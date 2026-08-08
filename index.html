@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ラーメン二郎制覇マップ</title>
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --jiro-yellow: #ffcc00;
+            --jiro-dark: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #f5f5f5;
+            --border-color: #333;
+            --link-color: #64b5f6;
+            --gmap-color: #81c784;
+            
+            --status-closed: #616161;       /* 終了/定休: 灰色 */
+            --status-scheduled: #0288d1;    /* 準備中: 水色 */
+            --status-open: #2e7d32;         /* 営業中: 緑 */
+            --status-closing-soon: #ed6c02; /* 営業中（まもなく終了）: 橙色 */
+            --status-preopen: #9c27b0;      /* オープン予定: 紫 */
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--jiro-dark);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #000;
+            border-bottom: 3px solid var(--jiro-yellow);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        h1 {
+            color: var(--jiro-yellow);
+            margin: 0;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .stats-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar-bg {
+            background-color: #333;
+            width: 70px;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background-color: var(--jiro-yellow);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* 共通スイッチボタンのスタイル */
+        .mode-switch {
+            display: inline-flex;
+            background-color: #2a2a2a;
+            border: 1px solid var(--jiro-yellow);
+            border-radius: 4px;
+            overflow: hidden;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .mode-switch-option {
+            padding: 4px 10px;
+            color: #aaa;
+            transition: background-color 0.2s, color 0.2s;
+            user-select: none;
+        }
+
+        .mode-switch-option.active {
+            background-color: var(--jiro-yellow);
+            color: #000;
+        }
+
+        .layout-switch-container {
+            display: none;
+        }
+
+        .main-layout {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .map-wrapper {
+            position: relative;
+            flex: 1;
+            height: 40vh;
+            width: 100%;
+            display: block;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .map-center-crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .map-center-crosshair::before,
+        .map-center-crosshair::after {
+            content: '';
+            position: absolute;
+            background-color: var(--jiro-yellow);
+            box-shadow: 0 0 3px rgba(0,0,0,0.8);
+        }
+        .map-center-crosshair::before { width: 16px; height: 2px; }
+        .map-center-crosshair::after { width: 2px; height: 16px; }
+
+        .sidebar-container {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-color: var(--jiro-dark);
+            max-height: 60vh;
+            width: 100%;
+        }
+
+        .controls {
+            padding: 10px 15px;
+            background-color: #181818;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 6px 10px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .filter-groups {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .filter-group-title {
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-bottom: 3px;
+            font-weight: bold;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .chip-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background-color: #141414;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            user-select: none;
+            color: #777;
+            transition: all 0.2s;
+        }
+
+        .chip-label input[type="checkbox"] { display: none; }
+
+        .chip-label.filter-open:has(input:checked) { background-color: rgba(46, 125, 50, 0.25); border-color: var(--status-open); color: #81c784; font-weight: bold; }
+        .chip-label.filter-closing:has(input:checked) { background-color: rgba(237, 108, 2, 0.25); border-color: var(--status-closing-soon); color: #ffb74d; font-weight: bold; }
+        .chip-label.filter-scheduled:has(input:checked) { background-color: rgba(2, 136, 209, 0.25); border-color: var(--status-scheduled); color: #4fc3f7; font-weight: bold; }
+        .chip-label.filter-closed:has(input:checked) { background-color: rgba(97, 97, 97, 0.25); border-color: var(--status-closed); color: #e0e0e0; font-weight: bold; }
+        
+        .chip-label.filter-visit:has(input:checked) {
+            background-color: #262200;
+            border-color: var(--jiro-yellow);
+            color: var(--jiro-yellow);
+            font-weight: bold;
+        }
+
+        .sub-filter-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            width: 100%;
+            align-items: flex-end;
+        }
+
+        .sub-filter-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sub-filter-section.sort-section {
+            margin-left: auto;
+        }
+
+        .sort-select {
+            background-color: #141414;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            cursor: pointer;
+        }
+
+        .container {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 12px 15px;
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .shop-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            user-select: none;
+            transition: border-color 0.2s, background-color 0.2s;
+            overflow: hidden;
+        }
+
+        .shop-item:hover { border-color: var(--jiro-yellow); }
+
+        .shop-item.visited {
+            background-color: #262200;
+            border-left: 4px solid var(--jiro-yellow);
+        }
+
+        .shop-grid.compact-mode .shop-item { padding: 8px 12px; }
+        .shop-grid.compact-mode .detailed-content { display: none; }
+        .shop-grid.compact-mode .compact-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 100%;
+            min-width: 0;
+        }
+        .compact-content { display: none; }
+
+        .shop-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .shop-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .shop-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .shop-name {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: var(--jiro-yellow);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+            color: #fff;
+            display: inline-block;
+            white-space: nowrap;
+            flex-shrink: 0;
+            width: 85px;
+            text-align: center;
+        }
+        .status-open { background-color: var(--status-open); }
+        .status-closing-soon { background-color: var(--status-closing-soon); }
+        .status-scheduled { background-color: var(--status-scheduled); }
+        .status-closed { background-color: var(--status-closed); }
+        .status-preopen { background-color: var(--status-preopen); }
+
+        .shop-sub-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .distance-tag {
+            font-size: 0.75rem;
+            color: var(--link-color);
+            font-weight: bold;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .next-schedule {
+            font-size: 0.78rem;
+            color: #bbb;
+            font-weight: normal;
+            background: transparent;
+            padding: 0;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            flex: 1;
+            min-width: 0;
+        }
+        .next-schedule.is-open {
+            color: #81c784;
+            background: transparent;
+        }
+
+        .meta-text-outside {
+            font-size: 0.8rem;
+            color: #ddd;
+            line-height: 1.4;
+            margin: 4px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .hours-box {
+            background: #141414;
+            padding: 6px 8px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            margin-top: 2px;
+        }
+        .hours-title {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #aaa;
+            margin-bottom: 4px;
+        }
+
+        .hours-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.72rem;
+            color: #ddd;
+        }
+        .hours-table th, .hours-table td {
+            border: 1px solid #333;
+            padding: 3px 6px;
+            text-align: left;
+        }
+        .hours-table th {
+            background-color: #222;
+            color: var(--jiro-yellow);
+            width: 75px;
+            white-space: nowrap;
+        }
+
+        .links-group {
+            display: flex;
+            gap: 12px;
+            font-size: 0.8rem;
+            margin-top: 6px;
+        }
+
+        .shop-link { color: var(--link-color); text-decoration: none; }
+        .gmap-link { color: var(--gmap-color); text-decoration: none; font-weight: bold; }
+        .shop-link:hover, .gmap-link:hover { text-decoration: underline; }
+
+        .visit-toggle-btn {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background-color: #2a2a2a;
+            color: #aaa;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .visit-toggle-btn.is-visited {
+            background-color: var(--jiro-yellow);
+            color: #000;
+            border-color: var(--jiro-yellow);
+        }
+        .visit-toggle-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .sidebar-footer {
+            padding: 8px 15px;
+            background-color: #101010;
+            border-top: 1px solid var(--border-color);
+            text-align: right;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .disclaimer-link {
+            color: #888;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .disclaimer-link:hover { color: var(--jiro-yellow); }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border: 1px solid var(--jiro-yellow);
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            color: #ddd;
+            line-height: 1.6;
+            font-size: 0.85rem;
+        }
+
+        .modal-header {
+            font-weight: bold;
+            font-size: 1.05rem;
+            color: var(--jiro-yellow);
+            margin-bottom: 12px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+        }
+
+        .modal-body p { margin: 0 0 10px 0; }
+
+        .modal-footer {
+            text-align: right;
+            margin-top: 15px;
+        }
+
+        .modal-close-btn {
+            background-color: var(--jiro-yellow);
+            color: #000;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .marker-pin {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0,0,0,0.6);
+        }
+        .bg-open { background-color: var(--status-open); }
+        .bg-closing-soon { background-color: var(--status-closing-soon); }
+        .bg-scheduled { background-color: var(--status-scheduled); }
+        .bg-closed { background-color: var(--status-closed); }
+        .bg-preopen { background-color: var(--status-preopen); }
+
+        .border-visited { border: 3px solid var(--jiro-yellow); }
+        .border-unvisited { border: 2px solid #ffffff; }
+
+        .location-btn {
+            background-color: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 6px;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            transition: background-color 0.2s, transform 0.1s, border-color 0.2s;
+        }
+        .location-btn:hover { background-color: #2a2a2a; }
+        .location-btn:active { transform: scale(0.95); }
+        
+        .location-btn .location-icon {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: #888;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .location-btn .location-inner-circle { fill: #888; }
+
+        .location-btn.active-loc {
+            background-color: rgba(255, 204, 0, 0.15);
+            border-color: var(--jiro-yellow);
+        }
+        .location-btn.active-loc .location-icon { stroke: var(--jiro-yellow); }
+        .location-btn.active-loc .location-inner-circle { fill: var(--jiro-yellow); }
+
+        .user-location-pin {
+            width: 16px;
+            height: 16px;
+            background-color: #2196f3;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(33, 150, 243, 0.8);
+        }
+
+        .leaflet-popup-content-wrapper {
+            background: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 0;
+            width: 330px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.85);
+        }
+        .leaflet-popup-content {
+            margin: 12px;
+            line-height: 1.4;
+        }
+        .leaflet-popup-content .detailed-content {
+            display: block !important;
+        }
+        .leaflet-popup-content .compact-content {
+            display: none !important;
+        }
+        .leaflet-container .leaflet-popup-close-button {
+            color: #888;
+            padding: 4px;
+            top: 8px;
+            right: 8px;
+            font-size: 16px;
+            z-index: 10;
+        }
+        .leaflet-container .leaflet-popup-close-button:hover { color: #fff; }
+        .leaflet-popup-tip { background: var(--card-bg); }
+
+        @media (min-width: 900px) {
+            .layout-switch-container { display: none !important; }
+            .view-mode-switch-container { display: inline-block !important; }
+            
+            .main-layout { flex-direction: row; }
+            .map-wrapper {
+                height: 100% !important;
+                width: auto !important;
+                flex: 1 !important;
+                display: block !important;
+            }
+            .sidebar-container {
+                width: 380px !important;
+                height: 100% !important;
+                max-height: none !important;
+                flex-shrink: 0;
+                border-left: 1px solid var(--border-color);
+                display: flex !important;
+            }
+        }
+
+        @media (max-width: 899px) {
+            .layout-switch-container { display: inline-block !important; }
+            
+            body.is-map-mode .view-mode-switch-container {
+                display: none !important;
+            }
+
+            .main-layout.mode-map .map-wrapper {
+                height: 100% !important;
+                display: block !important;
+            }
+            .main-layout.mode-map .sidebar-container { display: none !important; }
+
+            .main-layout.mode-list .map-wrapper { display: none !important; }
+            .main-layout.mode-list .sidebar-container {
+                height: 100% !important;
+                max-height: none !important;
+                display: flex !important;
+            }
+        }
+    </style>
+</head>
+<body class="is-map-mode">
+
+<header>
+    <h1>ラーメン二郎制覇マップ</h1>
+    <div class="header-right">
+        <div class="layout-switch-container">
+            <div class="mode-switch" onclick="toggleLayoutMode()">
+                <div class="mode-switch-option active" id="opt-layout-map">地図</div>
+                <div class="mode-switch-option" id="opt-layout-list">リスト</div>
+            </div>
+        </div>
+        <div class="view-mode-switch-container">
+            <div class="mode-switch" onclick="toggleViewMode()">
+                <div class="mode-switch-option active" id="opt-compact">コンパクト</div>
+                <div class="mode-switch-option" id="opt-detailed">詳細</div>
+            </div>
+        </div>
+        <div class="stats-container">
+            <div>制覇: <span id="visited-count" style="color:var(--jiro-yellow);">0</span> / <span id="total-count">0</span> 店舗</div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+            <div id="percentage">0%</div>
+        </div>
+    </div>
+</header>
+
+<div class="main-layout mode-map" id="main-layout">
+    <div class="map-wrapper">
+        <div id="map"></div>
+        <div class="map-center-crosshair"></div>
+    </div>
+    <div class="sidebar-container">
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="店舗名・住所で検索..." oninput="render()">
+            </div>
+            
+            <div class="filter-groups">
+                <div>
+                    <div class="filter-group-title">営業状態（複数選択可）</div>
+                    <div class="checkbox-group">
+                        <label class="chip-label filter-open">
+                            <input type="checkbox" name="open-filter" value="open" checked onchange="render()"> 営業中
+                        </label>
+                        <label class="chip-label filter-closing">
+                            <input type="checkbox" name="open-filter" value="closing-soon" checked onchange="render()"> まもなく終了
+                        </label>
+                        <label class="chip-label filter-scheduled">
+                            <input type="checkbox" name="open-filter" value="scheduled" checked onchange="render()"> 準備中
+                        </label>
+                        <label class="chip-label filter-closed">
+                            <input type="checkbox" name="open-filter" value="closed" checked onchange="render()"> 終了/定休
+                        </label>
+                    </div>
+                </div>
+
+                <div class="sub-filter-group">
+                    <div class="sub-filter-section">
+                        <div class="filter-group-title">訪問状態</div>
+                        <div class="checkbox-group">
+                            <label class="chip-label filter-visit">
+                                <input type="checkbox" name="visit-filter" value="visited" checked onchange="render()"> 制覇済
+                            </label>
+                            <label class="chip-label filter-visit">
+                                <input type="checkbox" name="visit-filter" value="unvisited" checked onchange="render()"> 未制覇
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="sub-filter-section sort-section">
+                        <div class="filter-group-title">並べ替え</div>
+                        <select id="sort-select" class="sort-select" onchange="render()">
+                            <option value="distance">距離順</option>
+                            <option value="hours">営業時間順</option>
+                            <option value="name">50音順</option>
+                            <option value="opened">開店日順</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="shop-grid" id="shop-grid"></div>
+        </div>
+
+        <div class="sidebar-footer">
+            <span class="disclaimer-link" onclick="openFeedbackModal()">フィードバック</span> | 
+            <span class="disclaimer-link" onclick="openDisclaimer()">免責事項</span>
+        </div>
+    </div>
+</div>
+
+<!-- 免責事項モーダル -->
+<div class="modal-overlay" id="disclaimer-modal">
+    <div class="modal-content">
+        <div class="modal-header">免責事項・注意事項</div>
+        <div class="modal-body">
+            <p>当サイトはラーメン二郎ファンの個人による非公式サイトです。ラーメン二郎直系各店舗および関連企業とは一切関係ありません。</p>
+            <p>掲載している営業時間・定休日・各種情報は最新の注意を払って更新しておりますが、突発的な臨休や営業時間の変更等により実際の状況と異なる場合があります。</p>
+            <p>当サイトの利用により生じたトラブルや損害等について、運営者は一切の責任を負いかねますのであらかじめご了承ください。</p>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: #aaa;">
+                <strong>利用データの取り扱いについて:</strong><br>
+                当サイトでは、各店舗のチェック状態（訪問記録）を保存および同期するため、ブラウザのローカルストレージおよび匿名化された端末識別ID（ランダムな文字列）を使用しております。このIDには氏名やメールアドレス等の個人情報は一切含まれず、個人の特定や追跡を目的とするものではありません。
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-close-btn" onclick="closeDisclaimer()">閉じる</button>
+        </div>
+    </div>
+</div>
+
+<!-- Googleフォーム用モーダル -->
+<div class="modal-overlay" id="feedback-modal">
+    <div class="modal-content" style="max-width: 650px; padding: 15px;">
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>フィードバック・不具合報告</span>
+            <button class="modal-close-btn" style="padding: 2px 8px; font-size: 0.8rem;" onclick="closeFeedbackModal()">✕</button>
+        </div>
+        <div class="modal-body" style="padding: 0; height: 70vh; overflow: hidden;">
+            <iframe 
+                id="gform-iframe"
+                src="https://docs.google.com/forms/d/e/1FAIpQLSeBRdX48LtssaqFoOI7w8SQVpEIDvMLPLrPi5njsQSn0cKR0w/viewform?embedded=true" 
+                width="100%" 
+                height="100%" 
+                frameborder="0" 
+                marginheight="0" 
+                marginwidth="0"
+                style="border: none;">
+                読み込み中…
+            </iframe>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+function getOrCreateUserId() {
+    let userId = localStorage.getItem('jiro_user_id');
+    if (!userId) {
+        userId = 'user_' + Math.random().toString(36).substring(2, 8) + '_' + Date.now().toString(36);
+        localStorage.setItem('jiro_user_id', userId);
+    }
+    return userId;
+}
+
+const CURRENT_USER_ID = getOrCreateUserId();
+// ★指定いただいたGAS URLを設定済み
+const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzIEpLl3ZCaH8-OJEqezCFYOO0Tq4q3tsKc3577vbGGlDnfjvJlrlH67EZHK_IwguKb/exec";
+
+let shops = [];
+let visitedState = JSON.parse(localStorage.getItem('jiro_pc_visited')) || {};
+let isCompactMode = true; 
+let currentLayoutMode = 'map';
+let userCoords = null;
+let userMarker = null;
+let locationBtnElement = null;
+const markers = {};
+let activePopupMarker = null;
+
+// 連打防止管理用のセット（処理中の店舗IDを記録）
+const processingShops = new Set();
+
+const geoOptions = {
+    enableHighAccuracy: false,
+    timeout: 3000,
+    maximumAge: 60000
+};
+
+function formatTime(hourFloat) {
+    const h = Math.floor(hourFloat);
+    const m = Math.round((hourFloat - h) * 60);
+    return `${h}:${m < 10 ? '0' : ''}${m}`;
+}
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
+function formatDistance(km) {
+    if (km < 1) {
+        return `約 ${Math.round(km * 1000)}m`;
+    }
+    return `約 ${km < 10 ? km.toFixed(1) : Math.round(km)}km`;
+}
+
+function isPreOpen(shop) {
+    if (!shop.openedAt) return false;
+    const today = new Date().toISOString().split('T')[0];
+    return shop.openedAt > today;
+}
+
+function isClosedShopExpired(shop, targetDate = new Date()) {
+    if (!shop.closedAt) return false;
+    
+    const year = targetDate.getFullYear();
+    const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+    const dayStr = String(targetDate.getDate()).padStart(2, '0');
+    const todayStr = `${year}-${month}-${dayStr}`;
+
+    if (shop.closedAt < todayStr) return true;
+
+    if (shop.closedAt === todayStr) {
+        const currentHour = targetDate.getHours() + (targetDate.getMinutes() / 60);
+        const todayShifts = getTodayShifts(shop, targetDate);
+        if (todayShifts && todayShifts.length > 0) {
+            const lastEndHour = Math.max(...todayShifts.map(s => s[1]));
+            if (currentHour > lastEndHour) return true;
+        } else {
+            if (currentHour >= 4) return true;
+        }
+    }
+    return false;
+}
+
+function getTodayShifts(shop, targetDate = new Date()) {
+    const year = targetDate.getFullYear();
+    const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+    const dayStr = String(targetDate.getDate()).padStart(2, '0');
+    const dateString = `${year}-${month}-${dayStr}`;
+
+    if (shop.temporary && Array.isArray(shop.temporary)) {
+        const tempEntry = shop.temporary.find(t => t.date === dateString);
+        if (tempEntry) {
+            return tempEntry.hours; 
+        }
+    }
+
+    const jsDay = targetDate.getDay();
+    const mondayBasedDay = (jsDay + 6) % 7;
+    return shop.shiftsByDay ? shop.shiftsByDay[mondayBasedDay] : null;
+}
+
+function getTemporaryStatus(shop, targetDate = new Date()) {
+    const year = targetDate.getFullYear();
+    const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+    const dayStr = String(targetDate.getDate()).padStart(2, '0');
+    const dateString = `${year}-${month}-${dayStr}`;
+
+    if (shop.temporary && Array.isArray(shop.temporary)) {
+        const tempEntry = shop.temporary.find(t => t.date === dateString);
+        if (tempEntry) {
+            if (tempEntry.hours.length === 0) return '臨時休業';
+            return '臨時営業';
+        }
+    }
+    return null;
+}
+
+function getBusinessStatus(shop, targetDate = new Date()) {
+    if (isPreOpen(shop)) {
+        return { type: 'preopen', bgClass: 'bg-preopen', label: 'オープン予定' };
+    }
+
+    const tempStatus = getTemporaryStatus(shop, targetDate);
+    if (tempStatus === '臨時休業') {
+        return { type: 'closed', bgClass: 'bg-closed', label: '臨時休業' };
+    }
+
+    const currentHour = targetDate.getHours() + (targetDate.getMinutes() / 60);
+    const shifts = getTodayShifts(shop, targetDate);
+
+    if (shifts && shifts.length > 0) {
+        for (const [start, end] of shifts) {
+            if (currentHour >= start && currentHour <= end) {
+                const remainingHours = end - currentHour;
+                const isClosingSoon = remainingHours <= 1.0;
+                return { 
+                    type: isClosingSoon ? 'closing-soon' : 'open', 
+                    bgClass: isClosingSoon ? 'bg-closing-soon' : 'bg-open', 
+                    isClosingSoon: isClosingSoon,
+                    endTime: end,
+                    label: isClosingSoon ? 'まもなく終了' : '営業中'
+                };
+            }
+        }
+        for (const [start, end] of shifts) {
+            if (currentHour < start) {
+                return { type: 'scheduled', bgClass: 'bg-scheduled', label: '準備中' };
+            }
+        }
+    }
+    return { type: 'closed', bgClass: 'bg-closed', label: tempStatus === '臨時営業' ? '臨時営業（終了）' : '終了/定休' };
+}
+
+function getNextOpenScheduleText(shop) {
+    if (isPreOpen(shop)) {
+        return `<span class="next-schedule">オープン予定: ${shop.openedAt.replace(/-/g, '/')}</span>`;
+    }
+
+    const now = new Date();
+    const status = getBusinessStatus(shop, now);
+    
+    const todayTemp = getTemporaryStatus(shop, now);
+    let todayTempNote = '';
+    if (todayTemp === '臨時休業') todayTempNote = '（本日臨時休業）';
+    else if (todayTemp === '臨時営業') todayTempNote = '（本日臨時営業）';
+
+    if (status.type === 'open' || status.type === 'closing-soon') {
+        const soonText = status.isClosingSoon ? ' (まもなく終了)' : '';
+        return `<span class="next-schedule is-open">〜${formatTime(status.endTime)}まで${soonText} ${todayTempNote}</span>`;
+    }
+
+    const todayShifts = getTodayShifts(shop, now);
+    const currentHour = now.getHours() + (now.getMinutes() / 60);
+
+    if (todayShifts && todayShifts.length > 0) {
+        for (const [start, end] of todayShifts) {
+            if (currentHour < start) {
+                return `<span class="next-schedule">次回: 本日 ${formatTime(start)}- ${todayTempNote}</span>`;
+            }
+        }
+    }
+
+    const dayNames = ["月", "火", "水", "木", "金", "土", "日"];
+    for (let offset = 1; offset <= 7; offset++) {
+        const checkDate = new Date();
+        checkDate.setDate(now.getDate() + offset);
+        const checkShifts = getTodayShifts(shop, checkDate);
+
+        if (checkShifts && checkShifts.length > 0) {
+            const firstShiftStart = checkShifts[0][0];
+            const checkJsDay = checkDate.getDay();
+            const checkMondayDay = (checkJsDay + 6) % 7;
+            let dayPrefix = "";
+            if (offset === 1) dayPrefix = "明日";
+            else if (offset === 2) dayPrefix = "明後日";
+            else dayPrefix = `${checkDate.getMonth() + 1}/${checkDate.getDate()}(${dayNames[checkMondayDay]})`;
+
+            return `<span class="next-schedule">次回: ${dayPrefix} ${formatTime(firstShiftStart)}- ${todayTempNote}</span>`;
+        }
+    }
+    return `<span class="next-schedule">次回: 不定休 ${todayTempNote}</span>`;
+}
+
+function getGoogleMapsUrl(shop) {
+    const queryText = `ラーメン二郎 ${shop.name} ${shop.addressText || ''}`;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(queryText)}`;
+}
+
+function renderBusinessHoursTable(shop) {
+    if (!shop.shiftsByDay) return '情報なし';
+
+    const dayNames = ["月", "火", "水", "木", "金", "土", "日"];
+    let groupedSchedules = [];
+    let currentDays = [];
+    let currentTimeStr = null;
+
+    for (let d = 0; d < 7; d++) {
+        const shifts = shop.shiftsByDay ? shop.shiftsByDay[d] : null;
+        let timeStr = '定休日';
+        if (shifts && shifts.length > 0) {
+            timeStr = shifts.map(s => `${formatTime(s[0])}-${formatTime(s[1])}`).join(', ');
+        }
+
+        if (currentTimeStr === null) {
+            currentTimeStr = timeStr;
+            currentDays.push(d);
+        } else if (currentTimeStr === timeStr) {
+            const lastDay = currentDays[currentDays.length - 1];
+            if (d === lastDay + 1) {
+                currentDays.push(d);
+            } else {
+                groupedSchedules.push({ days: [...currentDays], time: currentTimeStr });
+                currentDays = [d];
+                currentTimeStr = timeStr;
+            }
+        } else {
+            groupedSchedules.push({ days: [...currentDays], time: currentTimeStr });
+            currentDays = [d];
+            currentTimeStr = timeStr;
+        }
+    }
+    if (currentDays.length > 0) {
+        groupedSchedules.push({ days: [...currentDays], time: currentTimeStr });
+    }
+
+    let rowsHtml = '';
+    groupedSchedules.forEach(group => {
+        let dayLabel = '';
+        if (group.days.length === 7) {
+            dayLabel = '全日';
+        } else {
+            dayLabel = group.days.map(d => dayNames[d]).join('');
+        }
+        rowsHtml += `<tr><th>${dayLabel}</th><td>${group.time}</td></tr>`;
+    });
+
+    return `<table class="hours-table"><tbody>${rowsHtml}</tbody></table>`;
+}
+
+function generateCardContentHTML(shop, isVisited, fromPopup = false) {
+    const toggleBtnText = isVisited ? '制覇済' : '未制覇';
+    const toggleBtnClass = isVisited ? 'visit-toggle-btn is-visited' : 'visit-toggle-btn';
+    const isProcessing = processingShops.has(shop.id);
+    const disabledAttr = isProcessing ? 'disabled' : '';
+
+    const gmapUrl = getGoogleMapsUrl(shop);
+    
+    const xUrl = shop.x ? `https://x.com/${shop.x}` : null;
+    const pc3Url = (shop.urls && shop.urls.pc) ? shop.urls.pc : null;
+    const tabelogUrl = (shop.urls && shop.urls.tabelog) ? shop.urls.tabelog : null;
+
+    let linksHtml = '';
+    if (xUrl) linksHtml += `<a href="${xUrl}" target="_blank" rel="noopener noreferrer" class="shop-link">X ↗</a>`;
+    if (pc3Url) linksHtml += `<a href="${pc3Url}" target="_blank" rel="noopener noreferrer" class="shop-link">PC店Ⅲ ↗</a>`;
+    if (tabelogUrl) linksHtml += `<a href="${tabelogUrl}" target="_blank" rel="noopener noreferrer" class="shop-link">食べログ ↗</a>`;
+
+    const status = getBusinessStatus(shop);
+    let statusTag = `<span class="status-badge ${status.bgClass}">${status.label}</span>`;
+
+    const nextScheduleText = getNextOpenScheduleText(shop);
+    
+    const originLabel = userCoords ? "現在地から" : "中心から";
+    const distanceText = shop.distance !== undefined 
+        ? `<span class="distance-tag">📍 ${originLabel} ${formatDistance(shop.distance)}</span>` 
+        : '';
+
+    const fullAddress = `${shop.prefecture || ''} ${shop.addressText || ''}`.trim();
+    const ticketTimingText = shop.ticketTiming ? `<div><span style="color:var(--link-color); font-size: 1.1em; display:inline-block; transform: rotate(-15deg);">🎟️</span> ${shop.ticketTiming}</div>` : '';
+    const notesText = shop.notes ? `<div><strong>備考:</strong> ${shop.notes}</div>` : '';
+    const hoursTableHtml = renderBusinessHoursTable(shop);
+
+    return `
+        <div class="shop-info">
+            <div class="compact-content">
+                <div class="shop-header-row">
+                    <div class="shop-title-wrapper">
+                        <span class="shop-name">${shop.name}</span>
+                        ${statusTag}
+                    </div>
+                    <button class="${toggleBtnClass}" ${disabledAttr} style="padding:2px 8px; font-size:0.75rem;" onclick="toggleVisit('${shop.id}', ${fromPopup}, event)">
+                        ${toggleBtnText}
+                    </button>
+                </div>
+                <div class="shop-sub-row">
+                    ${nextScheduleText}
+                    ${distanceText}
+                </div>
+            </div>
+
+            <div class="detailed-content">
+                <div class="shop-header-row">
+                    <div class="shop-title-wrapper">
+                        <span class="shop-name">${shop.name}</span>
+                        ${statusTag}
+                    </div>
+                    <button class="${toggleBtnClass}" ${disabledAttr} onclick="toggleVisit('${shop.id}', ${fromPopup}, event)">
+                        ${toggleBtnText}
+                    </button>
+                </div>
+                
+                <div class="shop-sub-row">
+                    ${nextScheduleText}
+                    ${distanceText}
+                </div>
+
+                <div class="meta-text-outside">
+                    <div><a href="${gmapUrl}" target="_blank" rel="noopener noreferrer" class="gmap-link">📍 ${fullAddress || '住所不明'} ↗</a></div>
+                    ${ticketTimingText}
+                    ${notesText}
+                </div>
+
+                <div class="hours-box">
+                    <div class="hours-title">営業時間</div>
+                    ${hoursTableHtml}
+                </div>
+
+                <div class="links-group">
+                    ${linksHtml}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+const map = L.map('map', {
+    fadeAnimation: false,
+    zoomAnimation: true,
+    markerZoomAnimation: false
+}).setView([36.0000, 139.6000], 7);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+map.on('movestart', () => {
+    if (userCoords) {
+        userCoords = null; 
+        updateLocationButtonUI(false);
+    }
+});
+
+map.on('moveend', () => {
+    render();
+});
+
+map.on('moveend zoomend move', () => {
+    if (activePopupMarker) {
+        const popup = activePopupMarker.getPopup();
+        if (popup && popup.getElement()) {
+            const popupEl = popup.getElement();
+            const mapContainer = map.getContainer();
+            
+            const popupRect = popupEl.getBoundingClientRect();
+            const mapRect = mapContainer.getBoundingClientRect();
+
+            const isOutside = 
+                popupRect.right < mapRect.left ||
+                popupRect.left > mapRect.right ||
+                popupRect.bottom < mapRect.top ||
+                popupRect.top > mapRect.bottom;
+
+            if (isOutside) {
+                activePopupMarker.closePopup();
+            }
+        }
+    }
+});
+
+function openDisclaimer() {
+    document.getElementById('disclaimer-modal').classList.add('active');
+}
+
+function closeDisclaimer() {
+    document.getElementById('disclaimer-modal').classList.remove('active');
+}
+
+function openFeedbackModal() {
+    document.getElementById('feedback-modal').classList.add('active');
+}
+
+function closeFeedbackModal() {
+    document.getElementById('feedback-modal').classList.remove('active');
+}
+
+function updateLocationButtonUI(hasLocation) {
+    if (!locationBtnElement) return;
+    if (hasLocation) {
+        locationBtnElement.classList.add('active-loc');
+        locationBtnElement.title = '現在地取得中（クリックで現在地基準に再設定）';
+    } else {
+        locationBtnElement.classList.remove('active-loc');
+        locationBtnElement.title = '現在地と最寄り店舗を表示';
+    }
+}
+
+function createIcon(shop, isVisited) {
+    const status = getBusinessStatus(shop);
+    const bgClass = status.bgClass;
+    const borderClass = isVisited ? 'border-visited' : 'border-unvisited';
+
+    return L.divIcon({
+        className: 'custom-icon',
+        html: `<div class="marker-pin ${bgClass} ${borderClass}"></div>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+    });
+}
+
+function saveState() {
+    localStorage.setItem('jiro_pc_visited', JSON.stringify(visitedState));
+    updateStats();
+}
+
+function updateStats() {
+    const total = shops.length;
+    const visitedCount = shops.filter(s => visitedState[s.id]).length;
+    const percent = total > 0 ? Math.round((visitedCount / total) * 100) : 0;
+
+    document.getElementById('total-count').textContent = total;
+    document.getElementById('visited-count').textContent = visitedCount;
+    document.getElementById('percentage').textContent = percent + '%';
+    document.getElementById('progress-fill').style.width = percent + '%';
+}
+
+function toggleViewMode() {
+    isCompactMode = !isCompactMode;
+    const optCompact = document.getElementById('opt-compact');
+    const optDetailed = document.getElementById('opt-detailed');
+    
+    if (isCompactMode) {
+        optCompact.classList.add('active');
+        optDetailed.classList.remove('active');
+    } else {
+        optCompact.classList.remove('active');
+        optDetailed.classList.add('active');
+    }
+    render();
+}
+
+function toggleLayoutMode() {
+    const layoutEl = document.getElementById('main-layout');
+    const optLayoutMap = document.getElementById('opt-layout-map');
+    const optLayoutList = document.getElementById('opt-layout-list');
+    
+    if (currentLayoutMode === 'map') {
+        currentLayoutMode = 'list';
+        document.body.classList.remove('is-map-mode');
+        document.body.classList.add('is-list-mode');
+        layoutEl.classList.remove('mode-map');
+        layoutEl.classList.add('mode-list');
+        optLayoutMap.classList.remove('active');
+        optLayoutList.classList.add('active');
+    } else {
+        currentLayoutMode = 'map';
+        document.body.classList.remove('is-list-mode');
+        document.body.classList.add('is-map-mode');
+        layoutEl.classList.remove('mode-list');
+        layoutEl.classList.add('mode-map');
+        optLayoutMap.classList.add('active');
+        optLayoutList.classList.remove('active');
+        setTimeout(() => { map.invalidateSize(); }, 50);
+    }
+}
+
+async function toggleVisit(id, fromPopup = false, event = null) {
+    if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
+    if (processingShops.has(id)) return;
+    processingShops.add(id);
+
+    visitedState[id] = !visitedState[id];
+    saveState();
+    const isVisited = !!visitedState[id];
+
+    const shop = shops.find(s => s.id === id);
+    if (markers[id] && shop) {
+        const marker = markers[id];
+        const isPopupOpen = marker.isPopupOpen();
+
+        marker.setIcon(createIcon(shop, isVisited));
+        marker.setPopupContent(generateCardContentHTML(shop, isVisited, true));
+
+        if (fromPopup || isPopupOpen) {
+            setTimeout(() => { marker.openPopup(); }, 0);
+        }
+    }
+    render();
+
+    if (GAS_API_URL) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+            await fetch(GAS_API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify({
+                    user_id: CURRENT_USER_ID,
+                    shop_id: id,
+                    is_completed: isVisited
+                }),
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+        } catch (err) {
+            console.error("GAS書き込み通信エラー:", err);
+        }
+    }
+
+    processingShops.delete(id);
+    render();
+}
+
+function focusShopOnMap(shopId) {
+    const shop = shops.find(s => s.id === shopId);
+    const marker = markers[shopId];
+
+    if (shop && shop.lat && shop.lng && marker) {
+        if (window.innerWidth < 900 && currentLayoutMode === 'list') {
+            toggleLayoutMode();
+        }
+
+        map.setView([shop.lat, shop.lng], 15, { animate: true });
+        
+        setTimeout(() => {
+            marker.openPopup();
+        }, 200);
+    }
+}
+
+function getNextShiftStartMinutes(shop, targetDate = new Date()) {
+    const status = getBusinessStatus(shop, targetDate);
+    if (status.type === 'open' || status.type === 'closing-soon') {
+        return -1; 
+    }
+    const currentHour = targetDate.getHours() + (targetDate.getMinutes() / 60);
+    const todayShifts = getTodayShifts(shop, targetDate);
+    if (todayShifts && todayShifts.length > 0) {
+        for (const [start, end] of todayShifts) {
+            if (currentHour < start) {
+                return start * 60; 
+            }
+        }
+    }
+    for (let offset = 1; offset <= 7; offset++) {
+        const checkDate = new Date();
+        checkDate.setDate(targetDate.getDate() + offset);
+        const checkShifts = getTodayShifts(shop, checkDate);
+        if (checkShifts && checkShifts.length > 0) {
+            return (24 * offset) + checkShifts[0][0] * 60; 
+        }
+    }
+    return 999999;
+}
+
+function render() {
+    const grid = document.getElementById('shop-grid');
+    if (isCompactMode) {
+        grid.classList.add('compact-mode');
+    } else {
+        grid.classList.remove('compact-mode');
+    }
+
+    const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+    const selectedOpenFilters = Array.from(document.querySelectorAll('input[name="open-filter"]:checked')).map(cb => cb.value);
+    const selectedVisitFilters = Array.from(document.querySelectorAll('input[name="visit-filter"]:checked')).map(cb => cb.value);
+    const sortType = document.getElementById('sort-select').value;
+
+    grid.innerHTML = '';
+    let displayShops = shops.filter(s => s.lat !== undefined && s.lng !== undefined && !isClosedShopExpired(s));
+
+    const center = map.getCenter();
+    const sortLat = userCoords ? userCoords.lat : center.lat;
+    const sortLng = userCoords ? userCoords.lng : center.lng;
+
+    displayShops.forEach(shop => {
+        shop.distance = calculateDistance(sortLat, sortLng, shop.lat, shop.lng);
+        if (markers[shop.id]) {
+            const isVisited = !!visitedState[shop.id];
+            markers[shop.id].setPopupContent(generateCardContentHTML(shop, isVisited, true));
+        }
+    });
+
+    const now = new Date();
+    if (sortType === 'distance') {
+        displayShops.sort((a, b) => a.distance - b.distance);
+    } else if (sortType === 'hours') {
+        displayShops.sort((a, b) => {
+            const startA = getNextShiftStartMinutes(a, now);
+            const startB = getNextShiftStartMinutes(b, now);
+            if (startA !== startB) {
+                return startA - startB;
+            }
+            return a.distance - b.distance; 
+        });
+    } else if (sortType === 'name') {
+        displayShops.sort((a, b) => (a.kana || a.name).localeCompare(b.kana || b.name, 'ja'));
+    } else if (sortType === 'opened') {
+        displayShops.sort((a, b) => {
+            if (!a.openedAt) return 1;
+            if (!b.openedAt) return -1;
+            return a.openedAt.localeCompare(b.openedAt);
+        });
+    }
+
+    displayShops.forEach(shop => {
+        const isVisited = !!visitedState[shop.id];
+        const status = getBusinessStatus(shop);
+
+        const visitType = isVisited ? 'visited' : 'unvisited';
+        if (!selectedVisitFilters.includes(visitType)) {
+            updateMarkerVisibility(shop.id, false);
+            return;
+        }
+
+        let statusFilterKey = status.type;
+        if (status.type === 'preopen') statusFilterKey = 'closed';
+        if (!selectedOpenFilters.includes(statusFilterKey)) {
+            updateMarkerVisibility(shop.id, false);
+            return;
+        }
+        
+        const fullAddress = `${shop.prefecture || ''}${shop.addressText || ''}`.toLowerCase();
+        if (searchQuery && !shop.name.toLowerCase().includes(searchQuery) && !fullAddress.includes(searchQuery)) {
+            updateMarkerVisibility(shop.id, false);
+            return;
+        }
+
+        updateMarkerVisibility(shop.id, true);
+
+        const item = document.createElement('div');
+        item.className = `shop-item ${isVisited ? 'visited' : ''}`;
+        item.onclick = (e) => {
+            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A') {
+                focusShopOnMap(shop.id);
+            }
+        };
+
+        item.innerHTML = generateCardContentHTML(shop, isVisited, false);
+        grid.appendChild(item);
+    });
+    updateStats();
+    setTimeout(() => { map.invalidateSize(); }, 50);
+}
+
+function updateMarkerVisibility(shopId, isVisible) {
+    if (markers[shopId]) {
+        if (isVisible) {
+            if (!map.hasLayer(markers[shopId])) map.addLayer(markers[shopId]);
+        } else {
+            if (map.hasLayer(markers[shopId])) map.removeLayer(markers[shopId]);
+        }
+    }
+}
+
+function locateAndFitToNearest(lat, lng) {
+    userCoords = { lat, lng };
+    updateLocationButtonUI(true);
+
+    const userIcon = L.divIcon({
+        className: 'custom-icon',
+        html: '<div class="user-location-pin"></div>',
+        iconSize: [16, 16],
+        iconAnchor: [8, 8]
+    });
+
+    if (userMarker) {
+        userMarker.setLatLng([lat, lng]);
+    } else {
+        userMarker = L.marker([lat, lng], { icon: userIcon }).addTo(map).bindPopup('<b>現在地</b>');
+    }
+
+    shops.forEach(s => {
+        if (s.lat && s.lng) s.distance = calculateDistance(lat, lng, s.lat, s.lng);
+    });
+
+    const validShops = shops.filter(s => s.distance !== undefined && !isClosedShopExpired(s));
+    validShops.sort((a, b) => a.distance - b.distance);
+    const nearestShop = validShops[0];
+
+    if (nearestShop) {
+        const bounds = L.latLngBounds([lat, lng], [nearestShop.lat, nearestShop.lng]);
+        map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15, animate: true });
+    } else {
+        map.flyTo([lat, lng], 13, { duration: 0.8 });
+    }
+    render();
+}
+
+const LocationControl = L.Control.extend({
+    options: { position: 'bottomright' },
+    onAdd: function () {
+        const btn = L.DomUtil.create('button', 'location-btn');
+        locationBtnElement = btn;
+        btn.title = '現在地と最寄り店舗を表示';
+        btn.innerHTML = `
+            <svg class="location-icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="8"></circle>
+                <line x1="12" y1="2" x2="12" y2="6"></line>
+                <line x1="12" y1="18" x2="12" y2="22"></line>
+                <line x1="2" y1="12" x2="6" y2="12"></line>
+                <line x1="18" y1="12" x2="22" y2="12"></line>
+                <circle class="location-inner-circle" cx="12" cy="12" r="3"></circle>
+            </svg>
+        `;
+        btn.onclick = function (e) {
+            e.stopPropagation();
+            if (!navigator.geolocation) {
+                alert("お使いのブラウザは位置情報に対応していません。");
+                return;
+            }
+            if (userCoords) {
+                updateLocationButtonUI(true);
+                locateAndFitToNearest(userCoords.lat, userCoords.lng);
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    locateAndFitToNearest(pos.coords.latitude, pos.coords.longitude);
+                },
+                (err) => { 
+                    updateLocationButtonUI(false);
+                    alert("現在地の取得に失敗しました: " + err.message); 
+                },
+                geoOptions
+            );
+        };
+        return btn;
+    }
+});
+
+async function initApp() {
+    map.addControl(new LocationControl());
+
+    try {
+        const response = await fetch('shops.json');
+        if (!response.ok) throw new Error('店舗データの読み込みに失敗しました');
+        const rawShops = await response.json();
+
+        shops = rawShops.filter(shop => !isClosedShopExpired(shop));
+    } catch (error) {
+        console.error(error);
+        alert('店舗データ（shops.json）の取得に失敗しました。Webサーバー経由で起動しているか確認してください。');
+        return;
+    }
+
+    shops.forEach(shop => {
+        if (shop.lat && shop.lng) {
+            const isVisited = !!visitedState[shop.id];
+            const marker = L.marker([shop.lat, shop.lng], { icon: createIcon(shop, isVisited) }).addTo(map);
+            
+            marker.bindPopup(generateCardContentHTML(shop, isVisited, true), {
+                autoPan: true,
+                autoPanPadding: [50, 50],
+                closeButton: true,
+                autoClose: true
+            });
+
+            marker.on('popupopen', () => {
+                activePopupMarker = marker;
+            });
+            marker.on('popupclose', () => {
+                if (activePopupMarker === marker) {
+                    activePopupMarker = null;
+                }
+            });
+
+            markers[shop.id] = marker;
+        }
+    });
+
+    render();
+
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            pos => locateAndFitToNearest(pos.coords.latitude, pos.coords.longitude),
+            err => { 
+                updateLocationButtonUI(false);
+                console.log("初期位置情報の取得スキップ:", err.message); 
+            },
+            geoOptions
+        );
+    }
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>
