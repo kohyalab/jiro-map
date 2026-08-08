@@ -1,0 +1,1684 @@
+[
+  {
+    "id": "mita",
+    "name": "三田本店",
+    "kana": "ミタホンテン",
+    "prefecture": "東京都",
+    "addressText": "港区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/mita/",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "meguro",
+    "name": "目黒店",
+    "kana": "メグロテン",
+    "prefecture": "東京都",
+    "addressText": "目黒区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/meguro/",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "1995-07",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "sengawa",
+    "name": "仙川店",
+    "kana": "センガワテン",
+    "prefecture": "東京都",
+    "addressText": "調布市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/sengawa/",
+      "tabelog": ""
+    },
+    "x": "senjiro26",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "1995-10",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "kabuki",
+    "name": "新宿歌舞伎町店",
+    "kana": "シンジュクカブキチョウテン",
+    "prefecture": "東京都",
+    "addressText": "新宿区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/kabuki/",
+      "tabelog": ""
+    },
+    "x": "kabujiikeji",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2016-10",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "shinagawa",
+    "name": "品川店",
+    "kana": "シナガワテン",
+    "prefecture": "東京都",
+    "addressText": "品川区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/shinagawa/",
+      "tabelog": ""
+    },
+    "x": "shinagawa26",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "1997-10",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "kotakibashi",
+    "name": "新宿小滝橋通り店",
+    "kana": "シンジュクオタキバシドオリテン",
+    "prefecture": "東京都",
+    "addressText": "新宿区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/kotakibashi/",
+      "tabelog": ""
+    },
+    "x": "jiro_otakibasi",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "shndaita",
+    "name": "環七新新代田店",
+    "kana": "カンナナシンシンダイタテン",
+    "prefecture": "東京都",
+    "addressText": "世田谷区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/shndaita/",
+      "tabelog": ""
+    },
+    "x": "26shinshindaita",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2000-01",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "yaen2",
+    "name": "八王子野猿街道店2",
+    "kana": "ハチオウジヤエンカイドウテンツー",
+    "prefecture": "東京都",
+    "addressText": "八王子市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/yaen2/",
+      "tabelog": ""
+    },
+    "x": "Jiro_Yaenkaido2",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2000-08",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "ikebukuro",
+    "name": "池袋東口店",
+    "kana": "イケブクロヒガシグチテン",
+    "prefecture": "東京都",
+    "addressText": "豊島区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/ikebukuro/",
+      "tabelog": ""
+    },
+    "x": "ikejikabuji",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "kameido",
+    "name": "亀戸店",
+    "kana": "カメイドテン",
+    "prefecture": "東京都",
+    "addressText": "江東区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/kameido/",
+      "tabelog": ""
+    },
+    "x": "jiro_kame",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "keikyukawasaki",
+    "name": "京急川崎店",
+    "kana": "ケイキュウカワサキテン",
+    "prefecture": "神奈川県",
+    "addressText": "川崎市川崎区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/keikyukawasaki/",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2001-04",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "fuchu",
+    "name": "府中店",
+    "kana": "フチュウテン",
+    "prefecture": "東京都",
+    "addressText": "府中市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/fuchu/",
+      "tabelog": ""
+    },
+    "x": "jiro_fuchu",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "matsudo",
+    "name": "松戸駅前店",
+    "kana": "マツドエキマエテン",
+    "prefecture": "千葉県",
+    "addressText": "松戸市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/matsudo/",
+      "tabelog": ""
+    },
+    "x": "matsudojiro3",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "mejirodai",
+    "name": "めじろ台店",
+    "kana": "メジロダイテン",
+    "prefecture": "東京都",
+    "addressText": "八王子市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/mejirodai/",
+      "tabelog": ""
+    },
+    "x": "mejirodai_jiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2002-05",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "ogikubo",
+    "name": "荻窪店",
+    "kana": "オギクボテン",
+    "prefecture": "東京都",
+    "addressText": "杉並区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/ogikubo/",
+      "tabelog": ""
+    },
+    "x": "ogkb_jiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2002-10",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "kaminoge",
+    "name": "上野毛店",
+    "kana": "カミノゲテン",
+    "prefecture": "東京都",
+    "addressText": "世田谷区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/kaminoge/",
+      "tabelog": ""
+    },
+    "x": "kaminogeJiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2002-11",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "keiseiookubo",
+    "name": "京成大久保店",
+    "kana": "ケイセイオオクボテン",
+    "prefecture": "千葉県",
+    "addressText": "船橋市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/keiseiookubo/",
+      "tabelog": ""
+    },
+    "x": "OKB26",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2002-12",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "ichinoe",
+    "name": "環七一之江店",
+    "kana": "カンナナイチノエテン",
+    "prefecture": "東京都",
+    "addressText": "江戸川区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/ichinoe/",
+      "tabelog": ""
+    },
+    "x": "ichinoejiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2003-11",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "sagamiohno",
+    "name": "相模大野店",
+    "kana": "サガミオノテン",
+    "prefecture": "神奈川県",
+    "addressText": "相模原市南区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/sagamiohno/",
+      "tabelog": ""
+    },
+    "x": "sumo_jiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "kannai",
+    "name": "横浜関内店",
+    "kana": "ヨコハマカンナイテン",
+    "prefecture": "神奈川県",
+    "addressText": "横浜市中区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/kannai/",
+      "tabelog": ""
+    },
+    "x": "kannaijiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "jimbocho",
+    "name": "神田神保町店",
+    "kana": "カンダジンボウチョウテン",
+    "prefecture": "東京都",
+    "addressText": "千代田区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/jimbocho/",
+      "tabelog": ""
+    },
+    "x": "jbc_jimbolian",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "koiwa",
+    "name": "小岩店",
+    "kana": "コイワテン",
+    "prefecture": "東京都",
+    "addressText": "江戸川区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/koiwa/",
+      "tabelog": ""
+    },
+    "x": "koiwajiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "hibarigaoka",
+    "name": "ひばりヶ丘駅前店",
+    "kana": "ヒバリガオカエキマエテン",
+    "prefecture": "東京都",
+    "addressText": "西東京市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/hibarigaoka/",
+      "tabelog": ""
+    },
+    "x": "Aarf0xvdBXkWd7o",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "tochigikaido",
+    "name": "栃木街道店",
+    "kana": "トチギカイドウテン",
+    "prefecture": "栃木県",
+    "addressText": "下都賀郡壬生町",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/tochigikaido/",
+      "tabelog": ""
+    },
+    "x": "Tochigikaidoten",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "tachikawa",
+    "name": "立川店",
+    "kana": "タチカワテン",
+    "prefecture": "東京都",
+    "addressText": "立川市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/tachikawa/",
+      "tabelog": ""
+    },
+    "x": "jirotachikawa",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2008-04",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "senjuohashi",
+    "name": "千住大橋駅前店",
+    "kana": "センジュオオハシエキマエテン",
+    "prefecture": "東京都",
+    "addressText": "足立区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/senjuohashi/",
+      "tabelog": ""
+    },
+    "x": "senjujirou26",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": null,
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "kashiwa",
+    "name": "柏店",
+    "kana": "カシワテン",
+    "prefecture": "千葉県",
+    "addressText": "柏市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/kashiwa/",
+      "tabelog": ""
+    },
+    "x": "genkimoriya",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2023-01",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "fujisawa",
+    "name": "湘南藤沢店",
+    "kana": "ショウナンフジサワテン",
+    "prefecture": "神奈川県",
+    "addressText": "藤沢市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/fujisawa/",
+      "tabelog": ""
+    },
+    "x": "fujirow26",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2010-03",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "nishidai",
+    "name": "西台駅前店",
+    "kana": "ニシダイエキマエテン",
+    "prefecture": "東京都",
+    "addressText": "板橋区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/nishidai/",
+      "tabelog": ""
+    },
+    "x": "jiro_nishidai",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2010-06",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "nakayamaekimae",
+    "name": "中山駅前店",
+    "kana": "ナカヤマエキマエテン",
+    "prefecture": "神奈川県",
+    "addressText": "横浜市緑区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/nakayamaekimae/",
+      "tabelog": ""
+    },
+    "x": "NKYMJIRO",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2010-12",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "sendai",
+    "name": "仙台店2",
+    "kana": "センダイテンツー",
+    "prefecture": "宮城県",
+    "addressText": "仙台市青葉区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/sendai/",
+      "tabelog": ""
+    },
+    "x": "jiro_sendai1023",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2011-10",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "sapporo",
+    "name": "札幌店",
+    "kana": "サッポロテン",
+    "prefecture": "北海道",
+    "addressText": "札幌市北区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/sapporo/",
+      "tabelog": ""
+    },
+    "x": "jiro_sapporo_",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2013-03",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "aizuwakamatsu",
+    "name": "会津若松駅前店",
+    "kana": "アイヅワカマツエキマエテン",
+    "prefecture": "福島県",
+    "addressText": "会津若松市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/aizuwakamatsu/",
+      "tabelog": ""
+    },
+    "x": "aizu_jiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2014-09",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "nigata",
+    "name": "新潟店",
+    "kana": "ニイガタテン",
+    "prefecture": "新潟県",
+    "addressText": "新潟市中央区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/nigata/",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2015-11",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "kawagoe",
+    "name": "川越店",
+    "kana": "カワゴエテン",
+    "prefecture": "埼玉県",
+    "addressText": "川越市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/kawagoe/",
+      "tabelog": ""
+    },
+    "x": "kwge26",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2017-03",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "kyoto",
+    "name": "京都店",
+    "kana": "キョウトテン",
+    "prefecture": "京都府",
+    "addressText": "京都市左京区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/kyoto/",
+      "tabelog": ""
+    },
+    "x": "jiro_kyoto",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2017-04",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "koshigaya",
+    "name": "越谷店",
+    "kana": "コシガヤテン",
+    "prefecture": "埼玉県",
+    "addressText": "越谷市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/koshigaya/",
+      "tabelog": ""
+    },
+    "x": "ksgy26",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2019-03",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "maebashichiyoda",
+    "name": "前橋千代田町店",
+    "kana": "マエバシチヨダマチテン",
+    "prefecture": "群馬県",
+    "addressText": "前橋市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/maebashichiyoda/",
+      "tabelog": ""
+    },
+    "x": "SnBZt6eRCdz7lQw",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2019-10",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "chiba",
+    "name": "千葉店",
+    "kana": "チバテン",
+    "prefecture": "千葉県",
+    "addressText": "千葉市中央区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/chiba/",
+      "tabelog": ""
+    },
+    "x": "jiro_chiba",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2020-06",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "omiya",
+    "name": "大宮店",
+    "kana": "オオミヤテン",
+    "prefecture": "埼玉県",
+    "addressText": "さいたま市大宮区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2020-06",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "hitachinaka",
+    "name": "ひたちなか店",
+    "kana": "ヒタチナカテン",
+    "prefecture": "茨城県",
+    "addressText": "ひたちなか市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/hitachinaka/",
+      "tabelog": ""
+    },
+    "x": "26_hitachinaka",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2021-12",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "hitotsubashi",
+    "name": "一橋学園店",
+    "kana": "ヒトツバシガクエンテン",
+    "prefecture": "東京都",
+    "addressText": "小平市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/hitotsubashi/",
+      "tabelog": ""
+    },
+    "x": "1284jiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2022-08",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "ikuta",
+    "name": "生田駅前店",
+    "kana": "イクタエキマエテン",
+    "prefecture": "神奈川県",
+    "addressText": "川崎市多摩区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/ikuta/",
+      "tabelog": ""
+    },
+    "x": "ikuta_jiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2023-05",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "asakurakaido",
+    "name": "朝倉街道駅前店",
+    "kana": "アサクラカイドウエキマエテン",
+    "prefecture": "福岡県",
+    "addressText": "筑紫野市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "r26akgd",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2024-12",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "nagoyaosone",
+    "name": "名古屋大曽根店",
+    "kana": "ナゴヤオオソネテン",
+    "prefecture": "愛知県",
+    "addressText": "名古屋市東区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "jiro_NGY",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2025-11",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "okinawa",
+    "name": "沖縄店",
+    "kana": "オキナワテン",
+    "prefecture": "沖縄県",
+    "addressText": "那覇市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "okinawa_jiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2026-06",
+    "closedAt": null,
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "kichijoji",
+    "name": "吉祥寺店",
+    "kana": "キチジョウジテン",
+    "prefecture": "東京都",
+    "addressText": "武蔵野市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "1986",
+    "closedAt": "2015-04",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "akabane1",
+    "name": "赤羽店（初代）",
+    "kana": "アカバネテン",
+    "prefecture": "東京都",
+    "addressText": "北区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "1991",
+    "closedAt": "2001",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "musashikosugi",
+    "name": "武蔵小杉店",
+    "kana": "ムサシコスギテン",
+    "prefecture": "神奈川県",
+    "addressText": "川崎市中原区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "1996-05",
+    "closedAt": "2011-01",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "yoyogi",
+    "name": "代々木店",
+    "kana": "ヨヨギテン",
+    "prefecture": "東京都",
+    "addressText": "渋谷区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "1998-09",
+    "closedAt": "1999-04",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "machida",
+    "name": "町田店",
+    "kana": "マチダテン",
+    "prefecture": "東京都",
+    "addressText": "町田市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "1999-03",
+    "closedAt": "2002-09",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "takadanobaba",
+    "name": "高田馬場店",
+    "kana": "タカダノババテン",
+    "prefecture": "東京都",
+    "addressText": "豊島区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2002-05",
+    "closedAt": "2013-03",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "omiya",
+    "name": "大宮店",
+    "kana": "オオミヤテン",
+    "prefecture": "埼玉県",
+    "addressText": "さいたま市大宮区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2008-08",
+    "closedAt": "2016-11",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "akabane2",
+    "name": "赤羽店（2代）",
+    "kana": "アカバネテン",
+    "prefecture": "東京都",
+    "addressText": "北区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "Akabane260",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2012-01",
+    "closedAt": "2017-04",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "shimbashi2",
+    "name": "新橋店（2代）",
+    "kana": "シンバシテン",
+    "prefecture": "東京都",
+    "addressText": "港区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2011-09",
+    "closedAt": "2018-04",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "shinkoganei",
+    "name": "新小金井街道店",
+    "kana": "シンコガネイカイドウテン",
+    "prefecture": "東京都",
+    "addressText": "小金井市",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "koganeijiro",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2001-03",
+    "closedAt": "2018-12",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "kamata",
+    "name": "JR西口蒲田店",
+    "kana": "ジェイアールニシグチカマタテン",
+    "prefecture": "東京都",
+    "addressText": "大田区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "",
+      "tabelog": ""
+    },
+    "x": "",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "1996-02",
+    "closedAt": "2019-10",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  },
+  {
+    "id": "sakuradai",
+    "name": "桜台駅前店",
+    "kana": "サクラダイエキマエテン",
+    "prefecture": "東京都",
+    "addressText": "練馬区",
+    "lat": 0,
+    "lng": 0,
+    "urls": {
+      "pc": "https://ramen-jiro-pc3.com/sakuradai/",
+      "tabelog": ""
+    },
+    "x": "sakuradaiekimae",
+    "ticketTiming": "",
+    "notes": "",
+    "openedAt": "2007-01-14",
+    "closedAt": "2025-03-02",
+    "temporary": [],
+    "shiftsByDay": {
+      "0": [],
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": []
+    },
+    "holidayShifts": null
+  }
+]
