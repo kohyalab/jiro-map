@@ -1963,7 +1963,18 @@
     "ticketTiming": "",
     "openedAt": "2006-06-11",
     "closedAt": null,
-    "temporary": [],
+    "temporary": [
+      {
+        "startDate": "2026-08-12",
+        "endDate": "2026-08-14",
+        "hours": [
+          [
+            15,
+            21
+          ]
+        ]
+      }
+    ],
     "shiftsByDay": {
       "0": [
         [
@@ -2842,7 +2853,22 @@
     "ticketTiming": "",
     "openedAt": "2013-03-31",
     "closedAt": null,
-    "temporary": [],
+    "temporary": [
+      {
+        "startDate": "2026-08-10",
+        "endDate": "2026-08-14",
+        "hours": [
+          [
+            10.5,
+            14
+          ],
+          [
+            17,
+            2000
+          ]
+        ]
+      }
+    ],
     "shiftsByDay": {
       "0": [
         [
