@@ -79,7 +79,6 @@
             flex-shrink: 0;
         }
 
-        /* ページの左上に表示するアイコン */
         .header-icon {
             width: 24px;
             height: 24px;
@@ -92,7 +91,6 @@
             color: var(--jiro-red);
         }
 
-        /* BETAバッジ */
         .beta-badge {
             font-size: 0.62rem;
             font-weight: bold;
@@ -178,7 +176,6 @@
             transition: width 0.3s ease;
         }
 
-        /* モード切替スイッチ群 */
         .mode-switch {
             display: inline-flex;
             background-color: #222;
@@ -211,7 +208,6 @@
             background-color: #444;
         }
 
-        /* 選択中（アクティブ）状態 */
         .mode-switch-option.active {
             background-color: var(--jiro-yellow) !important;
             color: #000 !important;
@@ -474,7 +470,6 @@
             width: 100%;
         }
 
-        /* 最小モード */
         .shop-grid.view-mode-minimal {
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
         }
@@ -535,7 +530,6 @@
             display: none !important;
         }
 
-        /* コンパクトモード & 詳細モード */
         .shop-grid.view-mode-compact,
         .shop-grid.view-mode-detailed {
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -903,7 +897,6 @@
 
 <header>
     <div class="header-left">
-        <!-- スペース削除＆BETAバッジ追加 -->
         <h1><img src="icon_jirolianmap.png" alt="アイコン" class="header-icon"><span class="brand-ramen">ジロリアン</span>マップ<span class="beta-badge">BETA</span></h1>
         <div class="header-center-search">
             <input type="search" id="search-input" placeholder="店舗名・フリガナ・住所で検索..." aria-label="店舗検索" oninput="onSearchInput()">
@@ -946,7 +939,7 @@
                             </label>
                             <label class="chip-label">
                                 <input type="checkbox" name="open-filter" value="scheduled" checked onchange="render()">
-                                <span class="color-dot bg-scheduled"></span> まもなく開店
+                                <span class="color-dot bg-scheduled"></span> 営業開始前
                             </label>
                             <label class="chip-label">
                                 <input type="checkbox" name="open-filter" value="closed" checked onchange="render()">
@@ -1375,29 +1368,8 @@ function getBusinessStatus(shop, targetDate = new Date()) {
     if (tempStatus === '休業') return { type: 'closed', bgClass: 'bg-closed', label: '営業時間外' };
 
     let currentHour = targetDate.getHours() + (targetDate.getMinutes() / 60);
-    let shifts = getTodayShifts(shop, targetDate);
 
-    if (shifts?.length) {
-        for (const [start, end] of shifts) {
-            if (currentHour >= start && currentHour <= end) {
-                const isClosingSoon = (end - currentHour) <= 1.0;
-                return { 
-                    type: isClosingSoon ? 'closing-soon' : 'open', 
-                    bgClass: isClosingSoon ? 'bg-closing-soon' : 'bg-open', 
-                    isClosingSoon, endTime: end, label: isClosingSoon ? 'まもなく終了' : '営業中'
-                };
-            }
-            if (currentHour >= (start - 1.0) && currentHour < start) {
-                return {
-                    type: 'scheduled',
-                    bgClass: 'bg-scheduled',
-                    label: 'まもなく開店',
-                    startTime: start
-                };
-            }
-        }
-    }
-
+    // 1. 前日からの跨ぎ営業（例: 25:00終了 ＝ 本日1:00まで営業）をチェック
     const yesterday = new Date(targetDate);
     yesterday.setDate(targetDate.getDate() - 1);
     const yesterdayShifts = getTodayShifts(shop, yesterday);
@@ -1409,9 +1381,36 @@ function getBusinessStatus(shop, targetDate = new Date()) {
                 return {
                     type: isClosingSoon ? 'closing-soon' : 'open',
                     bgClass: isClosingSoon ? 'bg-closing-soon' : 'bg-open',
+                    isClosingSoon, endTime: end - 24.0, label: isClosingSoon ? 'まもなく終了' : '営業中'
+                };
+            }
+        }
+    }
+
+    // 2. 当日シフトの判定
+    let shifts = getTodayShifts(shop, targetDate);
+    if (shifts?.length) {
+        // 現在営業中またはまもなく終了かを判定
+        for (const [start, end] of shifts) {
+            if (currentHour >= start && currentHour <= end) {
+                const isClosingSoon = (end - currentHour) <= 1.0;
+                return { 
+                    type: isClosingSoon ? 'closing-soon' : 'open', 
+                    bgClass: isClosingSoon ? 'bg-closing-soon' : 'bg-open', 
                     isClosingSoon, endTime: end, label: isClosingSoon ? 'まもなく終了' : '営業中'
                 };
             }
+        }
+
+        // 現在以降に開始するシフトが存在する場合、当日営業開始前と判定
+        const upcomingShift = shifts.find(([start]) => currentHour < start);
+        if (upcomingShift) {
+            return {
+                type: 'scheduled',
+                bgClass: 'bg-scheduled',
+                label: '営業開始前',
+                startTime: upcomingShift[0]
+            };
         }
     }
 
