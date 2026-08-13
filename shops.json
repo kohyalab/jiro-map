@@ -2878,6 +2878,16 @@
             20
           ]
         ]
+      },
+      {
+        "startDate": "2026-08-15",
+        "endDate": "2026-08-15",
+        "hours": []
+      },
+      {
+        "startDate": "2026-08-19",
+        "endDate": "2026-08-19",
+        "hours": []
       }
     ],
     "shiftsByDay": {
