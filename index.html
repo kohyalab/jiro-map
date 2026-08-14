@@ -383,6 +383,100 @@
             min-width: 0;
         }
 
+        .global-view-btn {
+            position: relative;
+            background-color: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 6px;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+            padding: 0;
+            margin-bottom: 8px;
+        }
+
+        .global-view-btn:hover {
+            border-color: var(--jiro-yellow);
+        }
+
+        .global-view-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 8px);
+            transform: translateX(-50%);
+            background-color: rgba(20,20,20,0.96);
+            color: #fff;
+            font-size: 0.68rem;
+            line-height: 1.2;
+            white-space: nowrap;
+            padding: 4px 7px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,204,0,0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+        }
+
+        .global-view-btn:hover::after {
+            opacity: 1;
+        }
+
+        .global-view-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: #888;
+            fill: none;
+            stroke-width: 1.8;
+        }
+
+        .global-view-btn:hover svg {
+            stroke: var(--jiro-yellow);
+        }
+
+        .location-btn {
+            position: relative;
+            background-color: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 6px;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+        }
+        .location-btn.is-visible { display: flex; }
+        .location-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 8px);
+            transform: translateX(-50%);
+            background-color: rgba(20,20,20,0.96);
+            color: #fff;
+            font-size: 0.68rem;
+            line-height: 1.2;
+            white-space: nowrap;
+            padding: 4px 7px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,204,0,0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+        }
+        .location-btn:hover::after {
+            opacity: 1;
+        }
+        .location-btn .location-icon { width: 20px; height: 20px; stroke: #888; fill: none; stroke-width: 2.5; }
+        .location-btn.active-loc { border-color: var(--jiro-yellow); }
+        .location-btn.active-loc .location-icon { stroke: var(--jiro-yellow); }
+
         #map {
             height: 100%;
             width: 100%;
@@ -968,22 +1062,6 @@
         .border-visited { border: 3px solid var(--jiro-yellow); }
         .border-unvisited { border: 2px solid #ffffff; }
 
-        .location-btn {
-            background-color: #1a1a1a;
-            border: 2px solid #444;
-            border-radius: 6px;
-            width: 38px;
-            height: 38px;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-        }
-        .location-btn.is-visible { display: flex; }
-        .location-btn .location-icon { width: 20px; height: 20px; stroke: #888; fill: none; stroke-width: 2.5; }
-        .location-btn.active-loc { border-color: var(--jiro-yellow); }
-        .location-btn.active-loc .location-icon { stroke: var(--jiro-yellow); }
 
         .user-location-pin {
             width: 16px;
@@ -1981,6 +2059,19 @@ function updateLocationButtonUI(hasLocation) {
     locationBtnElement.classList.toggle('is-visible', hasLocation);
 }
 
+function fitMapToAllShops() {
+    const validShops = shops.filter(shop => shop.lat !== undefined && shop.lng !== undefined && !isClosedShopExpired(shop));
+    if (validShops.length === 0) return;
+
+    const bounds = L.latLngBounds(validShops.map(shop => [shop.lat, shop.lng]));
+    map.fitBounds(bounds, {
+        padding: [30, 30],
+        maxZoom: 6,
+        animate: true
+    });
+    userHasInteractedWithMap = false;
+}
+
 function createIcon(shop, isVisited) {
     const status = getBusinessStatus(shop);
     return L.divIcon({
@@ -2526,12 +2617,38 @@ function requestUserLocation(silent = false, isUserClick = false) {
     );
 }
 
+const GlobalViewControl = L.Control.extend({
+    options: { position: 'bottomright' },
+    onAdd: function () {
+        const btn = L.DomUtil.create('button', 'global-view-btn');
+        btn.setAttribute('type', 'button');
+        btn.setAttribute('aria-label', '全国表示');
+        btn.setAttribute('data-tooltip', '全国表示');
+        btn.title = '全国表示';
+        btn.innerHTML = `
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="4" y="4" width="7" height="7" rx="1"/>
+                <rect x="13" y="4" width="7" height="7" rx="1"/>
+                <rect x="4" y="13" width="7" height="7" rx="1"/>
+                <rect x="13" y="13" width="7" height="7" rx="1"/>
+            </svg>
+        `;
+        btn.onclick = function (e) {
+            e.stopPropagation();
+            fitMapToAllShops();
+        };
+        return btn;
+    }
+});
+
 const LocationControl = L.Control.extend({
     options: { position: 'bottomright' },
     onAdd: function () {
         const btn = L.DomUtil.create('button', 'location-btn');
         locationBtnElement = btn;
-        btn.setAttribute('aria-label', '現在地を取得');
+        btn.setAttribute('aria-label', '現在地');
+        btn.setAttribute('data-tooltip', '現在地');
+        btn.title = '現在地';
         btn.innerHTML = `<svg class="location-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle></svg>`;
         btn.onclick = function (e) {
             e.stopPropagation();
@@ -2596,6 +2713,7 @@ function initResizer() {
 }
 
 async function initApp() {
+    map.addControl(new GlobalViewControl());
     map.addControl(new LocationControl());
 
     try {
