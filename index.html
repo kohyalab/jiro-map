@@ -237,10 +237,24 @@
             align-items: center;
             user-select: none;
             border-bottom: 1px solid var(--border-color);
+            gap: 8px;
         }
 
         .controls-toggle-bar:hover {
             background-color: #1c1c1c;
+        }
+
+        .controls-toggle-count {
+            color: #ddd;
+            font-size: 0.7rem;
+            font-weight: normal;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .controls-toggle-count strong {
+            font-weight: bold;
+            color: #fff;
         }
 
         .controls {
@@ -533,8 +547,88 @@
         }
 
         .shop-grid.view-mode-compact,
-        .shop-grid.view-mode-detailed {
+        .shop-grid.view-mode-detailed,
+        .shop-grid.view-mode-today {
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        }
+
+        .shop-grid.view-mode-today {
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        }
+
+        .shop-grid.view-mode-today .shop-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            padding: 8px 6px;
+            min-height: 85px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .shop-grid.view-mode-today .shop-item:hover {
+            border-color: var(--jiro-yellow);
+        }
+
+        .shop-grid.view-mode-today .shop-item.today-open {
+            background-color: rgba(46, 125, 50, 0.18);
+            border-color: rgba(76, 175, 80, 0.8);
+        }
+
+        .shop-grid.view-mode-today .shop-item.today-closed {
+            background-color: rgba(97, 97, 97, 0.18);
+            border-color: rgba(158, 158, 158, 0.8);
+        }
+
+        .today-summary-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+            width: 100%;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .today-summary-name {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--jiro-yellow);
+            word-break: break-all;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-width: 0;
+        }
+
+        .today-hours-text {
+            font-size: 0.7rem;
+            line-height: 1.25;
+            font-weight: normal;
+            white-space: normal;
+            word-break: break-word;
+            text-align: center;
+            width: 100%;
+        }
+
+        .today-hours-text.is-open {
+            color: #e9fbe9;
+        }
+
+        .today-hours-text.is-closed {
+            color: #f1f1f1;
+        }
+
+        .today-hours-text.is-temp {
+            color: #ff9f43;
         }
 
         .shop-item {
@@ -945,6 +1039,7 @@
     <div class="controls-wrapper collapsed" id="controls-wrapper">
         <div class="controls-toggle-bar" onclick="toggleControlsVisibility()">
             <span id="controls-toggle-text">▼ フィルタを表示する</span>
+            <span id="controls-toggle-count" class="controls-toggle-count">表示: <strong>0</strong>店舗</span>
         </div>
         <div class="controls">
             <div class="filter-groups">
@@ -1003,6 +1098,7 @@
                     <button type="button" class="mode-switch-option" id="opt-minimal" onclick="setListSubMode('minimal')">最小</button>
                     <button type="button" class="mode-switch-option active" id="opt-compact" onclick="setListSubMode('compact')">コンパクト</button>
                     <button type="button" class="mode-switch-option" id="opt-detailed" onclick="setListSubMode('detailed')">詳細</button>
+                    <button type="button" class="mode-switch-option" id="opt-today" onclick="setListSubMode('today')">本日</button>
                 </div>
                 <div id="sort-control-wrapper" style="display: flex; align-items: center; gap: 6px; margin-left: auto;">
                     <select id="sort-select" class="sort-select" onchange="onSortChange()">
@@ -1915,11 +2011,19 @@ function updateStats() {
     document.getElementById('progress-bar').setAttribute('aria-valuenow', percent);
 }
 
+function updateVisibleCount(count) {
+    const countNode = document.getElementById('controls-toggle-count');
+    if (countNode) {
+        countNode.innerHTML = `表示: <strong>${count}</strong>店舗`;
+    }
+}
+
 function setListSubMode(mode) {
     listSubMode = mode;
     document.getElementById('opt-minimal').classList.toggle('active', mode === 'minimal');
     document.getElementById('opt-compact').classList.toggle('active', mode === 'compact');
     document.getElementById('opt-detailed').classList.toggle('active', mode === 'detailed');
+    document.getElementById('opt-today').classList.toggle('active', mode === 'today');
     
     const sidebar = document.getElementById('sidebar-container');
     if (sidebar) {
@@ -2152,6 +2256,8 @@ function render() {
         grid.classList.add('view-mode-compact');
     } else if (listSubMode === 'detailed') {
         grid.classList.add('view-mode-detailed');
+    } else if (listSubMode === 'today') {
+        grid.classList.add('view-mode-today');
     }
 
     const rawSearchQuery = document.getElementById('search-input').value.toLowerCase().trim();
@@ -2233,6 +2339,7 @@ function render() {
     }
 
     const fragment = document.createDocumentFragment();
+    let visibleShopCount = 0;
 
     displayShops.forEach(shop => {
         const isVisited = !!visitedState[shop.id];
@@ -2264,9 +2371,11 @@ function render() {
         }
 
         updateMarkerVisibility(shop.id, true);
+        visibleShopCount++;
 
         const item = document.createElement('div');
-        item.className = `shop-item ${isVisited ? 'visited' : ''}`;
+        const isTodayOpen = ['open', 'closing-soon', 'scheduled'].includes(status.type);
+        item.className = `shop-item ${isVisited ? 'visited' : ''} ${listSubMode === 'today' ? (isTodayOpen ? 'today-open' : 'today-closed') : ''}`;
         
         if (listSubMode === 'minimal') {
             item.onclick = (e) => {
@@ -2280,6 +2389,28 @@ function render() {
                 <button type="button" class="visit-toggle-btn ${isVisited ? 'is-visited' : ''}" onclick="toggleVisit('${shop.id}', false, event)" aria-label="${shop.name}の制覇状態を切り替え">
                     ${isVisited ? '制覇済' : '未制覇'}
                 </button>
+            `;
+        } else if (listSubMode === 'today') {
+            item.onclick = (e) => {
+                if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A') {
+                    handleShopSelect(shop.id);
+                }
+            };
+
+            const tempStatus = getTemporaryStatus(shop);
+            const todayHours = (() => {
+                const shifts = getTodayShifts(shop);
+                if (!shifts || shifts.length === 0) return '休業';
+                return shifts.map(([start, end]) => `${formatTime(start)}-${formatTime(end)}`).join(', ');
+            })();
+
+            const textClass = tempStatus ? 'is-temp' : (isTodayOpen ? 'is-open' : 'is-closed');
+
+            item.innerHTML = `
+                <div class="today-summary-card">
+                    <div class="today-summary-name">${shop.name}</div>
+                    <div class="today-hours-text ${textClass}">${todayHours}</div>
+                </div>
             `;
         } else {
             item.onclick = (e) => {
@@ -2303,6 +2434,7 @@ function render() {
     });
 
     grid.appendChild(fragment);
+    updateVisibleCount(visibleShopCount);
     updateStats();
 }
 
