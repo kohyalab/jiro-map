@@ -375,8 +375,9 @@
             z-index: 1;
         }
 
+        /* リサイズハンドルのタッチ操作調整 */
         .resizer {
-            width: 6px;
+            width: 10px;
             background-color: #2a2a2a;
             cursor: col-resize;
             z-index: 10;
@@ -384,6 +385,7 @@
             transition: background-color 0.2s;
             border-left: 1px solid var(--border-color);
             border-right: 1px solid var(--border-color);
+            touch-action: none;
         }
         .resizer:hover, .resizer.is-dragging { background-color: var(--jiro-yellow); }
 
@@ -624,18 +626,25 @@
         .next-schedule.is-closing-soon { color: var(--status-closing-soon); font-weight: bold; }
         .next-schedule.is-scheduled { color: var(--status-scheduled); font-weight: bold; }
 
+        /* 臨時営業情報スタイル（枠線のみで強調し、通常表示では背景なし・文字色を調整） */
         .temp-schedule-box {
             margin-top: 6px;
             font-size: 0.75rem;
-            color: #ffb74d;
-            background-color: #2a2015;
-            border: 1px solid #5d4037;
+            color: #fff;
+            background: transparent;
+            border: 1px solid #333;
             padding: 5px 8px;
             border-radius: 4px;
             display: flex;
             flex-direction: column;
             gap: 2px;
             line-height: 1.4;
+        }
+        .temp-schedule-box.today-highlight {
+            border: 2px solid #ffa726;
+            background: transparent;
+            padding: 5px 8px;
+            border-radius: 4px;
         }
 
         .temp-schedule-label {
@@ -644,6 +653,7 @@
         }
 
         .temp-schedule-text {
+            color: #fff;
             word-break: break-all;
             white-space: normal;
         }
@@ -705,6 +715,18 @@
             color: var(--jiro-yellow);
             width: 5.2em;
             white-space: nowrap;
+        }
+
+        /* 営業時間の枠強調スタイル（枠線強調は維持し、曜日ラベルは黄色太字のまま） */
+        .hours-table tr.today-highlight {
+            outline: 2px solid #ffa726;
+            outline-offset: -1px;
+            background-color: transparent;
+        }
+        .hours-table tr.today-highlight th {
+            font-weight: bold;
+            color: var(--jiro-yellow);
+            background-color: transparent;
         }
 
         .links-group { 
@@ -1057,9 +1079,7 @@
     </div>
     <div class="modal-body" style="height: 60vh;">
         <iframe 
-            src="https://docs.google.com/forms/d/e/1FAIpQLSeBRdX48LtssaqFoOI7w8SQVpEIDvMLPLrPi5njsQSn0cKR0w/viewform?embedded=true" 
-            width="100%" height="100%" style="border: none;" title="フィードバックフォーム">
-            読み込み中…
+            src="https://docs.google.com/forms/d/e/1FAIpQLSdEjRJkYuFRvXjdCai8iUrh6wUiKw4z6H0GCo3QcD1-W24prA/viewform?embedded=true" width="640" height="1166" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…
         </iframe>
     </div>
 </dialog>
@@ -1494,17 +1514,22 @@ function getNextOpenScheduleText(shop) {
 }
 
 function getWeeklyTemporaryText(shop) {
-    if (!Array.isArray(shop.temporary) || shop.temporary.length === 0) return null;
+    if (!Array.isArray(shop.temporary) || shop.temporary.length === 0) return { text: null, hasToday: false };
 
     const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
     const now = new Date();
+    const todayKey = getLocalDateKey(now);
     const dailyList = [];
+    let hasTodayTemp = false;
 
     for (let i = 0; i < 30; i++) {
         const d = new Date();
         d.setDate(now.getDate() + i);
         const tempEntry = findTemporaryEntry(shop, d);
         if (tempEntry) {
+            if (getLocalDateKey(d) === todayKey) {
+                hasTodayTemp = true;
+            }
             const hours = tempEntry.hours;
             const statusType = (!hours || hours.length === 0) ? '休業' : hours.map(s => `${formatTime(s[0])}-${formatTime(s[1])}`).join(', ');
             
@@ -1524,7 +1549,7 @@ function getWeeklyTemporaryText(shop) {
         }
     }
 
-    if (dailyList.length === 0) return null;
+    if (dailyList.length === 0) return { text: null, hasToday: false };
 
     const consecutiveGroups = [];
     let currentGroup = null;
@@ -1577,7 +1602,7 @@ function getWeeklyTemporaryText(shop) {
         return g.statusType === '休業' ? `${combinedDates} 臨時休業` : `${combinedDates} ${g.statusType}`;
     });
 
-    return formattedParts.join('、');
+    return { text: formattedParts.join('、'), hasToday: hasTodayTemp };
 }
 
 function formatWeekNumbers(weeks) {
@@ -1606,6 +1631,36 @@ function renderBusinessHoursTable(shop) {
 
     const baseDayNames = ["月", "火", "水", "木", "金", "土", "日"];
     const rawEntries = [];
+
+    // 本日の日時・祝日情報・臨時情報取得
+    const now = new Date();
+    const currentHour = now.getHours() + (now.getMinutes() / 60);
+
+    // 24:00（深夜跨ぎ）営業の判定ロジック：深夜0〜4時等で前日からの営業中である場合、前日を「本日扱い」の対象とする
+    let activeTargetDate = new Date(now);
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+    const yesterdayShifts = getTodayShifts(shop, yesterday);
+    let isLateNightOvernight = false;
+
+    if (yesterdayShifts?.length) {
+        const adjustedHour = currentHour + 24.0;
+        for (const [start, end] of yesterdayShifts) {
+            if (end > 24.0 && adjustedHour >= start && adjustedHour <= end) {
+                isLateNightOvernight = true;
+                activeTargetDate = yesterday;
+                break;
+            }
+        }
+    }
+
+    const tempEntryToday = findTemporaryEntry(shop, activeTargetDate);
+    const hasTodayTemp = !!tempEntryToday; // 臨時営業情報が適用される日か判定
+
+    const targetJsDay = activeTargetDate.getDay(); // 0:日, 1:月...
+    const targetMondayBasedDay = (targetJsDay + 6) % 7; // 0:月... 6:日
+    const targetIsHoliday = isJapaneseHoliday(activeTargetDate);
+    const hasHolidayShift = shop.holidayShifts !== null && shop.holidayShifts !== undefined;
 
     for (let mondayIndex = 0; mondayIndex < 7; mondayIndex++) {
         const jsDayOfWeek = (mondayIndex + 1) % 7;
@@ -1640,14 +1695,30 @@ function renderBusinessHoursTable(shop) {
             fullText += `（${specTexts.join('、')}）`;
         }
 
-        rawEntries.push({ dayLabel, text: fullText, isHoliday: false });
+        // 強調判定：臨時営業適用日は強調しない。祝日で祝日枠がない場合は該当曜日を強調
+        let isTodayRow = false;
+        if (!hasTodayTemp) {
+            if (targetIsHoliday) {
+                if (!hasHolidayShift && mondayIndex === targetMondayBasedDay) {
+                    isTodayRow = true;
+                }
+            } else {
+                if (mondayIndex === targetMondayBasedDay) {
+                    isTodayRow = true;
+                }
+            }
+        }
+
+        rawEntries.push({ dayLabel, text: fullText, isHoliday: false, isToday: isTodayRow });
     }
 
-    if (shop.holidayShifts !== null && shop.holidayShifts !== undefined) {
+    if (hasHolidayShift) {
         const holidayStr = Array.isArray(shop.holidayShifts) && shop.holidayShifts.length > 0
             ? shop.holidayShifts.map(s => `${formatTime(s[0])}-${formatTime(s[1])}`).join(', ')
             : '定休日';
-        rawEntries.push({ dayLabel: '祝', text: holidayStr, isHoliday: true });
+        // 祝日の場合かつ臨時営業がない場合「祝」を強調
+        const isTodayRow = !hasTodayTemp && targetIsHoliday;
+        rawEntries.push({ dayLabel: '祝', text: holidayStr, isHoliday: true, isToday: isTodayRow });
     }
 
     const groupedEntries = [];
@@ -1655,14 +1726,14 @@ function renderBusinessHoursTable(shop) {
 
     rawEntries.forEach(entry => {
         if (!currentGroup) {
-            currentGroup = { labels: [entry.dayLabel], text: entry.text, hasHoliday: entry.isHoliday };
+            currentGroup = { labels: [entry.dayLabel], text: entry.text, hasHoliday: entry.isHoliday, isToday: entry.isToday };
         } else {
-            if (currentGroup.text === entry.text && (!currentGroup.hasHoliday || (currentGroup.labels.length === 1 && currentGroup.labels[0] === '日' && entry.isHoliday))) {
+            if (currentGroup.text === entry.text && currentGroup.isToday === entry.isToday && (!currentGroup.hasHoliday || (currentGroup.labels.length === 1 && currentGroup.labels[0] === '日' && entry.isHoliday))) {
                 currentGroup.labels.push(entry.dayLabel);
                 if (entry.isHoliday) currentGroup.hasHoliday = true;
             } else {
                 groupedEntries.push(currentGroup);
-                currentGroup = { labels: [entry.dayLabel], text: entry.text, hasHoliday: entry.isHoliday };
+                currentGroup = { labels: [entry.dayLabel], text: entry.text, hasHoliday: entry.isHoliday, isToday: entry.isToday };
             }
         }
     });
@@ -1692,7 +1763,8 @@ function renderBusinessHoursTable(shop) {
             labelDisplay = labels.join('');
         }
 
-        rowsHtml += `<tr><th>${labelDisplay}</th><td>${group.text}</td></tr>`;
+        const todayClass = group.isToday ? 'class="today-highlight"' : '';
+        rowsHtml += `<tr ${todayClass}><th>${labelDisplay}</th><td>${group.text}</td></tr>`;
     });
 
     return `<table class="hours-table"><tbody>${rowsHtml}</tbody></table>`;
@@ -1722,11 +1794,11 @@ function generateCardContentHTML(shop, isVisited, fromPopup = false) {
         distanceText = `<span class="distance-tag">📍 現在地から ${formatDistance(shop.userDistance)}</span>`;
     }
 
-    const tempWeeklyText = getWeeklyTemporaryText(shop);
-    const tempWeeklyHtml = tempWeeklyText ? `
-        <div class="temp-schedule-box">
+    const tempWeeklyInfo = getWeeklyTemporaryText(shop);
+    const tempWeeklyHtml = tempWeeklyInfo.text ? `
+        <div class="temp-schedule-box ${tempWeeklyInfo.hasToday ? 'today-highlight' : ''}">
             <span class="temp-schedule-label">臨時営業情報（～30日後）:</span>
-            <div class="temp-schedule-text">${tempWeeklyText}</div>
+            <div class="temp-schedule-text">${tempWeeklyInfo.text}</div>
         </div>
     ` : '';
 
@@ -2341,17 +2413,17 @@ function initResizer() {
     const sidebar = document.getElementById('sidebar-container');
     let isDragging = false;
 
-    resizer.addEventListener('mousedown', (e) => {
+    function handleStart(e) {
         isDragging = true;
         resizer.classList.add('is-dragging');
         document.body.style.cursor = 'col-resize';
         document.body.style.userSelect = 'none';
-    });
+    }
 
-    document.addEventListener('mousemove', (e) => {
+    function handleMove(clientX) {
         if (!isDragging) return;
         const containerWidth = document.querySelector('.content-area').clientWidth;
-        let newSidebarWidth = containerWidth - e.clientX;
+        let newSidebarWidth = containerWidth - clientX;
         
         const minW = (listSubMode === 'minimal') ? 160 : 340;
         if (newSidebarWidth < minW) newSidebarWidth = minW;
@@ -2359,16 +2431,35 @@ function initResizer() {
         
         sidebar.style.width = newSidebarWidth + 'px';
         map.invalidateSize();
-    });
+    }
 
-    document.addEventListener('mouseup', () => {
+    function handleEnd() {
         if (isDragging) {
             isDragging = false;
             resizer.classList.remove('is-dragging');
             document.body.style.cursor = '';
             document.body.style.userSelect = '';
         }
-    });
+    }
+
+    // マウスイベント
+    resizer.addEventListener('mousedown', handleStart);
+    document.addEventListener('mousemove', (e) => handleMove(e.clientX));
+    document.addEventListener('mouseup', handleEnd);
+
+    // タッチスクリーン（スマホ）対応イベント
+    resizer.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) handleStart(e.touches[0]);
+    }, { passive: true });
+    
+    document.addEventListener('touchmove', (e) => {
+        if (isDragging && e.touches.length === 1) {
+            handleMove(e.touches[0].clientX);
+        }
+    }, { passive: true });
+
+    document.addEventListener('touchend', handleEnd);
+    document.addEventListener('touchcancel', handleEnd);
 }
 
 async function initApp() {
