@@ -626,7 +626,7 @@
         .next-schedule.is-closing-soon { color: var(--status-closing-soon); font-weight: bold; }
         .next-schedule.is-scheduled { color: var(--status-scheduled); font-weight: bold; }
 
-        /* 臨時営業情報スタイル（枠線のみで強調し、通常表示では背景なし・文字色を調整） */
+        /* 臨時営業情報は枠線ではなく背景色で強調 */
         .temp-schedule-box {
             margin-top: 6px;
             font-size: 0.75rem;
@@ -641,8 +641,8 @@
             line-height: 1.4;
         }
         .temp-schedule-box.today-highlight {
-            border: 2px solid #ffa726;
-            background: transparent;
+            background-color: rgba(255, 167, 38, 0.16);
+            border: 1px solid transparent;
             padding: 5px 8px;
             border-radius: 4px;
         }
@@ -717,16 +717,17 @@
             white-space: nowrap;
         }
 
-        /* 営業時間の枠強調スタイル（枠線強調は維持し、曜日ラベルは黄色太字のまま） */
+        /* 営業時間は枠線ではなく背景色で強調 */
         .hours-table tr.today-highlight {
-            outline: 2px solid #ffa726;
-            outline-offset: -1px;
-            background-color: transparent;
+            background-color: rgba(255, 167, 38, 0.12);
+        }
+        .hours-table tr.today-highlight th,
+        .hours-table tr.today-highlight td {
+            background-color: rgba(255, 167, 38, 0.12);
         }
         .hours-table tr.today-highlight th {
             font-weight: bold;
             color: var(--jiro-yellow);
-            background-color: transparent;
         }
 
         .links-group { 
