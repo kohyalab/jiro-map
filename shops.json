@@ -1319,7 +1319,13 @@
     "ticketTiming": "",
     "openedAt": "2002-10-14",
     "closedAt": null,
-    "temporary": [],
+    "temporary": [
+      {
+        "startDate": "2026-08-15",
+        "endDate": "2026-08-15",
+        "hours": []
+      }
+    ],
     "shiftsByDay": {
       "0": [
         [
