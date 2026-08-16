@@ -922,7 +922,18 @@
     "ticketTiming": "",
     "openedAt": "2001-04-17",
     "closedAt": null,
-    "temporary": [],
+    "temporary": [
+      {
+        "startDate": "2026-08-17",
+        "endDate": "2026-08-17",
+        "hours": [
+          [
+            17,
+            21
+          ]
+        ]
+      }
+    ],
     "shiftsByDay": {
       "0": [
         [
