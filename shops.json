@@ -3757,7 +3757,13 @@
     "ticketTiming": "",
     "openedAt": "2019-10-27",
     "closedAt": null,
-    "temporary": [],
+    "temporary": [
+      {
+        "startDate": "2026-08-19",
+        "endDate": "2026-08-20",
+        "hours": []
+      }
+    ],
     "shiftsByDay": {
       "0": [],
       "1": [
