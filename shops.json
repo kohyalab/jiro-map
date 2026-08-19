@@ -2714,7 +2714,13 @@
     "ticketTiming": "",
     "openedAt": "2010-12-12",
     "closedAt": null,
-    "temporary": [],
+    "temporary": [
+      {
+        "startDate": "2026-08-20",
+        "endDate": "2026-08-27",
+        "hours": []
+      }
+    ],
     "shiftsByDay": {
       "0": [
         [
@@ -4241,7 +4247,13 @@
     "ticketTiming": "",
     "openedAt": "2023-01-09",
     "closedAt": null,
-    "temporary": [],
+    "temporary": [
+      {
+        "startDate": "2026-08-20",
+        "endDate": "2026-08-20",
+        "hours": []
+      }
+    ],
     "shiftsByDay": {
       "0": [
         [
