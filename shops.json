@@ -942,6 +942,26 @@
             21
           ]
         ]
+      },
+      {
+        "startDate": "2026-08-22",
+        "endDate": "2026-08-22",
+        "hours": [
+          [
+            11,
+            14.5
+          ]
+        ]
+      },
+      {
+        "startDate": "2026-08-23",
+        "endDate": "2026-08-23",
+        "hours": [
+          [
+            11,
+            14.5
+          ]
+        ]
       }
     ],
     "shiftsByDay": {
@@ -1789,6 +1809,11 @@
       {
         "startDate": "2026-08-13",
         "endDate": "2026-08-16",
+        "hours": []
+      },
+      {
+        "startDate": "2026-08-22",
+        "endDate": "2026-08-22",
         "hours": []
       }
     ],
@@ -3596,9 +3621,24 @@
     "closedAt": null,
     "temporary": [
       {
-        "startDate": "2026-08-19",
-        "endDate": "2026-08-19",
-        "hours": []
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-21",
+        "hours": [
+          [
+            11,
+            14.5
+          ]
+        ]
+      },
+      {
+        "startDate": "2026-08-22",
+        "endDate": "2026-08-22",
+        "hours": [
+          [
+            17.5,
+            20.5
+          ]
+        ]
       }
     ],
     "shiftsByDay": {
@@ -4051,9 +4091,14 @@
     "closedAt": null,
     "temporary": [
       {
-        "startDate": "2026-08-11",
-        "endDate": "2026-08-16",
-        "hours": []
+        "startDate": "2026-08-21",
+        "endDate": "2026-08-21",
+        "hours": [
+          [
+            11,
+            14.5
+          ]
+        ]
       }
     ],
     "shiftsByDay": {
