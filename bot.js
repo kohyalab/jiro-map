@@ -1,27 +1,34 @@
 const { chromium } = require('playwright');
 const { TwitterApi } = require('twitter-api-v2');
 
+// 日本時間（JST）の本日日付文字列を生成 (例: 8/22(土))
 function getTodayText() {
     const now = new Date();
-    const month = now.getMonth() + 1;
-    const date = now.getDate();
+    const jstDate = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
+    const month = jstDate.getMonth() + 1;
+    const date = jstDate.getDate();
     const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
-    const dayStr = dayNames[now.getDay()];
+    const dayStr = dayNames[jstDate.getDay()];
     return `${month}/${date}(${dayStr})`;
 }
 
 async function run() {
     const browser = await chromium.launch({ headless: true });
-    // 店舗カード4列が綺麗に収まるビューポート
+    // PCビューで判定させるため幅1280px以上を確保
     const page = await browser.newPage({
-        viewport: { width: 500, height: 1000 },
-        deviceScaleFactor: 2
+        viewport: { width: 1280, height: 1200 },
+        deviceScaleFactor: 2 // 高解像度・鮮明化
     });
 
     await page.goto('https://app.jirolianmap.com/', { waitUntil: 'networkidle' });
 
-    // 1. 画面初期設定（日別モード・開店日順ソート・レイアウトの最適化）
+    // 1. 条件設定（日別レイアウト・開店日順ソート・リスト全体表示）
     await page.evaluate(() => {
+        // リストのみ表示に切り替え
+        if (typeof isShowMap !== 'undefined') isShowMap = false;
+        if (typeof isShowList !== 'undefined') isShowList = true;
+        if (typeof updateLayout === 'function') updateLayout();
+
         // 日別モードに切り替え
         if (typeof setListSubMode === 'function') {
             setListSubMode('today');
@@ -36,36 +43,35 @@ async function run() {
             }
         }
 
-        // 不要な要素を非表示にし、4列表示用のスタイルを適用
+        // スクロールを解除し、リスト全域をきれいに収めるスタイル調整
         const style = document.createElement('style');
-        style.id = 'bot-custom-style';
+        style.id = 'bot-capture-style';
         style.innerHTML = `
       header, #controls-wrapper, #map-wrapper, #drag-resizer, .list-header-controls, .app-footer, .header-toggle-btn {
         display: none !important;
       }
       body, .main-layout, .content-area, .sidebar-container {
-        width: 440px !important;
+        width: 100% !important;
         height: auto !important;
         overflow: visible !important;
         background-color: #121212 !important;
       }
-      .sidebar-container {
-        min-width: 440px !important;
+      #sidebar-container {
+        width: 100% !important;
+        min-width: 100% !important;
       }
       .container {
         overflow: visible !important;
         height: auto !important;
-        padding: 6px 8px !important;
-      }
-      .shop-grid.view-mode-today {
-        grid-template-columns: repeat(4, 98px) !important;
-        gap: 6px !important;
-        width: 100% !important;
+        max-height: none !important;
+        padding: 10px !important;
       }
       #date-selector-area {
         display: flex !important;
+        align-items: center !important;
         border-bottom: 1px solid #333 !important;
-        padding: 8px 12px !important;
+        padding: 10px 14px !important;
+        background-color: #121212 !important;
       }
     `;
         document.head.appendChild(style);
@@ -74,32 +80,13 @@ async function run() {
     // レンダリング待機
     await page.waitForTimeout(1000);
 
-    // 2. 1枚目のキャプチャ (1〜6行目: 店舗インデックス 0〜23 を表示)
-    await page.evaluate(() => {
-        const items = document.querySelectorAll('#shop-grid .shop-item');
-        items.forEach((item, index) => {
-            item.style.display = (index < 24) ? 'flex' : 'none';
-        });
-    });
-    await page.waitForTimeout(300);
-
+    // 2. リスト画面全体のキャプチャを取得
     const sidebar = await page.$('#sidebar-container');
-    await sidebar.screenshot({ path: 'sheet_1.png' });
-
-    // 3. 2枚目のキャプチャ (7〜12行目: 店舗インデックス 24〜47 を表示)
-    await page.evaluate(() => {
-        const items = document.querySelectorAll('#shop-grid .shop-item');
-        items.forEach((item, index) => {
-            item.style.display = (index >= 24 && index < 48) ? 'flex' : 'none';
-        });
-    });
-    await page.waitForTimeout(300);
-
-    await sidebar.screenshot({ path: 'sheet_2.png' });
+    await sidebar.screenshot({ path: 'sheet.png' });
 
     await browser.close();
 
-    // 4. X（Twitter）への画像アップロード＆自動投稿
+    // 3. X (Twitter) への画像アップロード & ツイート
     const client = new TwitterApi({
         appKey: process.env.TWITTER_API_KEY,
         appSecret: process.env.TWITTER_API_SECRET,
@@ -107,15 +94,14 @@ async function run() {
         accessSecret: process.env.TWITTER_ACCESS_SECRET,
     });
 
-    const mediaId1 = await client.v1.uploadMedia('sheet_1.png');
-    const mediaId2 = await client.v1.uploadMedia('sheet_2.png');
+    const mediaId = await client.v1.uploadMedia('sheet.png');
 
-    const tweetText = `【本日${getTodayText()}のラーメン二郎営業情報】\n\n詳しい情報はジロリアンマップで↓\nhttp://app.jirolianmap.com\n \n※営業時間の白文字は通常、オレンジ色文字は臨時営業・休業\n#ラーメン二郎 #二郎 #営業情報 #ジロリアンマップ`;
+    const tweetText = `【本日${getTodayText()}のラーメン二郎営業情報】\n\n詳しい情報はジロリアンマップで↓\n🔗https://app.jirolianmap.com\n \n※営業時間の白文字は通常、オレンジ色文字は臨時営業・休業#ラーメン二郎 #二郎 #営業情報 #ジロリアンマップ`;
 
     await client.v2.tweet({
         text: tweetText,
         media: {
-            media_ids: [mediaId1, mediaId2]
+            media_ids: [mediaId]
         }
     });
 
