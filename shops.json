@@ -9,7 +9,8 @@
     "lng": 139.7416323715387,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/mita/",
-      "tabelog": "https://tabelog.com/tokyo/A1314/A131402/13006051/"
+      "tabelog": "https://tabelog.com/tokyo/A1314/A131402/13006051/",
+      "rdb": "https://ramendb.supleks.jp/s/1419.html"
     },
     "x": "",
     "ticketTiming": "",
@@ -76,7 +77,8 @@
     "lng": 139.5729189300423,
     "urls": {
       "pc": "",
-      "tabelog": ""
+      "tabelog": "",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -107,7 +109,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": ""
+      "tabelog": "",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -138,7 +141,8 @@
     "lng": 139.70711667317136,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/meguro/",
-      "tabelog": "https://tabelog.com/tokyo/A1316/A131601/13003449/"
+      "tabelog": "https://tabelog.com/tokyo/A1316/A131601/13003449/",
+      "rdb": "https://ramendb.supleks.jp/s/1414.html"
     },
     "x": "",
     "ticketTiming": "",
@@ -238,7 +242,8 @@
     "lng": 139.5838900256975,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/sengawa/",
-      "tabelog": "https://tabelog.com/tokyo/A1326/A132601/13000699/"
+      "tabelog": "https://tabelog.com/tokyo/A1326/A132601/13000699/",
+      "rdb": "https://ramendb.supleks.jp/s/2748.html"
     },
     "x": "senjiro26",
     "ticketTiming": "",
@@ -305,7 +310,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/kanagawa/A1401/A140211/14002632/dtlrvwlst/?type=0"
+      "tabelog": "https://tabelog.com/kanagawa/A1401/A140211/14002632/dtlrvwlst/?type=0",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -336,7 +342,8 @@
     "lng": 139.66579707898723,
     "urls": {
       "pc": "",
-      "tabelog": ""
+      "tabelog": "",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -367,7 +374,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": ""
+      "tabelog": "",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -398,7 +406,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": ""
+      "tabelog": "",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -429,7 +438,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/tokyo/A1304/A130401/13019616/"
+      "tabelog": "https://tabelog.com/tokyo/A1304/A130401/13019616/",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -460,7 +470,8 @@
     "lng": 139.7430567840793,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/shinagawa/",
-      "tabelog": "https://tabelog.com/tokyo/A1314/A131405/13007375/"
+      "tabelog": "https://tabelog.com/tokyo/A1314/A131405/13007375/",
+      "rdb": "https://ramendb.supleks.jp/s/338.html"
     },
     "x": "shinagawa26",
     "ticketTiming": "",
@@ -531,7 +542,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/tokyo/A1315/A131503/13017747/"
+      "tabelog": "https://tabelog.com/tokyo/A1315/A131503/13017747/",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -562,7 +574,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/tokyo/A1310/A131002/13011452/"
+      "tabelog": "https://tabelog.com/tokyo/A1310/A131002/13011452/",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -593,7 +606,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/tokyo/A1324/A132403/13017936/"
+      "tabelog": "https://tabelog.com/tokyo/A1324/A132403/13017936/",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -624,7 +638,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": ""
+      "tabelog": "",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -655,7 +670,8 @@
     "lng": 139.69831539088952,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/kotakibashi/",
-      "tabelog": "https://tabelog.com/tokyo/A1304/A130401/13001044/"
+      "tabelog": "https://tabelog.com/tokyo/A1304/A130401/13001044/",
+      "rdb": "https://ramendb.supleks.jp/s/3710.html"
     },
     "x": "jiro_otakibasi",
     "ticketTiming": "",
@@ -726,7 +742,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": ""
+      "tabelog": "",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -757,7 +774,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": ""
+      "tabelog": "",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -788,7 +806,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": ""
+      "tabelog": "",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -819,7 +838,7 @@
     "lng": 139.7138991067635,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/ikebukuro/",
-      "rdb": "",
+      "rdb": "https://ramendb.supleks.jp/s/67.html",
       "tabelog": "https://tabelog.com/tokyo/A1305/A130501/13003881/"
     },
     "x": "ikejikabuji",
@@ -903,7 +922,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/tokyo/A1325/A132501/13005945/"
+      "tabelog": "https://tabelog.com/tokyo/A1325/A132501/13005945/",
+      "rdb": ""
     },
     "x": "koganeijiro",
     "ticketTiming": "",
@@ -934,7 +954,8 @@
     "lng": 139.82666669999045,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/kameido/",
-      "tabelog": "https://tabelog.com/tokyo/A1312/A131202/13008000/"
+      "tabelog": "https://tabelog.com/tokyo/A1312/A131202/13008000/",
+      "rdb": "https://ramendb.supleks.jp/s/1302.html"
     },
     "x": "jiro_kame",
     "ticketTiming": "",
@@ -1069,7 +1090,8 @@
     "lng": 139.70525707116533,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/keikyukawasaki/",
-      "tabelog": "https://tabelog.com/kanagawa/A1405/A140501/14000765/"
+      "tabelog": "https://tabelog.com/kanagawa/A1405/A140501/14000765/",
+      "rdb": "https://ramendb.supleks.jp/s/3231.html"
     },
     "x": "",
     "ticketTiming": "",
@@ -1166,7 +1188,8 @@
     "lng": 139.47728667116294,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/fuchu/",
-      "tabelog": "https://tabelog.com/tokyo/A1326/A132602/13022272/"
+      "tabelog": "https://tabelog.com/tokyo/A1326/A132602/13022272/",
+      "rdb": "https://ramendb.supleks.jp/s/1370.html"
     },
     "x": "jiro_fuchu",
     "ticketTiming": "",
@@ -1228,7 +1251,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/tokyo/A1305/A130502/13006057/"
+      "tabelog": "https://tabelog.com/tokyo/A1305/A130502/13006057/",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -1259,7 +1283,8 @@
     "lng": 139.89934609999588,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/matsudo/",
-      "tabelog": "https://tabelog.com/chiba/A1203/A120302/12000236/"
+      "tabelog": "https://tabelog.com/chiba/A1203/A120302/12000236/",
+      "rdb": "https://ramendb.supleks.jp/s/286.html"
     },
     "x": "matsudojiro3",
     "ticketTiming": "",
@@ -1341,7 +1366,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/tokyo/A1329/A132904/13010397/"
+      "tabelog": "https://tabelog.com/tokyo/A1329/A132904/13010397/",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -1372,7 +1398,8 @@
     "lng": 139.62629727116703,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/ogikubo/",
-      "tabelog": "https://tabelog.com/tokyo/A1319/A131906/13006060/"
+      "tabelog": "https://tabelog.com/tokyo/A1319/A131906/13006060/",
+      "rdb": "https://ramendb.supleks.jp/s/2638.html"
     },
     "x": "ogkb_jiro",
     "ticketTiming": "",
@@ -1463,7 +1490,8 @@
     "lng": 139.63897097116592,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/kaminoge/",
-      "tabelog": "https://tabelog.com/tokyo/A1317/A131715/13010417/"
+      "tabelog": "https://tabelog.com/tokyo/A1317/A131715/13010417/",
+      "rdb": "https://ramendb.supleks.jp/s/3281.html"
     },
     "x": "kaminogeJiro",
     "ticketTiming": "",
@@ -1550,7 +1578,8 @@
     "lng": 140.0496039711602,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/keiseiookubo/",
-      "tabelog": "https://tabelog.com/chiba/A1202/A120204/12000911/"
+      "tabelog": "https://tabelog.com/chiba/A1202/A120204/12000911/",
+      "rdb": "https://ramendb.supleks.jp/s/4731.html"
     },
     "x": "OKB26",
     "ticketTiming": "",
@@ -1617,7 +1646,8 @@
     "lng": 139.88196182882908,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/ichinoe/",
-      "tabelog": "https://tabelog.com/tokyo/A1312/A131205/13010385/"
+      "tabelog": "https://tabelog.com/tokyo/A1312/A131205/13010385/",
+      "rdb": "https://ramendb.supleks.jp/s/1124.html"
     },
     "x": "ichinoejiro",
     "ticketTiming": "",
@@ -1695,7 +1725,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": ""
+      "tabelog": "",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -1726,7 +1757,8 @@
     "lng": 139.63076517117022,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/kannai/",
-      "tabelog": "https://tabelog.com/kanagawa/A1401/A140104/14001518/"
+      "tabelog": "https://tabelog.com/kanagawa/A1401/A140104/14001518/",
+      "rdb": "https://ramendb.supleks.jp/s/2532.html"
     },
     "x": "kannaijiro",
     "ticketTiming": "",
@@ -1817,7 +1849,8 @@
     "lng": 139.76081571812165,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/jimbocho/",
-      "tabelog": "https://tabelog.com/tokyo/A1310/A131003/13216512/"
+      "tabelog": "https://tabelog.com/tokyo/A1310/A131003/13216512/",
+      "rdb": "https://ramendb.supleks.jp/s/105637.html"
     },
     "x": "jbc_ramen_jiro",
     "ticketTiming": "",
@@ -1889,7 +1922,8 @@
     "lng": 139.8800502417785,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/koiwa/",
-      "tabelog": "https://tabelog.com/tokyo/A1312/A131204/13021952/"
+      "tabelog": "https://tabelog.com/tokyo/A1312/A131204/13021952/",
+      "rdb": "https://ramendb.supleks.jp/s/3387.html"
     },
     "x": "koiwajiro",
     "ticketTiming": "",
@@ -1956,7 +1990,7 @@
     "lng": 139.40134589999886,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/yaen2/",
-      "rdb": "",
+      "rdb": "https://ramendb.supleks.jp/s/4017.html",
       "tabelog": "https://tabelog.com/tokyo/A1329/A132904/13025633/"
     },
     "x": "Jiro_Yaenkaido2",
@@ -2057,7 +2091,8 @@
     "lng": 139.54356216412995,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/hibarigaoka/",
-      "tabelog": "https://tabelog.com/tokyo/A1328/A132801/13024745/"
+      "tabelog": "https://tabelog.com/tokyo/A1328/A132801/13024745/",
+      "rdb": "https://ramendb.supleks.jp/s/4738.html"
     },
     "x": "Aarf0xvdBXkWd7o",
     "ticketTiming": "",
@@ -2145,7 +2180,8 @@
     "lng": 139.66165455303465,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/sakuradai/",
-      "tabelog": "https://tabelog.com/tokyo/A1321/A132101/13038383/"
+      "tabelog": "https://tabelog.com/tokyo/A1321/A132101/13038383/",
+      "rdb": ""
     },
     "x": "sakuradaiekimae",
     "ticketTiming": "",
@@ -2176,7 +2212,8 @@
     "lng": 139.7948995742357,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/tochigikaido/",
-      "tabelog": "https://tabelog.com/tochigi/A0902/A090201/9002641/"
+      "tabelog": "https://tabelog.com/tochigi/A0902/A090201/9002641/",
+      "rdb": "https://ramendb.supleks.jp/s/12524.html"
     },
     "x": "Tochigikaidoten",
     "ticketTiming": "",
@@ -2257,7 +2294,8 @@
     "lng": 139.4095437508755,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/tachikawa/",
-      "tabelog": "https://tabelog.com/tokyo/A1329/A132901/13049195/"
+      "tabelog": "https://tabelog.com/tokyo/A1329/A132901/13049195/",
+      "rdb": "https://ramendb.supleks.jp/s/14757.html"
     },
     "x": "jirotachikawa",
     "ticketTiming": "",
@@ -2371,7 +2409,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/saitama/A1101/A110101/11005758/"
+      "tabelog": "https://tabelog.com/saitama/A1101/A110101/11005758/",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -2402,7 +2441,7 @@
     "lng": 139.7970657753107,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/senjuohashi/",
-      "rdb": "",
+      "rdb": "https://ramendb.supleks.jp/s/19341.html",
       "tabelog": "https://tabelog.com/tokyo/A1324/A132402/13090912/"
     },
     "x": "senjujirou26",
@@ -2460,7 +2499,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/ibaraki/A0803/A080301/8008761/"
+      "tabelog": "https://tabelog.com/ibaraki/A0803/A080301/8008761/",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -2491,7 +2531,8 @@
     "lng": 139.4328542944921,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/sagamiohno/",
-      "tabelog": "https://tabelog.com/kanagawa/A1407/A140701/14000839/"
+      "tabelog": "https://tabelog.com/kanagawa/A1407/A140701/14000839/",
+      "rdb": "https://ramendb.supleks.jp/s/2420.html"
     },
     "x": "sumo_jiro",
     "ticketTiming": "",
@@ -2592,7 +2633,8 @@
     "lng": 139.4822246411482,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/fujisawa/",
-      "tabelog": "https://tabelog.com/kanagawa/A1404/A140404/14035072/"
+      "tabelog": "https://tabelog.com/kanagawa/A1404/A140404/14035072/",
+      "rdb": "https://ramendb.supleks.jp/s/25545.html"
     },
     "x": "fujirow26",
     "ticketTiming": "",
@@ -2677,7 +2719,8 @@
     "lng": 139.67487930304625,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/nishidai/",
-      "tabelog": "https://tabelog.com/tokyo/A1322/A132205/13112690/"
+      "tabelog": "https://tabelog.com/tokyo/A1322/A132205/13112690/",
+      "rdb": "https://ramendb.supleks.jp/s/113862.html"
     },
     "x": "jiro_nishidai",
     "ticketTiming": "",
@@ -2765,7 +2808,8 @@
     "lng": 139.5386489179161,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/nakayamaekimae/",
-      "tabelog": "https://tabelog.com/kanagawa/A1401/A140207/14038422/"
+      "tabelog": "https://tabelog.com/kanagawa/A1401/A140207/14038422/",
+      "rdb": "https://ramendb.supleks.jp/s/30935.html"
     },
     "x": "NKYMJIRO",
     "ticketTiming": "",
@@ -2856,7 +2900,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/tokyo/A1308/A130802/13131107/"
+      "tabelog": "https://tabelog.com/tokyo/A1308/A130802/13131107/",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -2887,7 +2932,8 @@
     "lng": 0,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/sendai/",
-      "tabelog": "https://tabelog.com/miyagi/A0401/A040101/4011894/"
+      "tabelog": "https://tabelog.com/miyagi/A0401/A040101/4011894/",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -2918,7 +2964,8 @@
     "lng": 139.72083759462345,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/tokyo/A1323/A132305/13136555/"
+      "tabelog": "https://tabelog.com/tokyo/A1323/A132305/13136555/",
+      "rdb": ""
     },
     "x": "Akabane260",
     "ticketTiming": "",
@@ -2949,7 +2996,8 @@
     "lng": 141.34387806056674,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/sapporo/",
-      "tabelog": "https://tabelog.com/hokkaido/A0101/A010201/1041731/"
+      "tabelog": "https://tabelog.com/hokkaido/A0101/A010201/1041731/",
+      "rdb": "https://ramendb.supleks.jp/s/65267.html"
     },
     "x": "jiro_sapporo_",
     "ticketTiming": "",
@@ -3055,7 +3103,8 @@
     "lng": 139.66041560003418,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/shndaita/",
-      "tabelog": "https://tabelog.com/tokyo/A1318/A131803/13010833/"
+      "tabelog": "https://tabelog.com/tokyo/A1318/A131803/13010833/",
+      "rdb": "https://ramendb.supleks.jp/s/75362.html"
     },
     "x": "26shinshindaita",
     "ticketTiming": "",
@@ -3127,7 +3176,8 @@
     "lng": 139.93144378100283,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/aizuwakamatsu/",
-      "tabelog": "https://tabelog.com/fukushima/A0705/A070501/7011865/"
+      "tabelog": "https://tabelog.com/fukushima/A0705/A070501/7011865/",
+      "rdb": "https://ramendb.supleks.jp/s/77820.html"
     },
     "x": "aizu_jiro",
     "ticketTiming": "",
@@ -3249,7 +3299,8 @@
     "lng": 0,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/tokyo/A1315/A131503/13174962/"
+      "tabelog": "https://tabelog.com/tokyo/A1315/A131503/13174962/",
+      "rdb": ""
     },
     "x": "",
     "ticketTiming": "",
@@ -3280,7 +3331,8 @@
     "lng": 139.0601011436119,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/nigata/",
-      "tabelog": "https://tabelog.com/niigata/A1501/A150101/15016019/"
+      "tabelog": "https://tabelog.com/niigata/A1501/A150101/15016019/",
+      "rdb": "https://ramendb.supleks.jp/s/86798.html"
     },
     "x": "",
     "ticketTiming": "",
@@ -3407,7 +3459,8 @@
     "lng": 139.70195240044566,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/kabuki/",
-      "tabelog": "https://tabelog.com/tokyo/A1304/A130401/13200815/"
+      "tabelog": "https://tabelog.com/tokyo/A1304/A130401/13200815/",
+      "rdb": "https://ramendb.supleks.jp/s/95249.html"
     },
     "x": "kabujiikeji",
     "ticketTiming": "",
@@ -3473,7 +3526,8 @@
     "lng": 139.4766711798268,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/kawagoe/",
-      "tabelog": "https://tabelog.com/saitama/A1103/A110303/11043900/"
+      "tabelog": "https://tabelog.com/saitama/A1103/A110303/11043900/",
+      "rdb": "https://ramendb.supleks.jp/s/97949.html"
     },
     "x": "kwge26",
     "ticketTiming": "",
@@ -3540,7 +3594,8 @@
     "lng": 135.78751407009239,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/kyoto/",
-      "tabelog": "https://tabelog.com/kyoto/A2601/A260303/26028749/"
+      "tabelog": "https://tabelog.com/kyoto/A2601/A260303/26028749/",
+      "rdb": "https://ramendb.supleks.jp/s/97876.html"
     },
     "x": "jiro_kyoto",
     "ticketTiming": "",
@@ -3635,7 +3690,8 @@
     "lng": 139.31218725012081,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/mejirodai/",
-      "tabelog": "https://tabelog.com/tokyo/A1329/A132904/13209016/"
+      "tabelog": "https://tabelog.com/tokyo/A1329/A132904/13209016/",
+      "rdb": "https://ramendb.supleks.jp/s/99697.html"
     },
     "x": "mejirodai_jiro",
     "ticketTiming": "",
@@ -3737,7 +3793,8 @@
     "lng": 139.78763955950427,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/koshigaya/",
-      "tabelog": "https://tabelog.com/saitama/A1102/A110203/11049349/"
+      "tabelog": "https://tabelog.com/saitama/A1102/A110203/11049349/",
+      "rdb": "https://ramendb.supleks.jp/s/115782.html"
     },
     "x": "ksgy26",
     "ticketTiming": "",
@@ -3829,7 +3886,8 @@
     "lng": 139.07095892943883,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/maebashichiyoda/",
-      "tabelog": "https://tabelog.com/gunma/A1001/A100101/10020992/"
+      "tabelog": "https://tabelog.com/gunma/A1001/A100101/10020992/",
+      "rdb": "https://ramendb.supleks.jp/s/120613.html"
     },
     "x": "SnBZt6eRCdz7lQw",
     "ticketTiming": "",
@@ -3912,7 +3970,8 @@
     "lng": 140.12360292943615,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/chiba/",
-      "tabelog": "https://tabelog.com/chiba/A1201/A120101/12049275/"
+      "tabelog": "https://tabelog.com/chiba/A1201/A120101/12049275/",
+      "rdb": "https://ramendb.supleks.jp/s/124574.html"
     },
     "x": "jiro_chiba",
     "ticketTiming": "",
@@ -4013,7 +4072,8 @@
     "lng": 139.63200873447423,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/omiya/",
-      "tabelog": "https://tabelog.com/saitama/A1101/A110101/11005758/"
+      "tabelog": "https://tabelog.com/saitama/A1101/A110101/11005758/",
+      "rdb": "https://ramendb.supleks.jp/s/125117.html"
     },
     "x": "omiyapark26",
     "ticketTiming": "",
@@ -4105,7 +4165,8 @@
     "lng": 140.5153049294101,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/hitachinaka/",
-      "tabelog": "https://tabelog.com/ibaraki/A0801/A080102/8025680/"
+      "tabelog": "https://tabelog.com/ibaraki/A0801/A080102/8025680/",
+      "rdb": "https://ramendb.supleks.jp/s/135329.html"
     },
     "x": "26_hitachinaka",
     "ticketTiming": "",
@@ -4202,7 +4263,8 @@
     "lng": 139.47927894113468,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/hitotsubashi/",
-      "tabelog": "https://tabelog.com/tokyo/A1328/A132804/13274195/"
+      "tabelog": "https://tabelog.com/tokyo/A1328/A132804/13274195/",
+      "rdb": "https://ramendb.supleks.jp/s/142777.html"
     },
     "x": "1284jiro",
     "ticketTiming": "",
@@ -4318,7 +4380,8 @@
     "lng": 139.95919870462066,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/kashiwa/",
-      "tabelog": "https://tabelog.com/chiba/A1203/A120301/12056350/"
+      "tabelog": "https://tabelog.com/chiba/A1203/A120301/12056350/",
+      "rdb": "https://ramendb.supleks.jp/s/146037.html"
     },
     "x": "genkimoriya",
     "ticketTiming": "",
@@ -4385,7 +4448,8 @@
     "lng": 139.54543979904597,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/ikuta/",
-      "tabelog": "https://tabelog.com/kanagawa/A1405/A140506/14091118/"
+      "tabelog": "https://tabelog.com/kanagawa/A1405/A140506/14091118/",
+      "rdb": "https://ramendb.supleks.jp/s/149549.html"
     },
     "x": "ikuta_jiro",
     "ticketTiming": "",
@@ -4481,7 +4545,8 @@
     "lng": 130.53349342941664,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/fukuoka/A4003/A400301/40068939/"
+      "tabelog": "https://tabelog.com/fukuoka/A4003/A400301/40068939/",
+      "rdb": "https://ramendb.supleks.jp/s/161889.html"
     },
     "x": "r26akgd",
     "ticketTiming": "",
@@ -4579,7 +4644,8 @@
     "lng": 140.8720881025786,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/miyagi/A0401/A040101/4028874/"
+      "tabelog": "https://tabelog.com/miyagi/A0401/A040101/4028874/",
+      "rdb": "https://ramendb.supleks.jp/s/164808.html"
     },
     "x": "jiro_sendai1023",
     "ticketTiming": "",
@@ -4676,7 +4742,8 @@
     "lng": 136.94194176117125,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/aichi/A2301/A230110/23094216/"
+      "tabelog": "https://tabelog.com/aichi/A2301/A230110/23094216/",
+      "rdb": "https://ramendb.supleks.jp/s/168898.html"
     },
     "x": "jiro_NGY",
     "ticketTiming": "",
@@ -4798,7 +4865,8 @@
     "lng": 127.68975521492895,
     "urls": {
       "pc": "",
-      "tabelog": "https://tabelog.com/okinawa/A4701/A470101/47034759/"
+      "tabelog": "https://tabelog.com/okinawa/A4701/A470101/47034759/",
+      "rdb": "https://ramendb.supleks.jp/s/173581.html"
     },
     "x": "okinawa_jiro",
     "ticketTiming": "",
