@@ -1636,6 +1636,16 @@
                 <a href="https://take4.hiyamugi.com/shop/shop_history.htm" target="_blank" rel="noopener noreferrer"
                     style="color:var(--link-color);">Take4 二郎 食記録 ラーメン二郎 年表</a>
             </p>
+            <hr style="border:0; border-top:1px solid #333; margin:12px 0;">
+            <div style="font-size: 0.8rem; color: #ddd; margin-bottom: 8px;">
+                <strong>制覇データのバックアップ・復元</strong>
+                <p style="margin: 4px 0 8px 0; font-size: 0.72rem; color: #aaa;">ブラウザのキャッシュクリアやアプリアップデート等によるデータ消失に備えて、現在の制覇状況をファイルに保存したり、保存したファイルから復元することができます。</p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" onclick="exportVisitedData()" style="padding: 4px 10px; background-color: #333; border: 1px solid #555; color: #fff; cursor: pointer; border-radius: 4px; font-size: 0.75rem;">データをエクスポート</button>
+                    <button type="button" onclick="document.getElementById('import-file-input').click()" style="padding: 4px 10px; background-color: #333; border: 1px solid #555; color: #fff; cursor: pointer; border-radius: 4px; font-size: 0.75rem;">データをインポート</button>
+                    <input type="file" id="import-file-input" accept=".json" onchange="importVisitedData(event)" style="display: none;">
+                </div>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="modal-close-btn"
@@ -1695,7 +1705,25 @@
         const MITA_HONTON_COORDS = { lat: 35.64805, lng: 139.74160 };
 
         let shops = [];
-        let visitedState = JSON.parse(localStorage.getItem('jiro_pc_visited')) || {};
+        let visitedState = (() => {
+            const mainData = localStorage.getItem('jiro_pc_visited');
+            if (mainData) {
+                try {
+                    return JSON.parse(mainData) || {};
+                } catch (e) {}
+            }
+            const backupData = localStorage.getItem('jiro_pc_visited_backup');
+            if (backupData) {
+                try {
+                    const parsed = JSON.parse(backupData);
+                    if (parsed && typeof parsed === 'object') {
+                        localStorage.setItem('jiro_pc_visited', backupData);
+                        return parsed;
+                    }
+                } catch (e) {}
+            }
+            return {};
+        })();
 
         let listSubMode = 'compact';
         let selectedDateKey = getLocalDateKey(new Date());
@@ -2562,8 +2590,54 @@
         }
 
         function saveState() {
-            localStorage.setItem('jiro_pc_visited', JSON.stringify(visitedState));
+            const dataStr = JSON.stringify(visitedState);
+            localStorage.setItem('jiro_pc_visited', dataStr);
+            localStorage.setItem('jiro_pc_visited_backup', dataStr);
             updateStats();
+        }
+
+        function exportVisitedData() {
+            const dataStr = localStorage.getItem('jiro_pc_visited') || '{}';
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `jirolianmap_visited_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importVisitedData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported && typeof imported === 'object') {
+                        const cleaned = {};
+                        for (const key in imported) {
+                            if (typeof imported[key] === 'boolean' || imported[key] === 1 || imported[key] === 0) {
+                                cleaned[key] = !!imported[key];
+                            }
+                        }
+                        const dataStr = JSON.stringify(cleaned);
+                        localStorage.setItem('jiro_pc_visited', dataStr);
+                        localStorage.setItem('jiro_pc_visited_backup', dataStr);
+                        alert("制覇データのインポートが完了しました。ページをリロードして反映します。");
+                        window.location.reload();
+                    } else {
+                        throw new Error("不正なデータ形式");
+                    }
+                } catch (err) {
+                    alert("インポートに失敗しました。正しいJSON形式のバックアップファイルを選択してください。");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
         }
 
         function updateStats() {
