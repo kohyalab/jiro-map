@@ -118,27 +118,42 @@ async function run() {
     await sidebar.screenshot({ path: 'sheet.png' });
 
     await browser.close();
+    console.log('画像生成(sheet.png)が完了しました。');
 
-    // X（Twitter）へ自動投稿
-    const client = new TwitterApi({
-        appKey: process.env.TWITTER_API_KEY,
-        appSecret: process.env.TWITTER_API_SECRET,
-        accessToken: process.env.TWITTER_ACCESS_TOKEN,
-        accessSecret: process.env.TWITTER_ACCESS_SECRET,
-    });
+    const hasTwitterCreds = process.env.TWITTER_API_KEY && 
+                            process.env.TWITTER_API_SECRET && 
+                            process.env.TWITTER_ACCESS_TOKEN && 
+                            process.env.TWITTER_ACCESS_SECRET;
 
-    const mediaId = await client.v1.uploadMedia('sheet.png');
+    if (!hasTwitterCreds) {
+        console.log('X (Twitter) の環境変数が設定されていないため、自動投稿をスキップします。');
+        return;
+    }
 
-    const tweetText = `【本日${getTodayText()}のラーメン二郎営業情報】\n\n詳しい情報はジロリアンマップで↓\n🔗https://app.jirolianmap.com\n \n※営業時間の白文字は通常、オレンジ色文字は臨時営業・休業\n\n#ラーメン二郎 #二郎 #営業情報 #ジロリアンマップ`;
+    try {
+        console.log('X (Twitter) への自動投稿を開始します...');
+        const client = new TwitterApi({
+            appKey: process.env.TWITTER_API_KEY,
+            appSecret: process.env.TWITTER_API_SECRET,
+            accessToken: process.env.TWITTER_ACCESS_TOKEN,
+            accessSecret: process.env.TWITTER_ACCESS_SECRET,
+        });
 
-    await client.v2.tweet({
-        text: tweetText,
-        media: {
-            media_ids: [mediaId]
-        }
-    });
+        const mediaId = await client.v1.uploadMedia('sheet.png');
 
-    console.log('縦長画像の自動投稿が完了しました。');
+        const tweetText = `【本日${getTodayText()}のラーメン二郎営業情報】\n\n詳しい情報はジロリアンマップで↓\n🔗https://app.jirolianmap.com\n \n※営業時間の白文字は通常、オレンジ色文字は臨時営業・休業\n\n#ラーメン二郎 #二郎 #営業情報 #ジロリアンマップ`;
+
+        await client.v2.tweet({
+            text: tweetText,
+            media: {
+                media_ids: [mediaId]
+            }
+        });
+
+        console.log('縦長画像の自動投稿が完了しました。');
+    } catch (twitterErr) {
+        console.error('X (Twitter) への投稿中にエラーが発生しましたが、画像生成は成功しています:', twitterErr.message);
+    }
 }
 
 run().catch(err => {

@@ -478,6 +478,7 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
             padding: 0;
             margin-bottom: 8px;
+            margin-right: 36px !important;
         }
 
         .global-view-btn:hover {
@@ -516,7 +517,7 @@
         }
 
         .global-view-btn:hover svg {
-            stroke: var(--jiro-yellow);
+            stroke: #fff;
         }
 
         .location-btn {
@@ -527,14 +528,11 @@
             width: 38px;
             height: 38px;
             cursor: pointer;
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-        }
-
-        .location-btn.is-visible {
-            display: flex;
+            margin-right: 36px !important;
         }
 
         .location-btn::after {
@@ -569,11 +567,11 @@
         }
 
         .location-btn.active-loc {
-            border-color: var(--jiro-yellow);
+            border-color: #fff;
         }
 
         .location-btn.active-loc .location-icon {
-            stroke: var(--jiro-yellow);
+            stroke: #fff;
         }
 
         #map {
@@ -1124,11 +1122,14 @@
 
         .links-group {
             display: flex;
-            gap: 12px;
-            font-size: 0.8rem;
+            flex-wrap: nowrap;
+            gap: 8px;
+            font-size: 0.72rem;
             margin-top: auto;
             padding-top: 6px;
             border-top: 1px dashed #333;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .shop-link {
@@ -1430,12 +1431,30 @@
         }
 
         .leaflet-bottom {
-            bottom: 48px !important;
+            bottom: 26px !important;
             z-index: 800 !important;
+            transition: bottom 0.25s ease;
+        }
+
+        @media (max-width: 767px) {
+            .leaflet-bottom {
+                bottom: 50px !important;
+            }
         }
 
         .leaflet-bottom.leaflet-left {
-            left: 10px !important;
+            left: 0 !important;
+            margin-left: 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        .leaflet-bottom.leaflet-left .leaflet-control {
+            margin-left: 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        .leaflet-control-attribution {
+            margin: 0 !important;
         }
     </style>
 </head>
@@ -1626,21 +1645,21 @@
         <div class="modal-header">プライバシーポリシー</div>
         <div class="modal-body"
             style="font-size: 0.82rem; line-height: 1.6; max-height: 70vh; overflow-y: auto; text-align: left; font-weight: normal;">
-            <p>当サイトは、本ウェブサイト上で提供するサービス（以下、「本サービス」といいます。）における、ユーザーの情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。
-            </p>
-            <p><strong>第1条（個人情報の非収集について）</strong><br>当サイトは、ユーザーの氏名、住所、電話番号、メールアドレスなど、特定の個人を直接識別できる「個人情報」の収集は行っておりません。
-            </p>
-            <p><strong>第2条（アクセス解析ツールとデータの匿名化について）</strong><br>当サイトでは、サイトの利用状況を把握し、コンテンツを改善するためにGoogleによるアクセス解析ツール「Googleアナリティクス」を利用しています。このGoogleアナリティクスは、データの収集のためにクッキー（Cookie）を使用しています。クッキーによって収集されるデータは、ブラウザの識別子やIPアドレス、閲覧したページの情報などであり、ユーザー個人を特定できる情報は含まれません。データはすべて匿名化された状態で処理されます。ユーザーは、お使いのブラウザの設定でクッキーを無効にすることにより、このデータ収集を拒否することができます。この規約に関しての詳細は「Googleアナリティクス利用規約」や「Googleのサービスを使用するサイトやアプリから収集した情報のGoogleによる使用」のページをご覧ください。
-            </p>
-            <p><strong>第3条（免責事項）</strong><br>当サイトからのリンクやバナーなどで移動したサイトで提供される情報、サービス等について、当サイトは一切の責任を負いません。また、当サイトのコンテンツ・情報について、できる限り正確な情報を提供するよう努めておりますが、正確性や安全性を保証するものではありません。当サイトに掲載された内容によって生じた損害等の一切の責任を負いかねますのでご了承ください。
-            </p>
-            <p><strong>第4条（著作権・肖像権）</strong><br>当サイト内の文章・画像等の著作権は当サイトに帰属します。利用目的を問わず、無断での転載を禁止します。</p>
-            <p><strong>第5条（プライバシーポリシーの変更）</strong><br>本ポリシーの内容は、法令その他本ポリシーに別段の定めのある事項を除いて、ユーザーに通知することなく、変更することができるものとします。変更後のプライバシーポリシーは、本ウェブサイトに掲載したときから効力を生じるものとします。
-            </p>
-            <p><strong>第6条（お問い合わせ窓口）</strong><br>本ポリシーに関するお問い合わせは、以下の窓口までお願いいたします。<br>連絡先：<a
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSdEjRJkYuFRvXjdCai8iUrh6wUiKw4z6H0GCo3QcD1-W24prA/viewform?usp=dialog"
-                    target="_blank" rel="noopener noreferrer"
-                    style="color: var(--link-color); text-decoration: underline;">お問い合わせフォーム</a></p>
+            <p>当サイトは、本ウェブサイト上で提供するサービス（以下、「本サービス」といいます。）におけるユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシーを定めます。</p>
+            
+            <p><strong>第1条（個人情報の非収集について）</strong><br>
+            当サイトは、ユーザーの氏名、住所、電話番号、メールアドレスなど、特定の個人を直接識別できる個人情報の収集・保持は行っておりません。</p>
+            
+            <p><strong>第2条（アクセス解析ツールとCookieについて）</strong><br>
+            当サイトでは、サイトの利用状況を把握し、コンテンツを改善するためにGoogleによるアクセス解析ツール「Googleアナリティクス」を利用しています。Googleアナリティクスは、データの収集のためにCookie（クッキー）を使用しています。このCookieによって収集されるデータは、ブラウザの識別子やIPアドレス、閲覧したページの情報などであり、ユーザー個人を特定する情報は含まれません。データはすべて匿名化された状態で処理されます。<br>
+            ユーザーは、お使いのブラウザの設定でCookieを無効にすることにより、このデータ収集を拒否することができます。詳細は「Googleアナリティクス利用規約」や「Googleのサービスを使用するサイトやアプリから収集した情報のGoogleによる使用」のページをご覧ください。</p>
+            
+            <p><strong>第3条（ポリシーの変更）</strong><br>
+            当サイトは、法令の変更等に伴い、本ポリシーの内容を事前の通知なく変更することがあります。変更後のプライバシーポリシーは、本ウェブサイトに掲載したときから効力を生じるものとします。</p>
+            
+            <p><strong>第4条（お問い合わせ窓口）</strong><br>
+            本ポリシーに関するお問い合わせは、以下の窓口までお願いいたします。<br><br>
+            連絡先：<a href="https://docs.google.com/forms/d/e/1FAIpQLSdEjRJkYuFRvXjdCai8iUrh6wUiKw4z6H0GCo3QcD1-W24prA/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" style="color: var(--link-color); text-decoration: underline;">お問い合わせフォーム</a></p>
         </div>
         <div class="modal-footer">
             <button type="button" class="modal-close-btn"
@@ -1650,22 +1669,23 @@
 
     <dialog class="app-modal" id="site-desc-modal">
         <div class="modal-header">本サイトについて</div>
-        <div class="modal-body">
-            <p>本サイトは、全国に広がるラーメン二郎の全店舗情報を網羅した、すべてのジロリアンのためのウェブサービスです。</p>
-            <p>「今すぐ最高の一杯にありつける一番近い店舗はどこか？」、「今日の営業時間や臨時休業情報は？」、「全店制覇に向けたこれまでの訪問実績を管理したい！」といった、すべての欲求を直感的な地図とリストで一元的に叶えます。
-            </p>
-            <p>当サイトは、ジロリアンの皆様により便利に使っていただけるよう、今後も順次機能の拡張や改善を予定しております。</p>
-            <p>日常から旅先や出張先で、溢れ出る「二郎欲」を満たす相棒として、ぜひご活用ください。</p>
+        <div class="modal-body" style="font-size: 0.82rem; line-height: 1.6; max-height: 70vh; overflow-y: auto; text-align: left; font-weight: normal;">
+            <p>本サイト（ジロリアンマップ）は、全国に広がるラーメン二郎の全店舗情報（営業時間・臨時営業情報・位置情報）を網羅した、すべてのジロリアンのための非公式ウェブサービスです。</p>
+            <p>「今すぐ最高の一杯にありつける一番近い店舗はどこか？」、「今日の営業時間や臨時休業情報は？」、「全店制覇に向けたこれまでの訪問実績を管理したい！」といった、すべての欲求を直感的な地図とリストで一元的に叶えます。</p>
+            <p>当サイトは、ジロリアンの皆様により便利に使っていただけるよう、今後も順次機能の拡張やUIの改善を予定しております。日常から旅先や出張先で、溢れ出る「二郎欲」を満たす相棒としてご活用ください。</p>
+            
             <hr style="border:0; border-top:1px solid #333; margin:12px 0;">
-            <p style="font-size:0.8rem; color:#aaa;">
-                <strong>出典（店舗開店・閉店日）:</strong><br>
+            <p style="font-size:0.75rem; color:#aaa; margin: 4px 0;">
+                <strong>データ出典について:</strong><br>
+                店舗の開店・閉店日や歴史に関する情報の一部は、以下のサイトを参考にしております。<br>
                 <a href="https://take4.hiyamugi.com/shop/shop_history.htm" target="_blank" rel="noopener noreferrer"
-                    style="color:var(--link-color);">Take4 二郎 食記録 ラーメン二郎 年表</a>
+                    style="color:var(--link-color); text-decoration: underline;">Take4 二郎 食記録 ラーメン二郎 年表 ↗</a>
             </p>
+            
             <hr style="border:0; border-top:1px solid #333; margin:12px 0;">
-            <div style="font-size: 0.8rem; color: #ddd; margin-bottom: 8px;">
-                <strong>制覇データのバックアップ・復元</strong>
-                <p style="margin: 4px 0 8px 0; font-size: 0.72rem; color: #aaa;">ブラウザのキャッシュクリアやアプリアップデート等によるデータ消失に備えて、現在の制覇状況をファイルに保存したり、保存したファイルから復元することができます。</p>
+            <div style="margin-bottom: 8px;">
+                <strong>制覇データのバックアップ・復元:</strong>
+                <p style="margin: 4px 0 8px 0; font-size: 0.72rem; color: #aaa; line-height: 1.4;">ブラウザのキャッシュクリアやアプリアップデート等によるデータ消失に備えて、現在の制覇状況をファイルに保存したり、保存したファイルから復元することができます。</p>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                     <button type="button" onclick="exportVisitedData()" style="padding: 4px 10px; background-color: #333; border: 1px solid #555; color: #fff; cursor: pointer; border-radius: 4px; font-size: 0.75rem;">データをエクスポート</button>
                     <button type="button" onclick="document.getElementById('import-file-input').click()" style="padding: 4px 10px; background-color: #333; border: 1px solid #555; color: #fff; cursor: pointer; border-radius: 4px; font-size: 0.75rem;">データをインポート</button>
@@ -1680,19 +1700,24 @@
     </dialog>
 
     <dialog class="app-modal" id="disclaimer-modal">
-        <div class="modal-header">免責事項・注意事項</div>
-        <div class="modal-body">
-            <p>当サイトは個人が運営するウェブサイトであり、ラーメン二郎直系各店舗および関連企業とは一切関係ありません。</p>
-            <p>掲載している情報には細心の注意を払っておりますが、実際の状況と異なる場合があります。</p>
-            <hr style="border:0; border-top:1px solid #333; margin:12px 0;">
-            <p style="font-size: 0.8rem; color: #aaa;">
-                <strong>【店舗情報・営業状態に関するご注意】</strong>
+        <div class="modal-header">免責事項・著作権</div>
+        <div class="modal-body" style="font-size: 0.82rem; line-height: 1.6; max-height: 70vh; overflow-y: auto; text-align: left; font-weight: normal;">
+            <p><strong>【関係性について】</strong><br>
+            当サイトは個人が運営するファンサイト（非公式サイト）であり、ラーメン二郎直系各店舗および関連企業とは一切関係ありません。</p>
+            
+            <p><strong>【免責事項】</strong><br>
+            当サイトのコンテンツや情報について、できる限り正確な情報を提供するよう努めておりますが、その正確性、安全性、妥当性を保証するものではありません。当サイトに掲載された情報、あるいはリンク先等で提供される情報・サービス等によって生じた損害やトラブル等について、運営者は一切の責任を負いかねますのでご了承ください。</p>
+            
+            <p><strong>【店舗情報・営業状態に関するご注意】</strong>
             <ul style="padding-left: 18px; margin: 6px 0 12px 0; line-height: 1.4;">
                 <li>店舗の移転等があった場合の「店舗開店日」は、店名の変更があった日を基準として記載しています。</li>
                 <li>営業時間および臨時休業の情報は手作業で更新を行っているため、実際の店舗情報への反映にタイムラグ（遅れ）が生じる場合があります。</li>
-                <li>営業状態の判定ロジックの都合上、店舗が通常営業・休業としているケースでも臨時営業・休業として表示する場合があります。</li>
+                <li>営業状態の自動判定ロジックの都合上、店舗が通常営業・休業としているケースでも臨時営業・休業として表示する場合があります。</li>
             </ul>
             </p>
+            
+            <p><strong>【著作権】</strong><br>
+            当サイト内の文章、画像、独自データ等の著作権は当サイトに帰属します。利用目的を問わず、無断での転載や複製等の二次利用を禁止します。</p>
         </div>
         <div class="modal-footer">
             <button type="button" class="modal-close-btn"
@@ -1731,6 +1756,7 @@
         const MITA_HONTON_COORDS = { lat: 35.64805, lng: 139.74160 };
 
         let shops = [];
+        let isAppInitialized = false;
         let visitedState = (() => {
             const mainData = localStorage.getItem('jiro_pc_visited');
             if (mainData) {
@@ -2549,7 +2575,14 @@
     `;
         }
 
-        const map = L.map('map', { fadeAnimation: false, zoomAnimation: true }).setView([MITA_HONTON_COORDS.lat, MITA_HONTON_COORDS.lng], 9);
+        const map = L.map('map', { 
+            fadeAnimation: false, 
+            zoomAnimation: true,
+            attributionControl: false
+        }).setView([MITA_HONTON_COORDS.lat, MITA_HONTON_COORDS.lng], 9);
+        
+        L.control.attribution({ position: 'bottomleft' }).addTo(map);
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
@@ -2589,7 +2622,7 @@
         function updateLocationButtonUI(hasLocation) {
             if (!locationBtnElement) return;
             locationBtnElement.classList.toggle('active-loc', hasLocation);
-            locationBtnElement.classList.toggle('is-visible', hasLocation);
+            locationBtnElement.classList.add('is-visible');
         }
 
         function fitMapToAllShops() {
@@ -2829,6 +2862,12 @@
                 ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>'
                 : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
             btn.setAttribute('aria-label', isCollapsed ? 'フッターを再表示' : 'フッターを隠す');
+
+            const leafletBottom = document.querySelector('.leaflet-bottom');
+            if (leafletBottom) {
+                const bottomVal = isCollapsed ? '0px' : (window.innerWidth <= 767 ? '50px' : '26px');
+                leafletBottom.style.setProperty('bottom', bottomVal, 'important');
+            }
         }
 
         function toggleHeaderVisibility() {
@@ -3060,13 +3099,14 @@
             displayShops.forEach(shop => {
                 const isVisited = !!visitedState[shop.id];
                 const status = getBusinessStatus(shop, activeDate);
+                const currentStatus = getBusinessStatus(shop, new Date());
 
                 if (!selectedVisit.includes(isVisited ? 'visited' : 'unvisited')) {
                     updateMarkerVisibility(shop.id, false);
                     return;
                 }
 
-                let statusKey = status.type === 'preopen' ? 'closed' : status.type;
+                let statusKey = currentStatus.type === 'preopen' ? 'closed' : currentStatus.type;
                 if (!selectedOpen.includes(statusKey)) {
                     updateMarkerVisibility(shop.id, false);
                     return;
@@ -3274,11 +3314,10 @@
                 btn.setAttribute('data-tooltip', '全国表示');
                 btn.title = '全国表示';
                 btn.innerHTML = `
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="4" y="4" width="7" height="7" rx="1"/>
-                <rect x="13" y="4" width="7" height="7" rx="1"/>
-                <rect x="4" y="13" width="7" height="7" rx="1"/>
-                <rect x="13" y="13" width="7" height="7" rx="1"/>
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+                <line x1="9" y1="3" x2="9" y2="18"></line>
+                <line x1="15" y1="6" x2="15" y2="21"></line>
             </svg>
         `;
                 btn.onclick = function (e) {
@@ -3292,12 +3331,21 @@
         const LocationControl = L.Control.extend({
             options: { position: 'bottomright' },
             onAdd: function () {
-                const btn = L.DomUtil.create('button', 'location-btn');
+                const btn = L.DomUtil.create('button', 'location-btn is-visible');
                 locationBtnElement = btn;
                 btn.setAttribute('aria-label', '現在地');
                 btn.setAttribute('data-tooltip', '現在地');
                 btn.title = '現在地';
-                btn.innerHTML = `<svg class="location-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle></svg>`;
+                btn.innerHTML = `
+            <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="3"></circle>
+                <line x1="12" y1="1" x2="12" y2="4"></line>
+                <line x1="12" y1="20" x2="12" y2="23"></line>
+                <line x1="1" y1="12" x2="4" y2="12"></line>
+                <line x1="20" y1="12" x2="23" y2="12"></line>
+            </svg>
+        `;
                 btn.onclick = function (e) {
                     e.stopPropagation();
                     requestUserLocation(false, true);
@@ -3377,20 +3425,44 @@
         }
 
         async function initApp() {
-            map.addControl(new GlobalViewControl());
-            map.addControl(new LocationControl());
-            initDateSelector();
+            if (!isAppInitialized) {
+                map.addControl(new GlobalViewControl());
+                map.addControl(new LocationControl());
+                initDateSelector();
+            }
 
             try {
-                const response = await fetch('shops.json');
+                const isLocalEnv = window.location.protocol === 'file:' || 
+                                   window.location.hostname === 'localhost' || 
+                                   window.location.hostname === '127.0.0.1';
+                const url = isLocalEnv ? 'shops.json' : 'shops.json?t=' + Date.now();
+                const fetchOptions = isLocalEnv ? {} : { cache: 'no-cache' };
+                const response = await fetch(url, fetchOptions);
                 if (!response.ok) throw new Error('読み込み失敗');
                 shops = (await response.json()).filter(shop => !isClosedShopExpired(shop));
             } catch (error) {
                 console.error(error);
+                const grid = document.getElementById('shop-grid');
+                if (grid) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1 / -1; padding: 20px; text-align: center; color: var(--jiro-red); font-weight: bold; font-family: sans-serif; font-size: 0.85rem; line-height: 1.6;">
+                            店舗情報の読み込みに失敗しました。<br>
+                            通信環境を確認の上、再試行してください。<br><br>
+                            <button type="button" onclick="initApp()" style="padding: 6px 16px; background-color: var(--jiro-yellow); color: #000; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; outline: none; font-size: 0.8rem;">再読み込み</button>
+                        </div>
+                    `;
+                }
                 return;
             }
 
             let mitaShopId = null;
+
+            for (const key in markers) {
+                if (markers[key]) {
+                    map.removeLayer(markers[key]);
+                    delete markers[key];
+                }
+            }
 
             shops.forEach(shop => {
                 if (shop.lat && shop.lng) {
@@ -3412,13 +3484,16 @@
                 markers[mitaShopId].openPopup();
             }
 
-            if ("geolocation" in navigator) {
-                requestUserLocation(true, false);
-            } else {
-                updateSortDropdownOptions();
+            if (!isAppInitialized) {
+                if ("geolocation" in navigator) {
+                    requestUserLocation(true, false);
+                } else {
+                    updateSortDropdownOptions();
+                }
+                initResizer();
             }
 
-            initResizer();
+            isAppInitialized = true;
             setTimeout(() => map.invalidateSize(), 100);
         }
 
