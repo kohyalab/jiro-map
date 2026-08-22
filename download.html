@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>営業情報画像ダウンロード | ジロリアンマップ</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- html-to-image CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+    <style>
+        :root {
+            --jiro-yellow: #ffcc00;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #f5f5f5;
+            --border-color: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Noto Sans JP', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 620px;
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            color: var(--jiro-yellow);
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 24px;
+        }
+
+        .iframe-wrapper {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #141414;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        iframe {
+            width: 534px;
+            height: 100%;
+            border: none;
+            background-color: #121212;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .actions-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--jiro-yellow);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background-color: #e6b800;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #333;
+            color: #ccc;
+            border: 1px solid #444;
+        }
+
+        .btn-secondary:hover {
+            background-color: #444;
+            color: #fff;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>営業情報画像ダウンロード</h1>
+        <p class="subtitle">bot.jsと同じ設定のプレビューを生成しています。「ダウンロード」で画像保存できます。</p>
+        
+        <div class="iframe-wrapper">
+            <!-- index.html を読み込み、JSで動的にbot用のスタイルと設定を適用する -->
+            <iframe id="target-iframe" src="index.html"></iframe>
+        </div>
+        
+        <div class="actions-group">
+            <button type="button" class="btn btn-secondary" onclick="reloadPreview()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                </svg>
+                表示を更新
+            </button>
+            
+            <button type="button" class="btn btn-primary" onclick="triggerDownload()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                画像をダウンロード
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function getFormattedDateYMD(separator) {
+            const now = new Date();
+            const jstDate = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
+            const year = jstDate.getFullYear();
+            const month = String(jstDate.getMonth() + 1).padStart(2, '0');
+            const date = String(jstDate.getDate()).padStart(2, '0');
+            return `${year}${separator}${month}${separator}${date}`;
+        }
+
+        function applyBotStyle() {
+            const iframe = document.getElementById('target-iframe');
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            const win = iframe.contentWindow;
+
+            if (!doc || !win) return;
+
+            // 1. Google Fonts（Noto Sans JP）の動的読み込み
+            const fontLink = doc.createElement('link');
+            fontLink.rel = 'stylesheet';
+            fontLink.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap';
+            doc.head.appendChild(fontLink);
+
+            // 2. 日別モード & 開店日順ソート
+            if (typeof win.setListSubMode === 'function') win.setListSubMode('today');
+            const sortSelect = doc.getElementById('sort-select');
+            if (sortSelect) {
+                sortSelect.value = 'opened';
+                if (typeof win.onSortChange === 'function') win.onSortChange();
+            }
+
+            // 3. 日付表示を「yyyy/mm/dd」に固定置換
+            const dateInput = doc.getElementById('date-selector');
+            if (dateInput && dateInput.parentElement) {
+                dateInput.parentElement.innerHTML = `
+                    <div style="display:inline-flex; align-items:center; gap:8px; background:#141414; border:1px solid #333; border-radius:4px; padding:4px 10px; color:#fff; font-size:0.85rem; font-weight:bold; font-family:'Noto Sans JP', sans-serif;">
+                      <span>${getFormattedDateYMD('/')}</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
+                    </div>
+                `;
+            }
+
+            // 4. 縦長・4列・フォント指定CSSの適用
+            const style = doc.createElement('style');
+            style.id = 'bot-capture-style';
+            style.innerHTML = `
+                * {
+                  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif !important;
+                }
+                #sidebar-container {
+                  display: flex !important;
+                  visibility: visible !important;
+                  opacity: 1 !important;
+                  position: absolute !important;
+                  top: 0 !important;
+                  left: 0 !important;
+                  width: 534px !important;
+                  min-width: 534px !important;
+                  height: auto !important;
+                  max-height: none !important;
+                  background-color: #121212 !important;
+                  z-index: 999999 !important;
+                  overflow: visible !important;
+                  padding-bottom: 12px !important;
+                }
+                .list-header-controls {
+                  display: none !important;
+                }
+                #date-selector-area {
+                  display: flex !important;
+                  align-items: center !important;
+                  gap: 8px !important;
+                  border-bottom: 1px solid #333 !important;
+                  padding: 10px 12px !important;
+                  background-color: #121212 !important;
+                }
+                .container {
+                  overflow: visible !important;
+                  height: auto !important;
+                  max-height: none !important;
+                  padding: 8px 10px !important;
+                }
+                .shop-grid.view-mode-today {
+                  grid-template-columns: repeat(5, 98px) !important;
+                  gap: 6px !important;
+                  width: 100% !important;
+                }
+                /* 不要なコントロールを非表示 */
+                #map, .drag-resizer, header, .app-footer, .leaflet-control-container, #controls-wrapper {
+                  display: none !important;
+                }
+            `;
+            doc.head.appendChild(style);
+        }
+
+        function reloadPreview() {
+            const iframe = document.getElementById('target-iframe');
+            iframe.src = 'index.html?t=' + Date.now();
+        }
+
+        function triggerDownload() {
+            const iframe = document.getElementById('target-iframe');
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            const sidebar = doc ? doc.getElementById('sidebar-container') : null;
+
+            if (!sidebar) {
+                alert('プレビュー画面の読み込みが完了していません。しばらく待ってから再度お試しください。');
+                return;
+            }
+
+            // html-to-image で高精細PNGを生成
+            htmlToImage.toPng(sidebar, {
+                width: 534,
+                style: {
+                    transform: 'none'
+                }
+            })
+            .then(function (dataUrl) {
+                const link = document.createElement('a');
+                link.download = `jiro_sheet_${getFormattedDateYMD('-')}.png`;
+                link.href = dataUrl;
+                link.click();
+            })
+            .catch(function (error) {
+                console.error('画像生成に失敗しました:', error);
+                alert('画像の生成中にエラーが発生しました。ローカルサーバー(http://localhost等)経由でアクセスしているかご確認ください。');
+            });
+        }
+
+        // iframeのロード完了時に自動でbot用スタイルをあてる
+        document.getElementById('target-iframe').addEventListener('load', () => {
+            // データが読み込まれる時間を考慮して少し待つ
+            setTimeout(applyBotStyle, 500);
+        });
+    </script>
+</body>
+</html>
