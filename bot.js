@@ -121,15 +121,15 @@ async function run() {
 
     // X（Twitter）へ自動投稿
     const client = new TwitterApi({
-        appKey: process.env.TWITTER_API_KEY,
-        appSecret: process.env.TWITTER_API_SECRET,
-        accessToken: process.env.TWITTER_ACCESS_TOKEN,
-        accessSecret: process.env.TWITTER_ACCESS_SECRET,
+        appKey: process.env.TWITTER_API_KEY_DEV,
+        appSecret: process.env.TWITTER_API_SECRET_DEV,
+        accessToken: process.env.TWITTER_ACCESS_TOKEN_DEV,
+        accessSecret: process.env.TWITTER_ACCESS_SECRET_DEV,
     });
 
     const mediaId = await client.v1.uploadMedia('sheet.png');
 
-    const tweetText = `【本日${getTodayText()}のラーメン二郎営業情報】\n\n詳しい情報はジロリアンマップで↓\n🔗https://app.jirolianmap.com\n \n※営業時間の白文字は通常、オレンジ色文字は臨時営業・休業#ラーメン二郎 #二郎 #営業情報 #ジロリアンマップ`;
+    const tweetText = `【本日${getTodayText()}のラーメン二郎営業情報】\n\n詳しい情報はジロリアンマップで↓\n🔗https://app.jirolianmap.com\n \n※営業時間の白文字は通常、オレンジ色文字は臨時営業・休業\n#ラーメン二郎 #二郎 #営業情報 #ジロリアンマップ`;
 
     await client.v2.tweet({
         text: tweetText,
