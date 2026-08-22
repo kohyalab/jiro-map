@@ -1,7 +1,6 @@
 const { chromium } = require('playwright');
 const { TwitterApi } = require('twitter-api-v2');
 
-// 日本時間（JST）の本日日付文字列を生成 (例: 8/22(土))
 function getTodayText() {
     const now = new Date();
     const jstDate = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
@@ -12,81 +11,115 @@ function getTodayText() {
     return `${month}/${date}(${dayStr})`;
 }
 
+function getFormattedDateYMD() {
+    const now = new Date();
+    const jstDate = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
+    const year = jstDate.getFullYear();
+    const month = String(jstDate.getMonth() + 1).padStart(2, '0');
+    const date = String(jstDate.getDate()).padStart(2, '0');
+    return `${year}/${month}/${date}`;
+}
+
 async function run() {
     const browser = await chromium.launch({ headless: true });
-    // PCビューで判定させるため幅1280px以上を確保
     const page = await browser.newPage({
-        viewport: { width: 1280, height: 1200 },
-        deviceScaleFactor: 2 // 高解像度・鮮明化
+        viewport: { width: 1280, height: 1600 },
+        deviceScaleFactor: 2 // 高解像度（Retina）
     });
 
     await page.goto('https://app.jirolianmap.com/', { waitUntil: 'networkidle' });
 
-    // 1. 条件設定（日別レイアウト・開店日順ソート・リスト全体表示）
-    await page.evaluate(() => {
-        // リストのみ表示に切り替え
-        if (typeof isShowMap !== 'undefined') isShowMap = false;
-        if (typeof isShowList !== 'undefined') isShowList = true;
-        if (typeof updateLayout === 'function') updateLayout();
+    // 画面初期設定 & 縦長用スタイル・日本語フォント注入
+    await page.evaluate((ymdDate) => {
+        // 1. Google Fonts（Noto Sans JP）の動的読み込み
+        const fontLink = document.createElement('link');
+        fontLink.rel = 'stylesheet';
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap';
+        document.head.appendChild(fontLink);
 
-        // 日別モードに切り替え
-        if (typeof setListSubMode === 'function') {
-            setListSubMode('today');
-        }
-
-        // 開店日順ソート
+        // 2. 日別モード & 開店日順ソート
+        if (typeof setListSubMode === 'function') setListSubMode('today');
         const sortSelect = document.getElementById('sort-select');
         if (sortSelect) {
             sortSelect.value = 'opened';
-            if (typeof onSortChange === 'function') {
-                onSortChange();
-            }
+            if (typeof onSortChange === 'function') onSortChange();
         }
 
-        // スクロールを解除し、リスト全域をきれいに収めるスタイル調整
+        // 3. 日付表示を「yyyy/mm/dd」に固定置換
+        const dateInput = document.getElementById('date-selector');
+        if (dateInput && dateInput.parentElement) {
+            dateInput.parentElement.innerHTML = `
+        <div style="display:inline-flex; align-items:center; gap:8px; background:#141414; border:1px solid #333; border-radius:4px; padding:4px 10px; color:#fff; font-size:0.85rem; font-weight:bold; font-family:'Noto Sans JP', sans-serif;">
+          <span>${ymdDate}</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </div>
+      `;
+        }
+
+        // 4. 縦長・4列・フォント指定CSSの適用
         const style = document.createElement('style');
         style.id = 'bot-capture-style';
         style.innerHTML = `
-      header, #controls-wrapper, #map-wrapper, #drag-resizer, .list-header-controls, .app-footer, .header-toggle-btn {
-        display: none !important;
-      }
-      body, .main-layout, .content-area, .sidebar-container {
-        width: 100% !important;
-        height: auto !important;
-        overflow: visible !important;
-        background-color: #121212 !important;
+      * {
+        font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif !important;
       }
       #sidebar-container {
-        width: 100% !important;
-        min-width: 100% !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 440px !important;
+        min-width: 440px !important;
+        height: auto !important;
+        max-height: none !important;
+        background-color: #121212 !important;
+        z-index: 999999 !important;
+        overflow: visible !important;
+        padding-bottom: 12px !important;
+      }
+      .list-header-controls {
+        display: none !important;
+      }
+      #date-selector-area {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        border-bottom: 1px solid #333 !important;
+        padding: 10px 12px !important;
+        background-color: #121212 !important;
       }
       .container {
         overflow: visible !important;
         height: auto !important;
         max-height: none !important;
-        padding: 10px !important;
+        padding: 8px 10px !important;
       }
-      #date-selector-area {
-        display: flex !important;
-        align-items: center !important;
-        border-bottom: 1px solid #333 !important;
-        padding: 10px 14px !important;
-        background-color: #121212 !important;
+      .shop-grid.view-mode-today {
+        grid-template-columns: repeat(4, 98px) !important;
+        gap: 6px !important;
+        width: 100% !important;
       }
     `;
         document.head.appendChild(style);
-    });
+    }, getFormattedDateYMD());
 
-    // レンダリング待機
-    await page.waitForTimeout(1000);
+    // フォント読み込み・レンダリング完了待機
+    await page.waitForTimeout(1500);
 
-    // 2. リスト画面全体のキャプチャを取得
+    // 縦長画像として全体をキャプチャ
     const sidebar = await page.$('#sidebar-container');
     await sidebar.screenshot({ path: 'sheet.png' });
 
     await browser.close();
 
-    // 3. X (Twitter) への画像アップロード & ツイート
+    // X（Twitter）へ自動投稿
     const client = new TwitterApi({
         appKey: process.env.TWITTER_API_KEY,
         appSecret: process.env.TWITTER_API_SECRET,
@@ -105,7 +138,7 @@ async function run() {
         }
     });
 
-    console.log('Xへの自動投稿が正常に完了しました。');
+    console.log('縦長画像の自動投稿が完了しました。');
 }
 
 run().catch(err => {
