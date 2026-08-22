@@ -1,2 +1,2 @@
-# jiro-map
+# jirolianmap
 ラーメン二郎の直系店舗制覇状況を管理できるWebマップ
