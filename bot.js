@@ -75,8 +75,8 @@ async function run() {
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
-        width: 440px !important;
-        min-width: 440px !important;
+        width: 534px !important;
+        min-width: 534px !important;
         height: auto !important;
         max-height: none !important;
         background-color: #121212 !important;
@@ -102,7 +102,7 @@ async function run() {
         padding: 8px 10px !important;
       }
       .shop-grid.view-mode-today {
-        grid-template-columns: repeat(4, 98px) !important;
+        grid-template-columns: repeat(5, 98px) !important;
         gap: 6px !important;
         width: 100% !important;
       }
@@ -129,7 +129,7 @@ async function run() {
 
     const mediaId = await client.v1.uploadMedia('sheet.png');
 
-    const tweetText = `【本日${getTodayText()}のラーメン二郎営業情報】\n\n詳しい情報はジロリアンマップで↓\n🔗https://app.jirolianmap.com\n \n※営業時間の白文字は通常、オレンジ色文字は臨時営業・休業\n#ラーメン二郎 #二郎 #営業情報 #ジロリアンマップ`;
+    const tweetText = `【本日${getTodayText()}のラーメン二郎営業情報】\n\n詳しい情報はジロリアンマップで↓\n🔗https://app.jirolianmap.com\n \n※営業時間の白文字は通常、オレンジ色文字は臨時営業・休業\n\n#ラーメン二郎 #二郎 #営業情報 #ジロリアンマップ`;
 
     await client.v2.tweet({
         text: tweetText,
