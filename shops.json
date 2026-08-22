@@ -2402,6 +2402,7 @@
     "lng": 139.7970657753107,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/senjuohashi/",
+      "rdb": "",
       "tabelog": "https://tabelog.com/tokyo/A1324/A132402/13090912/"
     },
     "x": "senjujirou26",
@@ -2441,17 +2442,12 @@
           15.5
         ]
       ],
-      "5": [
-        [
-          10.5,
-          15.5
-        ]
-      ],
+      "5": [],
       "6": []
     },
     "holidayShifts": null,
     "remarks": "",
-    "hoursNotes": "祝日不定休",
+    "hoursNotes": "土曜、祝日不定休",
     "instagram": ""
   },
   {
