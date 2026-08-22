@@ -1,9 +1,32 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9B41DFG8R9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-9B41DFG8R9');
+    </script>
     <meta charset="UTF-8">
+    <meta name="description"
+        content="全国に広がるラーメン二郎の全店舗情報（営業時間・臨時営業情報・場所）を網羅した、すべてのジロリアンのための非公式ウェブサービス。日常から旅先や出張先で、溢れ出る「二郎欲」を満たす相棒としてご活用ください。">
+    <meta name="keywords" content="ラーメン二郎,二郎,ジロリアン,ジロリアンマップ,二郎マップ,営業時間,臨時休業,臨休,定休日,地図">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://app.jirolianmap.com/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ジロリアンマップ</title>
+    <meta property="og:title" content="ジロリアンマップ【二郎営業情報・マップ】">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://app.jirolianmap.com/">
+    <meta property="og:description"
+        content="全国に広がるラーメン二郎の全店舗情報（営業時間・臨時営業情報・場所）を網羅した、すべてのジロリアンのための非公式ウェブサービス。日常から旅先や出張先で、溢れ出る「二郎欲」を満たす相棒として、ぜひご活用ください。">
+    <meta property="og:image" content="jirolianmap_map.jpg">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="og:site_name" content="ジロリアンマップ【二郎営業情報・マップ】">
     <!-- ファビコンの設定（png） -->
     <link rel="icon" href="icon_jirolianmap.png" type="image/png">
     <!-- Leaflet.js CSS -->
@@ -18,7 +41,7 @@
             --border-color: #333;
             --link-color: #64b5f6;
             --gmap-color: #81c784;
-            
+
             /* ステータスカラー */
             --status-closed: #616161;
             --status-scheduled: #0288d1;
@@ -27,9 +50,12 @@
             --status-preopen: #9c27b0;
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             width: 100%;
@@ -57,7 +83,50 @@
             gap: 6px 10px;
             flex-shrink: 0;
             z-index: 1000;
+            position: relative;
+            transition: max-height 0.25s ease, padding 0.2s ease, border-bottom-color 0.2s ease;
+            max-height: 200px;
+            overflow: hidden;
         }
+
+        header.is-collapsed {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border-bottom-color: transparent;
+            overflow: visible;
+        }
+
+        .header-toggle-btn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(255, 204, 0, 0.95);
+            border: 2px solid #000;
+            border-radius: 4px;
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1002;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #000;
+            line-height: 1;
+        }
+
+        header.is-collapsed~.main-layout .header-toggle-btn {
+            display: flex;
+        }
+
+        .header-toggle-btn:hover {
+            background-color: rgba(255, 204, 0, 1);
+        }
+
+
 
         .header-left {
             display: flex;
@@ -137,13 +206,16 @@
                 align-items: stretch;
                 gap: 6px;
             }
+
             .header-left {
                 width: 100%;
                 justify-content: space-between;
             }
+
             .header-center-search {
                 max-width: none;
             }
+
             .header-right {
                 width: 100%;
                 justify-content: space-between;
@@ -213,7 +285,7 @@
             color: #000 !important;
             font-weight: normal !important;
             border-color: #ffffff !important;
-            box-shadow: 0 0 4px rgba(255, 204, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.8);
+            box-shadow: 0 0 4px rgba(255, 204, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
 
         .controls-wrapper {
@@ -330,7 +402,7 @@
             border-radius: 50%;
             display: inline-block;
             flex-shrink: 0;
-            box-shadow: 0 0 2px rgba(0,0,0,0.8);
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
         }
 
         .visit-border-sample {
@@ -341,8 +413,14 @@
             background-color: #555;
             flex-shrink: 0;
         }
-        .visit-border-sample.visited { border: 2px solid var(--jiro-yellow); }
-        .visit-border-sample.unvisited { border: 1px solid #ffffff; }
+
+        .visit-border-sample.visited {
+            border: 2px solid var(--jiro-yellow);
+        }
+
+        .visit-border-sample.unvisited {
+            border: 1px solid #ffffff;
+        }
 
         .sort-select {
             background-color: #141414;
@@ -354,7 +432,10 @@
             cursor: pointer;
             max-width: 100%;
         }
-        .sort-select option:disabled { color: #555; }
+
+        .sort-select option:disabled {
+            color: #555;
+        }
 
         .main-layout {
             display: flex;
@@ -394,7 +475,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
             padding: 0;
             margin-bottom: 8px;
         }
@@ -409,14 +490,14 @@
             left: 50%;
             bottom: calc(100% + 8px);
             transform: translateX(-50%);
-            background-color: rgba(20,20,20,0.96);
+            background-color: rgba(20, 20, 20, 0.96);
             color: #fff;
             font-size: 0.68rem;
             line-height: 1.2;
             white-space: nowrap;
             padding: 4px 7px;
             border-radius: 4px;
-            border: 1px solid rgba(255,204,0,0.5);
+            border: 1px solid rgba(255, 204, 0, 0.5);
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.15s ease;
@@ -449,33 +530,51 @@
             display: none;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
         }
-        .location-btn.is-visible { display: flex; }
+
+        .location-btn.is-visible {
+            display: flex;
+        }
+
         .location-btn::after {
             content: attr(data-tooltip);
             position: absolute;
             left: 50%;
             bottom: calc(100% + 8px);
             transform: translateX(-50%);
-            background-color: rgba(20,20,20,0.96);
+            background-color: rgba(20, 20, 20, 0.96);
             color: #fff;
             font-size: 0.68rem;
             line-height: 1.2;
             white-space: nowrap;
             padding: 4px 7px;
             border-radius: 4px;
-            border: 1px solid rgba(255,204,0,0.5);
+            border: 1px solid rgba(255, 204, 0, 0.5);
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.15s ease;
         }
+
         .location-btn:hover::after {
             opacity: 1;
         }
-        .location-btn .location-icon { width: 20px; height: 20px; stroke: #888; fill: none; stroke-width: 2.5; }
-        .location-btn.active-loc { border-color: var(--jiro-yellow); }
-        .location-btn.active-loc .location-icon { stroke: var(--jiro-yellow); }
+
+        .location-btn .location-icon {
+            width: 20px;
+            height: 20px;
+            stroke: #888;
+            fill: none;
+            stroke-width: 2.5;
+        }
+
+        .location-btn.active-loc {
+            border-color: var(--jiro-yellow);
+        }
+
+        .location-btn.active-loc .location-icon {
+            stroke: var(--jiro-yellow);
+        }
 
         #map {
             height: 100%;
@@ -495,7 +594,11 @@
             border-right: 1px solid var(--border-color);
             touch-action: none;
         }
-        .resizer:hover, .resizer.is-dragging { background-color: var(--jiro-yellow); }
+
+        .resizer:hover,
+        .resizer.is-dragging {
+            background-color: var(--jiro-yellow);
+        }
 
         .map-center-crosshair {
             position: absolute;
@@ -510,15 +613,24 @@
             align-items: center;
             justify-content: center;
         }
+
         .map-center-crosshair::before,
         .map-center-crosshair::after {
             content: '';
             position: absolute;
             background-color: var(--jiro-yellow);
-            box-shadow: 0 0 3px rgba(0,0,0,0.8);
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
         }
-        .map-center-crosshair::before { width: 16px; height: 2px; }
-        .map-center-crosshair::after { width: 2px; height: 16px; }
+
+        .map-center-crosshair::before {
+            width: 16px;
+            height: 2px;
+        }
+
+        .map-center-crosshair::after {
+            width: 2px;
+            height: 16px;
+        }
 
         .sidebar-container {
             display: flex;
@@ -543,22 +655,57 @@
             gap: 6px;
         }
 
+        .date-selector-area {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background-color: #1a1a1a;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .date-selector-area.is-visible {
+            display: flex;
+        }
+
+        .date-selector-label {
+            font-size: 0.75rem;
+            color: #aaa;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        #date-selector {
+            background: #141414;
+            color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 4px 6px;
+            font-size: 0.75rem;
+            min-width: 140px;
+        }
+
         @media (max-width: 320px) {
             .list-header-controls {
                 flex-direction: column;
                 align-items: stretch;
             }
+
             .mode-switch {
                 width: 100%;
                 justify-content: space-between;
             }
+
             .mode-switch-option {
                 flex: 1;
             }
+
             #sort-control-wrapper {
                 width: 100%;
                 margin-left: 0 !important;
             }
+
             .sort-select {
                 width: 100%;
             }
@@ -581,7 +728,7 @@
         }
 
         .shop-grid.view-mode-minimal {
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
         }
 
         .shop-grid.view-mode-minimal .shop-item {
@@ -590,49 +737,42 @@
             justify-content: space-between;
             align-items: center;
             text-align: center;
-            padding: 8px 6px;
-            min-height: 85px;
+            padding: 4px 6px;
+            min-height: 75px;
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             cursor: pointer;
             position: relative;
             transition: border-color 0.2s, background-color 0.2s;
+            overflow: hidden;
         }
 
         .shop-grid.view-mode-minimal .shop-item:hover {
             border-color: var(--jiro-yellow);
         }
 
-        .shop-grid.view-mode-minimal .shop-item.visited {
-            background-color: #262200;
-            border-color: var(--jiro-yellow);
+
+
+        /* 現在のステータス背景色（全モード） */
+        .shop-grid .shop-item.current-open {
+            background-color: rgba(46, 125, 50, 0.18);
+            border-color: rgba(76, 175, 80, 0.8);
         }
 
-        .shop-grid.view-mode-minimal .grid-shop-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            width: 100%;
-            flex: 1;
+        .shop-grid .shop-item.current-closing-soon {
+            background-color: rgba(237, 108, 2, 0.18);
+            border-color: rgba(237, 108, 2, 0.8);
         }
 
-        .shop-grid.view-mode-minimal .grid-shop-name {
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: var(--jiro-yellow);
-            word-break: break-all;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .shop-grid .shop-item.current-scheduled {
+            background-color: rgba(2, 136, 209, 0.18);
+            border-color: rgba(2, 136, 209, 0.8);
         }
 
-        .shop-grid.view-mode-minimal .visit-toggle-btn {
-            width: 100%;
-            padding: 3px 0;
-            font-size: 0.75rem;
-            margin-top: 6px;
+        .shop-grid .shop-item.current-closed {
+            background-color: rgba(97, 97, 97, 0.18);
+            border-color: rgba(158, 158, 158, 0.8);
         }
 
         .shop-grid.view-mode-minimal .shop-info,
@@ -647,37 +787,47 @@
         }
 
         .shop-grid.view-mode-today {
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
         }
 
         .shop-grid.view-mode-today .shop-item {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             text-align: center;
-            padding: 8px 6px;
-            min-height: 85px;
+            padding: 4px 6px;
+            min-height: 75px;
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             cursor: pointer;
             position: relative;
             transition: border-color 0.2s, background-color 0.2s;
+            overflow: hidden;
         }
 
         .shop-grid.view-mode-today .shop-item:hover {
             border-color: var(--jiro-yellow);
         }
 
-        .shop-grid.view-mode-today .shop-item.today-open {
+        .shop-grid.view-mode-today .shop-item.today-open,
+        .shop-grid.view-mode-minimal .shop-item.today-open {
             background-color: rgba(46, 125, 50, 0.18);
             border-color: rgba(76, 175, 80, 0.8);
         }
 
-        .shop-grid.view-mode-today .shop-item.today-closed {
+        .shop-grid.view-mode-today .shop-item.today-closed,
+        .shop-grid.view-mode-minimal .shop-item.today-closed {
             background-color: rgba(97, 97, 97, 0.18);
             border-color: rgba(158, 158, 158, 0.8);
+        }
+
+        .shop-grid.view-mode-today .shop-item.today-closed .today-summary-name,
+        .shop-grid.view-mode-minimal .shop-item.today-closed .today-summary-name,
+        .shop-grid .shop-item.current-closed .shop-name,
+        .shop-grid .shop-item.current-closed .today-summary-name {
+            color: #888;
         }
 
         .today-summary-card {
@@ -685,32 +835,44 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 2px;
+            gap: 1px;
             width: 100%;
             min-width: 0;
             flex: 1;
         }
 
         .today-summary-name {
-            font-size: 0.9rem;
+            font-size: 0.7rem;
             font-weight: bold;
             color: var(--jiro-yellow);
-            word-break: break-all;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            word-break: break-word;
+            text-wrap: balance;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             text-align: center;
-            min-width: 0;
+            overflow: hidden;
+            width: 100%;
+            height: 2.4em;
+            line-height: 1.2;
+            flex: 0 0 2.4em;
+            align-content: center;
         }
 
         .today-hours-text {
-            font-size: 0.7rem;
-            line-height: 1.25;
+            font-size: 0.62rem;
+            line-height: 1.35;
             font-weight: normal;
-            white-space: normal;
+            white-space: pre-line;
             word-break: break-word;
             text-align: center;
             width: 100%;
+            flex: 1 1 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+            min-height: 0;
         }
 
         .today-hours-text.is-open {
@@ -729,7 +891,7 @@
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 10px 12px;
+            padding: 8px 10px;
             cursor: pointer;
             transition: border-color 0.2s, background-color 0.2s;
             width: 100%;
@@ -738,16 +900,23 @@
             flex-direction: column;
         }
 
-        .shop-item:hover { border-color: var(--jiro-yellow); }
-
-        .shop-item.visited {
-            background-color: #262200;
-            border-left: 4px solid var(--jiro-yellow);
+        .shop-item:hover {
+            border-color: var(--jiro-yellow);
         }
 
-        .shop-info { display: flex; flex-direction: column; gap: 6px; width: 100%; min-width: 0; flex: 1; }
 
-        .shop-header-row, .shop-sub-row {
+
+        .shop-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .shop-header-row,
+        .shop-sub-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -766,7 +935,7 @@
         }
 
         .shop-name {
-            font-size: 1.05rem;
+            font-size: 0.96rem;
             font-weight: bold;
             color: var(--jiro-yellow);
             white-space: nowrap;
@@ -777,21 +946,36 @@
         }
 
         .status-badge {
-            font-size: 0.7rem;
-            padding: 2px 6px;
+            font-size: 0.64rem;
+            padding: 2px 5px;
             border-radius: 3px;
             font-weight: bold;
             color: #fff;
-            width: 85px;
+            width: 74px;
             text-align: center;
             flex-shrink: 0;
             margin-left: auto;
         }
-        .status-open { background-color: var(--status-open); }
-        .status-closing-soon { background-color: var(--status-closing-soon); }
-        .status-scheduled { background-color: var(--status-scheduled); }
-        .status-closed { background-color: var(--status-closed); }
-        .status-preopen { background-color: var(--status-preopen); }
+
+        .status-open {
+            background-color: var(--status-open);
+        }
+
+        .status-closing-soon {
+            background-color: var(--status-closing-soon);
+        }
+
+        .status-scheduled {
+            background-color: var(--status-scheduled);
+        }
+
+        .status-closed {
+            background-color: var(--status-closed);
+        }
+
+        .status-preopen {
+            background-color: var(--status-preopen);
+        }
 
         .distance-tag {
             font-size: 0.75rem;
@@ -802,7 +986,7 @@
         }
 
         .next-schedule {
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             color: #bbb;
             white-space: nowrap;
             overflow: hidden;
@@ -810,9 +994,21 @@
             flex: 1;
             min-width: 0;
         }
-        .next-schedule.is-open { color: var(--status-open); font-weight: bold; }
-        .next-schedule.is-closing-soon { color: var(--status-closing-soon); font-weight: bold; }
-        .next-schedule.is-scheduled { color: var(--status-scheduled); font-weight: bold; }
+
+        .next-schedule.is-open {
+            color: var(--status-open);
+            font-weight: bold;
+        }
+
+        .next-schedule.is-closing-soon {
+            color: var(--status-closing-soon);
+            font-weight: bold;
+        }
+
+        .next-schedule.is-scheduled {
+            color: var(--status-scheduled);
+            font-weight: bold;
+        }
 
         /* 臨時営業情報は枠線ではなく背景色で強調 */
         .temp-schedule-box {
@@ -828,6 +1024,7 @@
             gap: 2px;
             line-height: 1.4;
         }
+
         .temp-schedule-box.today-highlight {
             background-color: rgba(255, 167, 38, 0.16);
             border: 1px solid transparent;
@@ -868,7 +1065,7 @@
             background: transparent;
             border: none;
         }
-        
+
         .hours-title {
             font-size: 0.75rem;
             font-weight: bold;
@@ -880,6 +1077,7 @@
             gap: 4px;
             white-space: nowrap;
         }
+
         .open-date-text {
             font-size: 0.72rem;
             color: #888;
@@ -889,15 +1087,19 @@
         .hours-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: #ddd;
             border: 1px solid #333;
         }
-        .hours-table th, .hours-table td {
+
+        .hours-table th,
+        .hours-table td {
             border: 1px solid #333;
-            padding: 3px 6px;
+            padding: 2px 5px;
             text-align: left;
+            vertical-align: top;
         }
+
         .hours-table th {
             background-color: #141414;
             color: var(--jiro-yellow);
@@ -909,26 +1111,41 @@
         .hours-table tr.today-highlight {
             background-color: rgba(255, 167, 38, 0.12);
         }
+
         .hours-table tr.today-highlight th,
         .hours-table tr.today-highlight td {
             background-color: rgba(255, 167, 38, 0.12);
         }
+
         .hours-table tr.today-highlight th {
             font-weight: bold;
             color: var(--jiro-yellow);
         }
 
-        .links-group { 
-            display: flex; 
-            gap: 12px; 
-            font-size: 0.8rem; 
-            margin-top: auto; 
-            padding-top: 6px; 
-            border-top: 1px dashed #333; 
+        .links-group {
+            display: flex;
+            gap: 12px;
+            font-size: 0.8rem;
+            margin-top: auto;
+            padding-top: 6px;
+            border-top: 1px dashed #333;
         }
-        .shop-link { color: var(--link-color); text-decoration: none; }
-        .gmap-link { color: var(--gmap-color); text-decoration: none; font-weight: bold; }
-        .shop-link:hover, .gmap-link:hover { text-decoration: underline; }
+
+        .shop-link {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        .gmap-link {
+            color: var(--gmap-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .shop-link:hover,
+        .gmap-link:hover {
+            text-decoration: underline;
+        }
 
         .visit-toggle-btn {
             padding: 4px 10px;
@@ -942,6 +1159,7 @@
             transition: all 0.2s ease;
             flex-shrink: 0;
         }
+
         .visit-toggle-btn.is-visited {
             background-color: var(--jiro-yellow);
             color: #000;
@@ -949,6 +1167,7 @@
         }
 
         .app-footer {
+            position: relative;
             padding: 4px 12px;
             background-color: #101010;
             border-top: 1px solid var(--border-color);
@@ -961,6 +1180,68 @@
             flex-shrink: 0;
             z-index: 1000;
             width: 100%;
+            transition: max-height 0.25s ease, padding 0.2s ease, border-top-color 0.2s ease;
+            max-height: 120px;
+            overflow: visible;
+        }
+
+        .app-footer.is-collapsed {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border-top-color: transparent;
+            overflow: visible;
+        }
+
+        .app-footer.is-collapsed .footer-left-note,
+        .app-footer.is-collapsed .footer-right-links {
+            opacity: 0;
+            pointer-events: none;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .footer-toggle-btn {
+            position: absolute;
+            right: 10px;
+            bottom: calc(100% - 1px);
+            background-color: #101010;
+            color: #a0a0a0;
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            width: 28px;
+            height: 22px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: none;
+            user-select: none;
+            line-height: 1;
+            z-index: 1001;
+            opacity: 1;
+        }
+
+        .app-footer.is-collapsed .footer-toggle-btn {
+            opacity: 1;
+            bottom: calc(100% - 1px);
+        }
+
+        .footer-toggle-btn:hover {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        .footer-toggle-btn svg {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .footer-left-note {
@@ -987,7 +1268,10 @@
             padding: 0;
             font-size: inherit;
         }
-        .disclaimer-btn:hover { color: #fff; }
+
+        .disclaimer-btn:hover {
+            color: #fff;
+        }
 
         dialog.app-modal {
             background-color: var(--card-bg);
@@ -997,9 +1281,10 @@
             width: 90%;
             color: #ddd;
             padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
             z-index: 2000;
         }
+
         dialog.app-modal::backdrop {
             background-color: rgba(0, 0, 0, 0.7);
         }
@@ -1013,15 +1298,22 @@
             max-height: 85vh;
             color: var(--text-color);
             padding: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
             z-index: 2500;
             overflow-y: auto;
         }
+
         dialog.grid-popup-modal::backdrop {
             background-color: rgba(0, 0, 0, 0.7);
         }
-        .grid-popup-body { margin-top: 0; }
-        .grid-popup-body .detailed-content { display: flex !important; }
+
+        .grid-popup-body {
+            margin-top: 0;
+        }
+
+        .grid-popup-body .detailed-content {
+            display: flex !important;
+        }
 
         .modal-header {
             font-weight: bold;
@@ -1035,7 +1327,10 @@
             align-items: center;
         }
 
-        .modal-footer { text-align: right; margin-top: 15px; }
+        .modal-footer {
+            text-align: right;
+            margin-top: 15px;
+        }
 
         .modal-close-btn {
             background-color: var(--jiro-yellow);
@@ -1051,16 +1346,36 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            box-shadow: 0 0 5px rgba(0,0,0,0.6);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
         }
-        .bg-open { background-color: var(--status-open); }
-        .bg-closing-soon { background-color: var(--status-closing-soon); }
-        .bg-scheduled { background-color: var(--status-scheduled); }
-        .bg-closed { background-color: var(--status-closed); }
-        .bg-preopen { background-color: var(--status-preopen); }
 
-        .border-visited { border: 3px solid var(--jiro-yellow); }
-        .border-unvisited { border: 2px solid #ffffff; }
+        .bg-open {
+            background-color: var(--status-open);
+        }
+
+        .bg-closing-soon {
+            background-color: var(--status-closing-soon);
+        }
+
+        .bg-scheduled {
+            background-color: var(--status-scheduled);
+        }
+
+        .bg-closed {
+            background-color: var(--status-closed);
+        }
+
+        .bg-preopen {
+            background-color: var(--status-preopen);
+        }
+
+        .border-visited {
+            border: 3px solid var(--jiro-yellow);
+        }
+
+        .border-unvisited {
+            border: 2px solid #ffffff;
+        }
 
 
         .user-location-pin {
@@ -1079,908 +1394,1072 @@
             padding: 0;
             width: 330px;
         }
-        .leaflet-popup-content { margin: 12px; }
-        .leaflet-popup-content .detailed-content { display: flex !important; }
+
+        .leaflet-popup-content {
+            margin: 12px;
+        }
+
+        .leaflet-popup-content .detailed-content {
+            display: flex !important;
+        }
 
         .leaflet-bottom {
-            bottom: 10px !important;
+            bottom: 48px !important;
             z-index: 800 !important;
+        }
+
+        .leaflet-bottom.leaflet-left {
+            left: 10px !important;
         }
     </style>
 </head>
+
 <body>
 
-<header>
-    <div class="header-left">
-        <h1><img src="icon_jirolianmap.png" alt="アイコン" class="header-icon"><span class="brand-ramen">ジロリアン</span>マップ<span class="beta-badge">BETA</span></h1>
-        <div class="header-center-search">
-            <input type="search" id="search-input" placeholder="店舗名・フリガナ・住所で検索..." aria-label="店舗検索" oninput="onSearchInput()">
-        </div>
-    </div>
-
-    <div class="header-right">
-        <div class="layout-switch-container">
-            <div class="mode-switch" role="group" aria-label="レイアウト切り替え" id="layout-switch-group">
+    <header>
+        <div class="header-left">
+            <h1 style="cursor: pointer;" onclick="window.location.reload()"><img src="icon_jirolianmap.png" alt="アイコン"
+                    class="header-icon"><span class="brand-ramen">ジロリアン</span>マップ<span class="beta-badge">BETA</span>
+            </h1>
+            <div class="header-center-search">
+                <input type="search" id="search-input" placeholder="店舗名・フリガナ・住所で検索..." aria-label="店舗検索"
+                    oninput="onSearchInput()">
             </div>
         </div>
-        <div class="stats-container" aria-live="polite">
-            <div>制覇: <span id="visited-count" style="color:#000; font-weight:900;">0</span> / <span id="total-count">0</span> 店舗</div>
-            <div class="progress-bar-bg" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progress-bar">
-                <div class="progress-bar-fill" id="progress-fill"></div>
-            </div>
-            <div id="percentage">0%</div>
-        </div>
-    </div>
-</header>
 
-<div class="main-layout" id="main-layout">
-    <div class="controls-wrapper collapsed" id="controls-wrapper">
-        <div class="controls-toggle-bar" onclick="toggleControlsVisibility()">
-            <span id="controls-toggle-text">▼ フィルタを表示する</span>
-            <span id="controls-toggle-count" class="controls-toggle-count">表示: <strong>0</strong>店舗</span>
-        </div>
-        <div class="controls">
-            <div class="filter-groups">
-                <div class="filter-row">
-                    <fieldset style="border:none; padding:0; margin:0;">
-                        <legend class="filter-group-title">営業状態</legend>
-                        <div class="checkbox-group">
-                            <label class="chip-label">
-                                <input type="checkbox" name="open-filter" value="open" checked onchange="render()">
-                                <span class="color-dot bg-open"></span> 営業中
-                            </label>
-                            <label class="chip-label">
-                                <input type="checkbox" name="open-filter" value="closing-soon" checked onchange="render()">
-                                <span class="color-dot bg-closing-soon"></span> まもなく終了
-                            </label>
-                            <label class="chip-label">
-                                <input type="checkbox" name="open-filter" value="scheduled" checked onchange="render()">
-                                <span class="color-dot bg-scheduled"></span> 営業開始前
-                            </label>
-                            <label class="chip-label">
-                                <input type="checkbox" name="open-filter" value="closed" checked onchange="render()">
-                                <span class="color-dot bg-closed"></span> 営業時間外
-                            </label>
-                        </div>
-                    </fieldset>
-                </div>
-
-                <div class="filter-row">
-                    <fieldset style="border:none; padding:0; margin:0;">
-                        <legend class="filter-group-title">制覇状態</legend>
-                        <div class="checkbox-group">
-                            <label class="chip-label">
-                                <input type="checkbox" name="visit-filter" value="visited" checked onchange="render()">
-                                <span class="visit-border-sample visited"></span> 制覇済
-                            </label>
-                            <label class="chip-label">
-                                <input type="checkbox" name="visit-filter" value="unvisited" checked onchange="render()">
-                                <span class="visit-border-sample unvisited"></span> 未制覇
-                            </label>
-                        </div>
-                    </fieldset>
+        <div class="header-right">
+            <div class="layout-switch-container">
+                <div class="mode-switch" role="group" aria-label="レイアウト切り替え" id="layout-switch-group">
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="content-area">
-        <div class="map-wrapper" id="map-wrapper">
-            <div id="map"></div>
-            <div class="map-center-crosshair" aria-hidden="true"></div>
-        </div>
-        <div class="resizer" id="drag-resizer" style="display:none;"></div>
-        <div class="sidebar-container" id="sidebar-container">
-            <div class="list-header-controls" id="list-header-controls">
-                <div class="mode-switch" role="group" aria-label="リスト表示モード" id="view-mode-control-wrapper">
-                    <button type="button" class="mode-switch-option" id="opt-minimal" onclick="setListSubMode('minimal')">最小</button>
-                    <button type="button" class="mode-switch-option active" id="opt-compact" onclick="setListSubMode('compact')">コンパクト</button>
-                    <button type="button" class="mode-switch-option" id="opt-detailed" onclick="setListSubMode('detailed')">詳細</button>
-                    <button type="button" class="mode-switch-option" id="opt-today" onclick="setListSubMode('today')">本日</button>
+            <div class="stats-container" aria-live="polite">
+                <div>制覇: <span id="visited-count" style="color:#000; font-weight:900;">0</span> / <span
+                        id="total-count">0</span> 店舗</div>
+                <div class="progress-bar-bg" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                    id="progress-bar">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
                 </div>
-                <div id="sort-control-wrapper" style="display: flex; align-items: center; gap: 6px; margin-left: auto;">
-                    <select id="sort-select" class="sort-select" onchange="onSortChange()">
-                        <option value="distance_user" disabled>距離順（現在地）</option>
-                        <option value="distance_center">距離順（地図中心）</option>
-                        <option value="opened">開店日順</option>
-                        <option value="hours">営業時間順</option>
-                        <option value="name">50音順</option>
-                    </select>
-                </div>
-            </div>
-            <div class="container">
-                <div class="shop-grid" id="shop-grid"></div>
+                <div id="percentage">0%</div>
             </div>
         </div>
-    </div>
-</div>
+    </header>
 
-<div class="app-footer">
-    <div class="footer-left-note">記載内容は変更となる場合がありますので、ご自身でもご確認ください</div>
-    <div class="footer-right-links">
-        <button type="button" class="disclaimer-btn" onclick="document.getElementById('site-desc-modal').showModal()">本サイトについて</button> | 
-        <button type="button" class="disclaimer-btn" onclick="document.getElementById('feedback-modal').showModal()">フィードバック</button> | 
-        <button type="button" class="disclaimer-btn" onclick="document.getElementById('disclaimer-modal').showModal()">免責事項</button>
-    </div>
-</div>
+    <div class="main-layout" id="main-layout">
+        <button type="button" class="header-toggle-btn" id="header-toggle-btn" onclick="toggleHeaderVisibility()"
+            aria-label="ヘッダーを再表示">▼</button>
+        <div class="controls-wrapper collapsed" id="controls-wrapper">
+            <div class="controls-toggle-bar" onclick="toggleControlsVisibility()">
+                <span id="controls-toggle-text">▼ フィルタを表示する</span>
+                <span id="controls-toggle-count" class="controls-toggle-count">表示: <strong>0</strong> 店舗</span>
+            </div>
+            <div class="controls">
+                <div class="filter-groups">
+                    <div class="filter-row">
+                        <fieldset style="border:none; padding:0; margin:0;">
+                            <legend class="filter-group-title">現在の営業状態</legend>
+                            <div class="checkbox-group">
+                                <label class="chip-label">
+                                    <input type="checkbox" name="open-filter" value="open" checked onchange="render()">
+                                    <span class="color-dot bg-open"></span> 営業中
+                                </label>
+                                <label class="chip-label">
+                                    <input type="checkbox" name="open-filter" value="closing-soon" checked
+                                        onchange="render()">
+                                    <span class="color-dot bg-closing-soon"></span> まもなく終了
+                                </label>
+                                <label class="chip-label">
+                                    <input type="checkbox" name="open-filter" value="scheduled" checked
+                                        onchange="render()">
+                                    <span class="color-dot bg-scheduled"></span> 営業開始前
+                                </label>
+                                <label class="chip-label">
+                                    <input type="checkbox" name="open-filter" value="closed" checked
+                                        onchange="render()">
+                                    <span class="color-dot bg-closed"></span> 営業時間外
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
 
-<dialog class="grid-popup-modal" id="grid-popup-modal" onclick="if(event.target === this) this.close()">
-    <div class="grid-popup-body" id="grid-popup-content-area"></div>
-</dialog>
+                    <div class="filter-row" id="today-filter-row" style="display: none;">
+                        <fieldset style="border:none; padding:0; margin:0;">
+                            <legend class="filter-group-title">指定日付の営業状態</legend>
+                            <div class="checkbox-group">
+                                <label class="chip-label">
+                                    <input type="checkbox" name="today-open-filter" value="open" checked
+                                        onchange="render()">
+                                    営業
+                                </label>
+                                <label class="chip-label">
+                                    <input type="checkbox" name="today-open-filter" value="closed" checked
+                                        onchange="render()">
+                                    休業
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
 
-<dialog class="app-modal" id="site-desc-modal">
-    <div class="modal-header">本サイトについて</div>
-    <div class="modal-body">
-        <p>本サイトは、全国に広がるラーメン二郎の全店舗情報を網羅した、すべてのジロリアンのためのウェブサービスです。</p>
-        <p>「今すぐ最高の一杯にありつける一番近い店舗はどこか？」、「今日の営業時間や臨時休業情報は？」、「全店制覇に向けたこれまでの訪問実績を管理したい！」といった、すべての欲求を直感的な地図とリストで一元的に叶えます。</p>
-        <p>当サイトは、ジロリアンの皆様により便利に使っていただけるよう、今後も順次機能の拡張や改善を予定しております。</p>
-        <p>日常から旅先や出張先で、溢れ出る「二郎欲」を満たす相棒として、ぜひご活用ください。</p>
-        <hr style="border:0; border-top:1px solid #333; margin:12px 0;">
-        <p style="font-size:0.8rem; color:#aaa;">
-            <strong>出典（店舗開店・閉店日）:</strong><br>
-            <a href="https://take4.hiyamugi.com/shop/shop_history.htm" target="_blank" rel="noopener noreferrer" style="color:var(--link-color);">Take4 二郎 食記録 ラーメン二郎 年表</a>
-        </p>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="modal-close-btn" onclick="document.getElementById('site-desc-modal').close()">閉じる</button>
-    </div>
-</dialog>
+                    <div class="filter-row">
+                        <fieldset style="border:none; padding:0; margin:0;">
+                            <legend class="filter-group-title">制覇状態</legend>
+                            <div class="checkbox-group">
+                                <label class="chip-label">
+                                    <input type="checkbox" name="visit-filter" value="visited" checked
+                                        onchange="render()">
+                                    <span class="visit-border-sample visited"></span> 制覇済
+                                </label>
+                                <label class="chip-label">
+                                    <input type="checkbox" name="visit-filter" value="unvisited" checked
+                                        onchange="render()">
+                                    <span class="visit-border-sample unvisited"></span> 未制覇
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<dialog class="app-modal" id="disclaimer-modal">
-    <div class="modal-header">免責事項・注意事項</div>
-    <div class="modal-body">
-        <p>当サイトは個人が運営するウェブサイトであり、ラーメン二郎直系各店舗および関連企業とは一切関係ありません。</p>
-        <p>掲載している情報には細心の注意を払っておりますが、実際の状況と異なる場合があります。</p>
-        <hr style="border:0; border-top:1px solid #333; margin:12px 0;">
-        <p style="font-size: 0.8rem; color: #aaa;">
-            <strong>【店舗情報・営業状態に関するご注意】</strong>
+        <div class="content-area">
+            <div class="map-wrapper" id="map-wrapper">
+                <div id="map"></div>
+                <div class="map-center-crosshair" aria-hidden="true"></div>
+            </div>
+            <div class="resizer" id="drag-resizer" style="display:none;"></div>
+            <div class="sidebar-container" id="sidebar-container">
+                <div class="list-header-controls" id="list-header-controls">
+                    <div class="mode-switch" role="group" aria-label="リスト表示モード" id="view-mode-control-wrapper">
+                        <button type="button" class="mode-switch-option" id="opt-minimal"
+                            onclick="setListSubMode('minimal')">最小</button>
+                        <button type="button" class="mode-switch-option active" id="opt-compact"
+                            onclick="setListSubMode('compact')">コンパクト</button>
+                        <button type="button" class="mode-switch-option" id="opt-detailed"
+                            onclick="setListSubMode('detailed')">詳細</button>
+                        <button type="button" class="mode-switch-option" id="opt-today"
+                            onclick="setListSubMode('today')">日別</button>
+                    </div>
+                    <div id="sort-control-wrapper"
+                        style="display: flex; align-items: center; gap: 6px; margin-left: auto;">
+                        <select id="sort-select" class="sort-select" onchange="onSortChange()">
+                            <option value="distance_user" disabled">距離順（現在地）</option>
+                            <option value="distance_center">距離順（地図中心）</option>
+                            <option value="opened">開店日順</option>
+                            <option value="hours">営業時間順</option>
+                            <option value="name">50音順</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="date-selector-area" id="date-selector-area" style="position: relative;">
+                    <div style="position: relative; display: inline-block;">
+                        <input type="date" id="date-selector" min="" value="" style="padding-right: 24px;">
+                        <span onclick="try{document.getElementById('date-selector').showPicker()}catch(e){}"
+                            style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 0.85rem; z-index: 10; display: inline-flex; align-items: center; justify-content: center;"><svg
+                                width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                style="pointer-events: none;">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg></span>
+                    </div>
+                    <span style="font-size: 0.8rem; color: #ccc;">の営業状況</span>
+                </div>
+                <div class="container">
+                    <div class="shop-grid" id="shop-grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-footer" id="app-footer">
+        <button type="button" class="footer-toggle-btn" id="footer-toggle-btn" onclick="toggleFooterVisibility()"
+            aria-label="フッターを隠す">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" />
+            </svg>
+        </button>
+        <div class="footer-left-note">記載内容は変更となる場合がありますので、ご自身でもご確認ください</div>
+        <div class="footer-right-links">
+            <button type="button" class="disclaimer-btn"
+                onclick="document.getElementById('site-desc-modal').showModal()">本サイトについて</button> |
+            <button type="button" class="disclaimer-btn"
+                onclick="document.getElementById('feedback-modal').showModal()">フィードバック</button> |
+            <button type="button" class="disclaimer-btn"
+                onclick="document.getElementById('privacy-modal').showModal()">プライバシーポリシー</button> |
+            <button type="button" class="disclaimer-btn"
+                onclick="document.getElementById('disclaimer-modal').showModal()">免責事項</button>
+        </div>
+    </div>
+
+    <dialog class="grid-popup-modal" id="grid-popup-modal" onclick="if(event.target === this) this.close()">
+        <div class="grid-popup-body" id="grid-popup-content-area"></div>
+    </dialog>
+
+    <dialog class="app-modal" id="privacy-modal" style="max-width: 600px;">
+        <div class="modal-header">プライバシーポリシー</div>
+        <div class="modal-body"
+            style="font-size: 0.82rem; line-height: 1.6; max-height: 70vh; overflow-y: auto; text-align: left; font-weight: normal;">
+            <p>当サイトは、本ウェブサイト上で提供するサービス（以下、「本サービス」といいます。）における、ユーザーの情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。
+            </p>
+            <p><strong>第1条（個人情報の非収集について）</strong><br>当サイトは、ユーザーの氏名、住所、電話番号、メールアドレスなど、特定の個人を直接識別できる「個人情報」の収集は行っておりません。
+            </p>
+            <p><strong>第2条（アクセス解析ツールとデータの匿名化について）</strong><br>当サイトでは、サイトの利用状況を把握し、コンテンツを改善するためにGoogleによるアクセス解析ツール「Googleアナリティクス」を利用しています。このGoogleアナリティクスは、データの収集のためにクッキー（Cookie）を使用しています。クッキーによって収集されるデータは、ブラウザの識別子やIPアドレス、閲覧したページの情報などであり、ユーザー個人を特定できる情報は含まれません。データはすべて匿名化された状態で処理されます。ユーザーは、お使いのブラウザの設定でクッキーを無効にすることにより、このデータ収集を拒否することができます。この規約に関しての詳細は「Googleアナリティクス利用規約」や「Googleのサービスを使用するサイトやアプリから収集した情報のGoogleによる使用」のページをご覧ください。
+            </p>
+            <p><strong>第3条（免責事項）</strong><br>当サイトからのリンクやバナーなどで移動したサイトで提供される情報、サービス等について、当サイトは一切の責任を負いません。また、当サイトのコンテンツ・情報について、できる限り正確な情報を提供するよう努めておりますが、正確性や安全性を保証するものではありません。当サイトに掲載された内容によって生じた損害等の一切の責任を負いかねますのでご了承ください。
+            </p>
+            <p><strong>第4条（著作権・肖像権）</strong><br>当サイト内の文章・画像等の著作権は当サイトに帰属します。利用目的を問わず、無断での転載を禁止します。</p>
+            <p><strong>第5条（プライバシーポリシーの変更）</strong><br>本ポリシーの内容は、法令その他本ポリシーに別段の定めのある事項を除いて、ユーザーに通知することなく、変更することができるものとします。変更後のプライバシーポリシーは、本ウェブサイトに掲載したときから効力を生じるものとします。
+            </p>
+            <p><strong>第6条（お問い合わせ窓口）</strong><br>本ポリシーに関するお問い合わせは、以下の窓口までお願いいたします。<br>連絡先：<a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSdEjRJkYuFRvXjdCai8iUrh6wUiKw4z6H0GCo3QcD1-W24prA/viewform?usp=dialog"
+                    target="_blank" rel="noopener noreferrer"
+                    style="color: var(--link-color); text-decoration: underline;">お問い合わせフォーム</a></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="modal-close-btn"
+                onclick="document.getElementById('privacy-modal').close()">閉じる</button>
+        </div>
+    </dialog>
+
+    <dialog class="app-modal" id="site-desc-modal">
+        <div class="modal-header">本サイトについて</div>
+        <div class="modal-body">
+            <p>本サイトは、全国に広がるラーメン二郎の全店舗情報を網羅した、すべてのジロリアンのためのウェブサービスです。</p>
+            <p>「今すぐ最高の一杯にありつける一番近い店舗はどこか？」、「今日の営業時間や臨時休業情報は？」、「全店制覇に向けたこれまでの訪問実績を管理したい！」といった、すべての欲求を直感的な地図とリストで一元的に叶えます。
+            </p>
+            <p>当サイトは、ジロリアンの皆様により便利に使っていただけるよう、今後も順次機能の拡張や改善を予定しております。</p>
+            <p>日常から旅先や出張先で、溢れ出る「二郎欲」を満たす相棒として、ぜひご活用ください。</p>
+            <hr style="border:0; border-top:1px solid #333; margin:12px 0;">
+            <p style="font-size:0.8rem; color:#aaa;">
+                <strong>出典（店舗開店・閉店日）:</strong><br>
+                <a href="https://take4.hiyamugi.com/shop/shop_history.htm" target="_blank" rel="noopener noreferrer"
+                    style="color:var(--link-color);">Take4 二郎 食記録 ラーメン二郎 年表</a>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="modal-close-btn"
+                onclick="document.getElementById('site-desc-modal').close()">閉じる</button>
+        </div>
+    </dialog>
+
+    <dialog class="app-modal" id="disclaimer-modal">
+        <div class="modal-header">免責事項・注意事項</div>
+        <div class="modal-body">
+            <p>当サイトは個人が運営するウェブサイトであり、ラーメン二郎直系各店舗および関連企業とは一切関係ありません。</p>
+            <p>掲載している情報には細心の注意を払っておりますが、実際の状況と異なる場合があります。</p>
+            <hr style="border:0; border-top:1px solid #333; margin:12px 0;">
+            <p style="font-size: 0.8rem; color: #aaa;">
+                <strong>【店舗情報・営業状態に関するご注意】</strong>
             <ul style="padding-left: 18px; margin: 6px 0 12px 0; line-height: 1.4;">
                 <li>店舗の移転等があった場合の「店舗開店日」は、店名の変更があった日を基準として記載しています。</li>
                 <li>営業時間および臨時休業の情報は手作業で更新を行っているため、実際の店舗情報への反映にタイムラグ（遅れ）が生じる場合があります。</li>
                 <li>営業状態の判定ロジックの都合上、店舗が通常営業・休業としているケースでも臨時営業・休業として表示する場合があります。</li>
             </ul>
-            当サイトでは、訪問実績の記録やサービス運用のためにデータを収集・保持する場合がありますが、すべて個人が特定されない形式で行われております。
-        </p>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="modal-close-btn" onclick="document.getElementById('disclaimer-modal').close()">閉じる</button>
-    </div>
-</dialog>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="modal-close-btn"
+                onclick="document.getElementById('disclaimer-modal').close()">閉じる</button>
+        </div>
+    </dialog>
 
-<dialog class="app-modal" id="feedback-modal" style="max-width: 650px;">
-    <div class="modal-header">
-        <span>フィードバック・不具合報告</span>
-        <button type="button" class="modal-close-btn" style="padding: 2px 8px;" onclick="document.getElementById('feedback-modal').close()" aria-label="閉じる">✕</button>
-    </div>
-    <div class="modal-body" style="height: 60vh;">
-        <iframe 
-            src="https://docs.google.com/forms/d/e/1FAIpQLSdEjRJkYuFRvXjdCai8iUrh6wUiKw4z6H0GCo3QcD1-W24prA/viewform?embedded=true" width="640" height="1166" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…
-        </iframe>
-    </div>
-</dialog>
+    <dialog class="app-modal" id="feedback-modal" style="max-width: 650px;">
+        <div class="modal-header">
+            <span>フィードバック・不具合報告</span>
+            <button type="button" class="modal-close-btn" style="padding: 2px 8px;"
+                onclick="document.getElementById('feedback-modal').close()" aria-label="閉じる">✕</button>
+        </div>
+        <div class="modal-body" style="height: 60vh;">
+            <iframe
+                src="https://docs.google.com/forms/d/e/1FAIpQLSdEjRJkYuFRvXjdCai8iUrh6wUiKw4z6H0GCo3QcD1-W24prA/viewform?embedded=true"
+                width="640" height="1166" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…
+            </iframe>
+        </div>
+    </dialog>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-function getOrCreateUserId() {
-    let userId = localStorage.getItem('jiro_user_id');
-    if (!userId) {
-        userId = 'user_' + Math.random().toString(36).substring(2, 8) + '_' + Date.now().toString(36);
-        localStorage.setItem('jiro_user_id', userId);
-    }
-    return userId;
-}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        function getOrCreateUserId() {
+            let userId = localStorage.getItem('jiro_user_id');
+            if (!userId) {
+                userId = 'user_' + Math.random().toString(36).substring(2, 8) + '_' + Date.now().toString(36);
+                localStorage.setItem('jiro_user_id', userId);
+            }
+            return userId;
+        }
 
-const CURRENT_USER_ID = getOrCreateUserId();
-const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzIEpLl3ZCaH8-OJEqezCFYOO0Tq4q3tsKc3577vbGGlDnfjvJlrlH67EZHK_IwguKb/exec";
+        const CURRENT_USER_ID = getOrCreateUserId();
+        const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzIEpLl3ZCaH8-OJEqezCFYOO0Tq4q3tsKc3577vbGGlDnfjvJlrlH67EZHK_IwguKb/exec";
 
-const MITA_HONTON_COORDS = { lat: 35.64805, lng: 139.74160 };
+        const MITA_HONTON_COORDS = { lat: 35.64805, lng: 139.74160 };
 
-let shops = [];
-let visitedState = JSON.parse(localStorage.getItem('jiro_pc_visited')) || {};
+        let shops = [];
+        let visitedState = JSON.parse(localStorage.getItem('jiro_pc_visited')) || {};
 
-let listSubMode = 'compact'; 
+        let listSubMode = 'compact';
+        let selectedDateKey = getLocalDateKey(new Date());
 
-let isShowMap = true;
-let isShowList = true;
+        let isShowMap = true;
+        let isShowList = true;
 
-let narrowViewMode = 'map';
+        let narrowViewMode = 'map';
 
-let userCoords = null;
-let userMarker = null;
-let locationBtnElement = null;
-let isProgrammaticMove = false;
-let userHasInteractedWithMap = false;
-let lastMapCenter = { lat: MITA_HONTON_COORDS.lat, lng: MITA_HONTON_COORDS.lng }; 
-const markers = {};
-const processingShops = new Set();
-let customPreservedOrder = null;
+        let userCoords = null;
+        let userMarker = null;
+        let locationBtnElement = null;
+        let isProgrammaticMove = false;
+        let userHasInteractedWithMap = false;
+        let lastMapCenter = { lat: MITA_HONTON_COORDS.lat, lng: MITA_HONTON_COORDS.lng };
+        const markers = {};
+        const processingShops = new Set();
+        let customPreservedOrder = null;
 
-const geoOptions = { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 };
+        const geoOptions = { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 };
 
-function hiraganaToKatakana(str) {
-    if (!str) return '';
-    return str.replace(/[\u3041-\u3096]/g, function(match) {
-        return String.fromCharCode(match.charCodeAt(0) + 0x60);
-    });
-}
+        function hiraganaToKatakana(str) {
+            if (!str) return '';
+            return str.replace(/[\u3041-\u3096]/g, function (match) {
+                return String.fromCharCode(match.charCodeAt(0) + 0x60);
+            });
+        }
 
-function parseNormalizedDateStr(dateStr) {
-    if (!dateStr) return null;
-    const str = dateStr.trim();
-    const parts = str.split('-');
+        function parseNormalizedDateStr(dateStr) {
+            if (!dateStr) return null;
+            const str = dateStr.trim();
+            const parts = str.split('-');
 
-    if (parts.length === 1 && parts[0].length === 4) {
-        const year = parseInt(parts[0], 10);
-        return `${year}-12-31`;
-    }
-    if (parts.length === 2) {
-        const year = parseInt(parts[0], 10);
-        const month = parseInt(parts[1], 10);
-        const lastDay = new Date(year, month, 0).getDate();
-        const mStr = String(month).padStart(2, '0');
-        const dStr = String(lastDay).padStart(2, '0');
-        return `${year}-${mStr}-${dStr}`;
-    }
-    return str;
-}
+            if (parts.length === 1 && parts[0].length === 4) {
+                const year = parseInt(parts[0], 10);
+                return `${year}-12-31`;
+            }
+            if (parts.length === 2) {
+                const year = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10);
+                const lastDay = new Date(year, month, 0).getDate();
+                const mStr = String(month).padStart(2, '0');
+                const dStr = String(lastDay).padStart(2, '0');
+                return `${year}-${mStr}-${dStr}`;
+            }
+            return str;
+        }
 
-function formatOpenedDateText(openedAt) {
-    if (!openedAt) return '';
-    const parts = openedAt.trim().split('-');
-    if (parts.length === 1) return `${parts[0]}開店`;
-    if (parts.length === 2) return `${parts[0]}/${parseInt(parts[1], 10)}開店`;
-    if (parts.length === 3) return `${parts[0]}/${parseInt(parts[1], 10)}/${parseInt(parts[2], 10)}開店`;
-    return `${openedAt}開店`;
-}
+        function formatOpenedDateText(openedAt) {
+            if (!openedAt) return '';
+            const parts = openedAt.trim().split('-');
+            if (parts.length === 1) return `${parts[0]}開店`;
+            if (parts.length === 2) return `${parts[0]}/${parseInt(parts[1], 10)}開店`;
+            if (parts.length === 3) return `${parts[0]}/${parseInt(parts[1], 10)}/${parseInt(parts[2], 10)}開店`;
+            return `${openedAt}開店`;
+        }
 
-function isJapaneseHoliday(date = new Date()) {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const dayOfWeek = date.getDay();
+        function isJapaneseHoliday(date = new Date()) {
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const dayOfWeek = date.getDay();
 
-    function isBaseHoliday(y, m, d) {
-        if (m === 1 && d === 1) return true;
-        if (m === 1 && Math.ceil(d / 7) === 2 && new Date(y, 0, d).getDay() === 1) return true;
-        if (m === 2 && d === 11) return true;
-        if (m === 2 && d === 23) return true;
+            function isBaseHoliday(y, m, d) {
+                if (m === 1 && d === 1) return true;
+                if (m === 1 && Math.ceil(d / 7) === 2 && new Date(y, 0, d).getDay() === 1) return true;
+                if (m === 2 && d === 11) return true;
+                if (m === 2 && d === 23) return true;
 
-        const vernalEquinox = Math.floor(20.8431 + 0.242194 * (y - 1980) - Math.floor((y - 1980) / 4));
-        if (m === 3 && d === vernalEquinox) return true;
+                const vernalEquinox = Math.floor(20.8431 + 0.242194 * (y - 1980) - Math.floor((y - 1980) / 4));
+                if (m === 3 && d === vernalEquinox) return true;
 
-        if (m === 4 && d === 29) return true;
-        if (m === 5 && d === 3) return true;
-        if (m === 5 && d === 4) return true;
-        if (m === 5 && d === 5) return true;
+                if (m === 4 && d === 29) return true;
+                if (m === 5 && d === 3) return true;
+                if (m === 5 && d === 4) return true;
+                if (m === 5 && d === 5) return true;
 
-        if (m === 7 && Math.ceil(d / 7) === 3 && new Date(y, 6, d).getDay() === 1) return true;
-        if (m === 8 && d === 11) return true;
-        if (m === 9 && Math.ceil(d / 7) === 3 && new Date(y, 8, d).getDay() === 1) return true;
+                if (m === 7 && Math.ceil(d / 7) === 3 && new Date(y, 6, d).getDay() === 1) return true;
+                if (m === 8 && d === 11) return true;
+                if (m === 9 && Math.ceil(d / 7) === 3 && new Date(y, 8, d).getDay() === 1) return true;
 
-        const autumnalEquinox = Math.floor(23.2488 + 0.242194 * (y - 1980) - Math.floor((y - 1980) / 4));
-        if (m === 9 && d === autumnalEquinox) return true;
+                const autumnalEquinox = Math.floor(23.2488 + 0.242194 * (y - 1980) - Math.floor((y - 1980) / 4));
+                if (m === 9 && d === autumnalEquinox) return true;
 
-        if (m === 10 && Math.ceil(d / 7) === 2 && new Date(y, 9, d).getDay() === 1) return true;
-        if (m === 11 && d === 3) return true;
-        if (m === 11 && d === 23) return true;
+                if (m === 10 && Math.ceil(d / 7) === 2 && new Date(y, 9, d).getDay() === 1) return true;
+                if (m === 11 && d === 3) return true;
+                if (m === 11 && d === 23) return true;
 
-        return false;
-    }
+                return false;
+            }
 
-    if (isBaseHoliday(year, month, day)) return true;
+            if (isBaseHoliday(year, month, day)) return true;
 
-    if (dayOfWeek !== 0) {
-        for (let offset = 1; offset <= 7; offset++) {
-            const prev = new Date(year, month - 1, day - offset);
-            if (prev.getDay() === 0) {
-                if (isBaseHoliday(prev.getFullYear(), prev.getMonth() + 1, prev.getDate())) {
+            if (dayOfWeek !== 0) {
+                for (let offset = 1; offset <= 7; offset++) {
+                    const prev = new Date(year, month - 1, day - offset);
+                    if (prev.getDay() === 0) {
+                        if (isBaseHoliday(prev.getFullYear(), prev.getMonth() + 1, prev.getDate())) {
+                            return true;
+                        }
+                        break;
+                    }
+                    if (!isBaseHoliday(prev.getFullYear(), prev.getMonth() + 1, prev.getDate())) {
+                        break;
+                    }
+                }
+            }
+
+            if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                const prev = new Date(year, month - 1, day - 1);
+                const next = new Date(year, month - 1, day + 1);
+                if (isBaseHoliday(prev.getFullYear(), prev.getMonth() + 1, prev.getDate()) &&
+                    isBaseHoliday(next.getFullYear(), next.getMonth() + 1, next.getDate())) {
                     return true;
                 }
-                break;
             }
-            if (!isBaseHoliday(prev.getFullYear(), prev.getMonth() + 1, prev.getDate())) {
-                break;
-            }
-        }
-    }
 
-    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-        const prev = new Date(year, month - 1, day - 1);
-        const next = new Date(year, month - 1, day + 1);
-        if (isBaseHoliday(prev.getFullYear(), prev.getMonth() + 1, prev.getDate()) &&
-            isBaseHoliday(next.getFullYear(), next.getMonth() + 1, next.getDate())) {
+            return false;
+        }
+
+        function formatTime(hourFloat) {
+            const h = Math.floor(hourFloat);
+            const m = Math.round((hourFloat - h) * 60);
+            return `${h}:${m < 10 ? '0' : ''}${m}`;
+        }
+
+        function getSelectedDateObject() {
+            const dateInput = document.getElementById('date-selector');
+            const rawValue = dateInput && dateInput.value ? dateInput.value : selectedDateKey;
+            if (!rawValue) return new Date();
+            const [year, month, day] = rawValue.split('-').map(Number);
+            if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) {
+                return new Date();
+            }
+            return new Date(year, month - 1, day);
+        }
+
+        function setSelectedDate(dateStr) {
+            const minDate = getLocalDateKey(new Date());
+            const safeDate = !dateStr || dateStr < minDate ? minDate : dateStr;
+            selectedDateKey = safeDate;
+            const dateInput = document.getElementById('date-selector');
+            if (dateInput) {
+                dateInput.min = minDate;
+                dateInput.value = safeDate;
+            }
+            render();
+        }
+
+        function formatShiftList(shifts) {
+            if (!Array.isArray(shifts) || shifts.length === 0) return '定休日';
+            return shifts.map(([start, end]) => `${formatTime(start)}-${formatTime(end)}`).join(', ');
+        }
+
+        function getEffectiveDisplayDate() {
+            return listSubMode === 'today' ? getSelectedDateObject() : new Date();
+        }
+
+        function getLocalDateKey(date = new Date()) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+        }
+
+        function formatDistance(km) {
+            return `約 ${km < 1 ? km.toFixed(2) : km.toFixed(1)}km`;
+        }
+
+        function isPreOpen(shop, targetDate = new Date()) {
+            if (!shop.openedAt) return false;
+            const normalizedOpenDate = parseNormalizedDateStr(shop.openedAt);
+            return normalizedOpenDate > getLocalDateKey(targetDate);
+        }
+
+        function isClosedShopExpired(shop, targetDate = new Date()) {
+            if (!shop.closedAt) return false;
+            const normalizedCloseDate = parseNormalizedDateStr(shop.closedAt);
+            const todayStr = targetDate.toISOString().split('T')[0];
+
+            if (normalizedCloseDate < todayStr) return true;
+            if (normalizedCloseDate === todayStr) {
+                const currentHour = targetDate.getHours() + (targetDate.getMinutes() / 60);
+                const todayShifts = getTodayShifts(shop, targetDate);
+                if (todayShifts?.length) {
+                    return currentHour > Math.max(...todayShifts.map(s => s[1]));
+                }
+                return currentHour >= 4;
+            }
+            return false;
+        }
+
+        function areShiftsEqual(shiftsA, shiftsB) {
+            const a = shiftsA || [];
+            const b = shiftsB || [];
+            if (a.length !== b.length) return false;
+            for (let i = 0; i < a.length; i++) {
+                if (a[i][0] !== b[i][0] || a[i][1] !== b[i][1]) return false;
+            }
             return true;
         }
-    }
 
-    return false;
-}
+        function getNthDayOfWeek(year, month, week, dayOfWeek) {
+            let count = 0;
+            const targetDate = new Date(year, month - 1, 1);
+            const lastDate = new Date(year, month, 0).getDate();
 
-function formatTime(hourFloat) {
-    const h = Math.floor(hourFloat);
-    const m = Math.round((hourFloat - h) * 60);
-    return `${h}:${m < 10 ? '0' : ''}${m}`;
-}
-
-function getLocalDateKey(date = new Date()) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
-
-function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) ** 2;
-    return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
-}
-
-function formatDistance(km) {
-    return `約 ${km < 1 ? km.toFixed(2) : km.toFixed(1)}km`;
-}
-
-function isPreOpen(shop) {
-    if (!shop.openedAt) return false;
-    const normalizedOpenDate = parseNormalizedDateStr(shop.openedAt);
-    return normalizedOpenDate > new Date().toISOString().split('T')[0];
-}
-
-function isClosedShopExpired(shop, targetDate = new Date()) {
-    if (!shop.closedAt) return false;
-    const normalizedCloseDate = parseNormalizedDateStr(shop.closedAt);
-    const todayStr = targetDate.toISOString().split('T')[0];
-    
-    if (normalizedCloseDate < todayStr) return true;
-    if (normalizedCloseDate === todayStr) {
-        const currentHour = targetDate.getHours() + (targetDate.getMinutes() / 60);
-        const todayShifts = getTodayShifts(shop, targetDate);
-        if (todayShifts?.length) {
-            return currentHour > Math.max(...todayShifts.map(s => s[1]));
-        }
-        return currentHour >= 4;
-    }
-    return false;
-}
-
-function areShiftsEqual(shiftsA, shiftsB) {
-    const a = shiftsA || [];
-    const b = shiftsB || [];
-    if (a.length !== b.length) return false;
-    for (let i = 0; i < a.length; i++) {
-        if (a[i][0] !== b[i][0] || a[i][1] !== b[i][1]) return false;
-    }
-    return true;
-}
-
-function getNthDayOfWeek(year, month, week, dayOfWeek) {
-    let count = 0;
-    const targetDate = new Date(year, month - 1, 1);
-    const lastDate = new Date(year, month, 0).getDate();
-
-    if (week > 0) {
-        for (let d = 1; d <= lastDate; d++) {
-            targetDate.setDate(d);
-            if (targetDate.getDay() === dayOfWeek) {
-                count++;
-                if (count === week) return d;
+            if (week > 0) {
+                for (let d = 1; d <= lastDate; d++) {
+                    targetDate.setDate(d);
+                    if (targetDate.getDay() === dayOfWeek) {
+                        count++;
+                        if (count === week) return d;
+                    }
+                }
+            } else if (week === -1) {
+                let lastMatch = null;
+                for (let d = 1; d <= lastDate; d++) {
+                    targetDate.setDate(d);
+                    if (targetDate.getDay() === dayOfWeek) {
+                        lastMatch = d;
+                    }
+                }
+                return lastMatch;
             }
+            return null;
         }
-    } else if (week === -1) {
-        let lastMatch = null;
-        for (let d = 1; d <= lastDate; d++) {
-            targetDate.setDate(d);
-            if (targetDate.getDay() === dayOfWeek) {
-                lastMatch = d;
+
+        function findSpecialShiftEntry(shop, targetDate = new Date()) {
+            if (!Array.isArray(shop.specialShifts) || shop.specialShifts.length === 0) return null;
+            const year = targetDate.getFullYear();
+            const month = targetDate.getMonth() + 1;
+            const date = targetDate.getDate();
+            const dayOfWeek = targetDate.getDay();
+
+            for (const spec of shop.specialShifts) {
+                if (spec.day !== undefined && spec.day !== dayOfWeek) continue;
+                const nth = getNthDayOfWeek(year, month, spec.week, spec.day);
+                if (nth === date) {
+                    return spec.hours;
+                }
             }
+            return null;
         }
-        return lastMatch;
-    }
-    return null;
-}
 
-function findSpecialShiftEntry(shop, targetDate = new Date()) {
-    if (!Array.isArray(shop.specialShifts) || shop.specialShifts.length === 0) return null;
-    const year = targetDate.getFullYear();
-    const month = targetDate.getMonth() + 1;
-    const date = targetDate.getDate();
-    const dayOfWeek = targetDate.getDay();
+        function getRegularShiftsByDay(shop, targetDate = new Date()) {
+            if (Array.isArray(shop.holidaySpecialShifts)) {
+                for (const rule of shop.holidaySpecialShifts) {
+                    const offset = rule.targetOffset !== undefined ? rule.targetOffset : 1;
+                    const baseDate = new Date(targetDate.getTime());
+                    baseDate.setDate(baseDate.getDate() - offset);
 
-    for (const spec of shop.specialShifts) {
-        if (spec.day !== undefined && spec.day !== dayOfWeek) continue;
-        const nth = getNthDayOfWeek(year, month, spec.week, spec.day);
-        if (nth === date) {
-            return spec.hours;
-        }
-    }
-    return null;
-}
-
-function getRegularShiftsByDay(shop, targetDate = new Date()) {
-    if (isJapaneseHoliday(targetDate) && shop.holidayShifts !== null && shop.holidayShifts !== undefined) {
-        return shop.holidayShifts;
-    }
-
-    const specialShifts = findSpecialShiftEntry(shop, targetDate);
-    if (specialShifts !== null && specialShifts !== undefined) {
-        return specialShifts;
-    }
-
-    const mondayBasedDay = (targetDate.getDay() + 6) % 7;
-    return shop.shiftsByDay ? shop.shiftsByDay[mondayBasedDay] : null;
-}
-
-function isRedundantTempEntry(shop, tempEntry, targetDate) {
-    if (!tempEntry) return false;
-    if (tempEntry.endDate === null) return false;
-
-    const regularShifts = getRegularShiftsByDay(shop, targetDate);
-    return areShiftsEqual(tempEntry.hours, regularShifts);
-}
-
-function findTemporaryEntry(shop, targetDate = new Date()) {
-    if (!Array.isArray(shop.temporary) || shop.temporary.length === 0) return null;
-    const dateString = getLocalDateKey(targetDate);
-
-    const temp = shop.temporary.find(t => {
-        const start = t.startDate || t.date;
-        if (!start) return false;
-
-        if (t.endDate === null) {
-            return dateString >= start;
-        } else if (t.endDate) {
-            return dateString >= start && dateString <= t.endDate;
-        } else {
-            return dateString === start;
-        }
-    });
-
-    if (!temp) return null;
-    if (isRedundantTempEntry(shop, temp, targetDate)) {
-        return null;
-    }
-
-    return temp;
-}
-
-function getTodayShifts(shop, targetDate = new Date()) {
-    const tempEntry = findTemporaryEntry(shop, targetDate);
-    if (tempEntry) return tempEntry.hours;
-
-    return getRegularShiftsByDay(shop, targetDate);
-}
-
-function getTemporaryStatus(shop, targetDate = new Date()) {
-    const tempEntry = findTemporaryEntry(shop, targetDate);
-    if (tempEntry) return tempEntry.hours.length === 0 ? '休業' : '営業';
-    return null;
-}
-
-function getBusinessStatus(shop, targetDate = new Date()) {
-    if (isPreOpen(shop)) return { type: 'preopen', bgClass: 'bg-preopen', label: 'オープン予定' };
-    const tempStatus = getTemporaryStatus(shop, targetDate);
-    if (tempStatus === '休業') return { type: 'closed', bgClass: 'bg-closed', label: '営業時間外' };
-
-    let currentHour = targetDate.getHours() + (targetDate.getMinutes() / 60);
-
-    // 1. 前日からの跨ぎ営業（例: 25:00終了 ＝ 本日1:00まで営業）をチェック
-    const yesterday = new Date(targetDate);
-    yesterday.setDate(targetDate.getDate() - 1);
-    const yesterdayShifts = getTodayShifts(shop, yesterday);
-    if (yesterdayShifts?.length) {
-        const adjustedHour = currentHour + 24.0;
-        for (const [start, end] of yesterdayShifts) {
-            if (end > 24.0 && adjustedHour >= start && adjustedHour <= end) {
-                const isClosingSoon = (end - adjustedHour) <= 1.0;
-                return {
-                    type: isClosingSoon ? 'closing-soon' : 'open',
-                    bgClass: isClosingSoon ? 'bg-closing-soon' : 'bg-open',
-                    isClosingSoon, endTime: end - 24.0, label: isClosingSoon ? 'まもなく終了' : '営業中'
-                };
+                    if (baseDate.getDay() === rule.triggerDay && isJapaneseHoliday(baseDate)) {
+                        return rule.hours || [];
+                    }
+                }
             }
-        }
-    }
 
-    // 2. 当日シフトの判定
-    let shifts = getTodayShifts(shop, targetDate);
-    if (shifts?.length) {
-        // 現在営業中またはまもなく終了かを判定
-        for (const [start, end] of shifts) {
-            if (currentHour >= start && currentHour <= end) {
-                const isClosingSoon = (end - currentHour) <= 1.0;
-                return { 
-                    type: isClosingSoon ? 'closing-soon' : 'open', 
-                    bgClass: isClosingSoon ? 'bg-closing-soon' : 'bg-open', 
-                    isClosingSoon, endTime: end, label: isClosingSoon ? 'まもなく終了' : '営業中'
-                };
+            if (isJapaneseHoliday(targetDate) && shop.holidayShifts !== null && shop.holidayShifts !== undefined) {
+                return shop.holidayShifts;
             }
+
+            const specialShifts = findSpecialShiftEntry(shop, targetDate);
+            if (specialShifts !== null && specialShifts !== undefined) {
+                return specialShifts;
+            }
+
+            const mondayBasedDay = (targetDate.getDay() + 6) % 7;
+            return shop.shiftsByDay ? shop.shiftsByDay[mondayBasedDay] : null;
         }
 
-        // 現在以降に開始するシフトが存在する場合、当日営業開始前と判定
-        const upcomingShift = shifts.find(([start]) => currentHour < start);
-        if (upcomingShift) {
-            return {
-                type: 'scheduled',
-                bgClass: 'bg-scheduled',
-                label: '営業開始前',
-                startTime: upcomingShift[0]
-            };
+        function isRedundantTempEntry(shop, tempEntry, targetDate) {
+            if (!tempEntry) return false;
+            if (tempEntry.endDate === null) return false;
+
+            const regularShifts = getRegularShiftsByDay(shop, targetDate);
+            return areShiftsEqual(tempEntry.hours, regularShifts);
         }
-    }
 
-    return { type: 'closed', bgClass: 'bg-closed', label: '営業時間外' };
-}
+        function findTemporaryEntry(shop, targetDate = new Date()) {
+            if (!Array.isArray(shop.temporary) || shop.temporary.length === 0) return null;
+            const dateString = getLocalDateKey(targetDate);
 
-function getNextShiftTimes(shop, targetDate = new Date()) {
-    if (isPreOpen(shop)) return { startTime: 99999, endTime: 99999 };
-    const now = targetDate;
-    const currentHour = now.getHours() + (now.getMinutes() / 60);
-    const status = getBusinessStatus(shop, now);
+            const temp = shop.temporary.find(t => {
+                const start = t.startDate || t.date;
+                if (!start) return false;
 
-    if (status.type === 'open' || status.type === 'closing-soon') {
-        return { startTime: currentHour, endTime: status.endTime };
-    }
+                if (t.endDate === null) {
+                    return dateString >= start;
+                } else if (t.endDate) {
+                    return dateString >= start && dateString <= t.endDate;
+                } else {
+                    return dateString === start;
+                }
+            });
 
-    const todayShifts = getTodayShifts(shop, now);
-    if (todayShifts?.some(([start]) => currentHour < start)) {
-        const nextShift = todayShifts.find(([start]) => currentHour < start);
-        return { startTime: nextShift[0], endTime: nextShift[1] };
-    }
+            if (!temp) return null;
+            if (isRedundantTempEntry(shop, temp, targetDate)) {
+                return null;
+            }
 
-    for (let offset = 1; offset <= 30; offset++) {
-        const checkDate = new Date(now);
-        checkDate.setDate(now.getDate() + offset);
-        const checkShifts = getTodayShifts(shop, checkDate);
-        if (checkShifts?.length) {
-            return {
-                startTime: offset * 24 + checkShifts[0][0],
-                endTime: offset * 24 + checkShifts[0][1]
-            };
+            return temp;
         }
-    }
-    return { startTime: 99999, endTime: 99999 };
-}
 
-function getNextOpenScheduleText(shop) {
-    if (isPreOpen(shop)) {
-        const openDateStr = shop.openedAt ? shop.openedAt.replace(/-/g, '/') : '';
-        return `<span class="next-schedule">オープン予定: ${openDateStr}</span>`;
-    }
-    const now = new Date();
-    const status = getBusinessStatus(shop, now);
+        function getTodayShifts(shop, targetDate = new Date()) {
+            const tempEntry = findTemporaryEntry(shop, targetDate);
+            if (tempEntry) return tempEntry.hours;
 
-    let text = '';
-    let extraClass = '';
+            return getRegularShiftsByDay(shop, targetDate);
+        }
 
-    if (status.type === 'open' || status.type === 'closing-soon') {
-        text = `${formatTime(status.endTime)}まで`;
-        extraClass = status.type === 'closing-soon' ? 'is-closing-soon' : 'is-open';
-    } else if (status.type === 'scheduled') {
-        text = `本日 ${formatTime(status.startTime)} 開店`;
-        extraClass = 'is-scheduled';
-    } else {
-        const todayShifts = getTodayShifts(shop, now);
-        const currentHour = now.getHours() + (now.getMinutes() / 60);
-        if (todayShifts?.some(([start]) => currentHour < start)) {
-            const nextStart = todayShifts.find(([start]) => currentHour < start)[0];
-            text = `次回: 本日 ${formatTime(nextStart)}-`;
-        } else {
-            const dayNames = ["月", "火", "水", "木", "金", "土", "日"];
-            let found = false;
+        function getTemporaryStatus(shop, targetDate = new Date()) {
+            const tempEntry = findTemporaryEntry(shop, targetDate);
+            if (tempEntry) return tempEntry.hours.length === 0 ? '休業' : '営業';
+            return null;
+        }
+
+        function getBusinessStatus(shop, targetDate = new Date()) {
+            if (isPreOpen(shop, targetDate)) return { type: 'preopen', bgClass: 'bg-preopen', label: 'オープン予定' };
+            const tempStatus = getTemporaryStatus(shop, targetDate);
+            if (tempStatus === '休業') return { type: 'closed', bgClass: 'bg-closed', label: '営業時間外' };
+
+            let currentHour = targetDate.getHours() + (targetDate.getMinutes() / 60);
+
+            // 1. 前日からの跨ぎ営業（例: 25:00終了 ＝ 本日1:00まで営業）をチェック
+            const yesterday = new Date(targetDate);
+            yesterday.setDate(targetDate.getDate() - 1);
+            const yesterdayShifts = getTodayShifts(shop, yesterday);
+            if (yesterdayShifts?.length) {
+                const adjustedHour = currentHour + 24.0;
+                for (const [start, end] of yesterdayShifts) {
+                    if (end > 24.0 && adjustedHour >= start && adjustedHour <= end) {
+                        const isClosingSoon = (end - adjustedHour) <= 1.0;
+                        return {
+                            type: isClosingSoon ? 'closing-soon' : 'open',
+                            bgClass: isClosingSoon ? 'bg-closing-soon' : 'bg-open',
+                            isClosingSoon, endTime: end - 24.0, label: isClosingSoon ? 'まもなく終了' : '営業中'
+                        };
+                    }
+                }
+            }
+
+            // 2. 当日シフトの判定
+            let shifts = getTodayShifts(shop, targetDate);
+            if (shifts?.length) {
+                // 現在営業中またはまもなく終了かを判定
+                for (const [start, end] of shifts) {
+                    if (currentHour >= start && currentHour <= end) {
+                        const isClosingSoon = (end - currentHour) <= 1.0;
+                        return {
+                            type: isClosingSoon ? 'closing-soon' : 'open',
+                            bgClass: isClosingSoon ? 'bg-closing-soon' : 'bg-open',
+                            isClosingSoon, endTime: end, label: isClosingSoon ? 'まもなく終了' : '営業中'
+                        };
+                    }
+                }
+
+                // 現在以降に開始するシフトが存在する場合、当日営業開始前と判定
+                const upcomingShift = shifts.find(([start]) => currentHour < start);
+                if (upcomingShift) {
+                    return {
+                        type: 'scheduled',
+                        bgClass: 'bg-scheduled',
+                        label: '営業開始前',
+                        startTime: upcomingShift[0]
+                    };
+                }
+            }
+
+            return { type: 'closed', bgClass: 'bg-closed', label: '営業時間外' };
+        }
+
+        function getNextShiftTimes(shop, targetDate = new Date()) {
+            if (isPreOpen(shop)) return { startTime: 99999, endTime: 99999 };
+            const now = targetDate;
+            const currentHour = now.getHours() + (now.getMinutes() / 60);
+            const status = getBusinessStatus(shop, now);
+
+            if (status.type === 'open' || status.type === 'closing-soon') {
+                return { startTime: currentHour, endTime: status.endTime };
+            }
+
+            const todayShifts = getTodayShifts(shop, now);
+            if (todayShifts?.some(([start]) => currentHour < start)) {
+                const nextShift = todayShifts.find(([start]) => currentHour < start);
+                return { startTime: nextShift[0], endTime: nextShift[1] };
+            }
+
             for (let offset = 1; offset <= 30; offset++) {
-                const checkDate = new Date();
+                const checkDate = new Date(now);
                 checkDate.setDate(now.getDate() + offset);
                 const checkShifts = getTodayShifts(shop, checkDate);
                 if (checkShifts?.length) {
-                    const dayPrefix = offset === 1 ? "明日" : offset === 2 ? "明後日" : `${checkDate.getMonth() + 1}/${checkDate.getDate()}(${dayNames[(checkDate.getDay() + 6) % 7]})`;
-                    text = `次回: ${dayPrefix} ${formatTime(checkShifts[0][0])}-`;
-                    found = true;
-                    break;
+                    return {
+                        startTime: offset * 24 + checkShifts[0][0],
+                        endTime: offset * 24 + checkShifts[0][1]
+                    };
                 }
             }
-            if (!found) {
-                text = `次回: 30日後以降`;
-            }
+            return { startTime: 99999, endTime: 99999 };
         }
-    }
 
-    return `<span class="next-schedule ${extraClass}">${text}</span>`;
-}
-
-function getWeeklyTemporaryText(shop) {
-    if (!Array.isArray(shop.temporary) || shop.temporary.length === 0) return { text: null, hasToday: false };
-
-    const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
-    const now = new Date();
-    const todayKey = getLocalDateKey(now);
-    const dailyList = [];
-    let hasTodayTemp = false;
-
-    for (let i = 0; i < 30; i++) {
-        const d = new Date();
-        d.setDate(now.getDate() + i);
-        const tempEntry = findTemporaryEntry(shop, d);
-        if (tempEntry) {
-            if (getLocalDateKey(d) === todayKey) {
-                hasTodayTemp = true;
+        function getNextOpenScheduleText(shop, targetDate = new Date()) {
+            if (isPreOpen(shop)) {
+                const openDateStr = shop.openedAt ? shop.openedAt.replace(/-/g, '/') : '';
+                return `<span class="next-schedule" title="オープン予定: ${openDateStr}">オープン予定: ${openDateStr}</span>`;
             }
-            const hours = tempEntry.hours;
-            const statusType = (!hours || hours.length === 0) ? '休業' : hours.map(s => `${formatTime(s[0])}-${formatTime(s[1])}`).join(', ');
-            
-            const startD = new Date(tempEntry.startDate || tempEntry.date);
-            
-            dailyList.push({
-                dateObj: d,
-                month: d.getMonth() + 1,
-                date: d.getDate(),
-                dayStr: dayNames[d.getDay()],
-                startMonth: startD.getMonth() + 1,
-                startDate: startD.getDate(),
-                startDayStr: dayNames[startD.getDay()],
-                statusType: statusType,
-                isNoEndDate: tempEntry.endDate === null
-            });
-        }
-    }
+            const now = targetDate;
+            const status = getBusinessStatus(shop, now);
 
-    if (dailyList.length === 0) return { text: null, hasToday: false };
+            let text = '';
+            let extraClass = '';
 
-    const consecutiveGroups = [];
-    let currentGroup = null;
-
-    dailyList.forEach(item => {
-        if (!currentGroup) {
-            currentGroup = { start: item, end: item, statusType: item.statusType, isNoEndDate: item.isNoEndDate };
-        } else {
-            const prevDate = new Date(currentGroup.end.dateObj);
-            prevDate.setDate(prevDate.getDate() + 1);
-            const isConsecutive = getLocalDateKey(prevDate) === getLocalDateKey(item.dateObj);
-
-            if (isConsecutive && currentGroup.statusType === item.statusType && currentGroup.isNoEndDate === item.isNoEndDate) {
-                currentGroup.end = item;
+            if (status.type === 'open' || status.type === 'closing-soon') {
+                text = `${formatTime(status.endTime)} まで`;
+                extraClass = status.type === 'closing-soon' ? 'is-closing-soon' : 'is-open';
+            } else if (status.type === 'scheduled') {
+                text = `本日 ${formatTime(status.startTime)} から`;
+                extraClass = 'is-scheduled';
             } else {
-                consecutiveGroups.push(currentGroup);
-                currentGroup = { start: item, end: item, statusType: item.statusType, isNoEndDate: item.isNoEndDate };
+                const todayShifts = getTodayShifts(shop, now);
+                const currentHour = now.getHours() + (now.getMinutes() / 60);
+                if (todayShifts?.some(([start]) => currentHour < start)) {
+                    const nextStart = todayShifts.find(([start]) => currentHour < start)[0];
+                    text = `本日 ${formatTime(nextStart)} から`;
+                } else {
+                    const dayNames = ["月", "火", "水", "木", "金", "土", "日"];
+                    let found = false;
+                    for (let offset = 1; offset <= 30; offset++) {
+                        const checkDate = new Date();
+                        checkDate.setDate(now.getDate() + offset);
+                        const checkShifts = getTodayShifts(shop, checkDate);
+                        if (checkShifts?.length) {
+                            const dayPrefix = offset === 1 ? "明日" : offset === 2 ? "明後日" : `${checkDate.getMonth() + 1}/${checkDate.getDate()}(${dayNames[(checkDate.getDay() + 6) % 7]})`;
+                            text = `${dayPrefix} ${formatTime(checkShifts[0][0])} から`;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        text = `30日後以降 から`;
+                    }
+                }
             }
-        }
-    });
-    if (currentGroup) consecutiveGroups.push(currentGroup);
 
-    consecutiveGroups.forEach(g => {
-        if (g.isNoEndDate) {
-            const origStartStr = `${g.start.startMonth}/${g.start.startDate}(${g.start.startDayStr})`;
-            g.dateText = `${origStartStr}〜当面の間`;
-        } else if (g.start === g.end) {
-            g.dateText = `${g.start.month}/${g.start.date}(${g.start.dayStr})`;
-        } else {
-            g.dateText = `${g.start.month}/${g.start.date}(${g.start.dayStr})-${g.end.month}/${g.end.date}(${g.end.dayStr})`;
+            return `<span class="next-schedule ${extraClass}" title="${text}">${text}</span>`;
         }
-    });
 
-    const mergedGroups = [];
-    consecutiveGroups.forEach(g => {
-        const existing = mergedGroups.find(m => m.statusType === g.statusType && m.isNoEndDate === g.isNoEndDate);
-        if (existing) {
-            existing.dateTexts.push(g.dateText);
-        } else {
-            mergedGroups.push({
-                statusType: g.statusType,
-                isNoEndDate: g.isNoEndDate,
-                dateTexts: [g.dateText]
+        function getWeeklyTemporaryText(shop, targetDate = new Date()) {
+            if (!Array.isArray(shop.temporary) || shop.temporary.length === 0) return { text: null, hasToday: false };
+
+            const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
+            const now = targetDate;
+            const todayKey = getLocalDateKey(now);
+            const dailyList = [];
+            let hasTodayTemp = false;
+
+            for (let i = 0; i < 30; i++) {
+                const d = new Date();
+                d.setDate(now.getDate() + i);
+                const tempEntry = findTemporaryEntry(shop, d);
+                if (tempEntry) {
+                    if (getLocalDateKey(d) === todayKey) {
+                        hasTodayTemp = true;
+                    }
+                    const hours = tempEntry.hours;
+                    const statusType = (!hours || hours.length === 0) ? '休業' : hours.map(s => `${formatTime(s[0])}-${formatTime(s[1])}`).join(', ');
+
+                    const startD = new Date(tempEntry.startDate || tempEntry.date);
+
+                    dailyList.push({
+                        dateObj: d,
+                        month: d.getMonth() + 1,
+                        date: d.getDate(),
+                        dayStr: dayNames[d.getDay()],
+                        startMonth: startD.getMonth() + 1,
+                        startDate: startD.getDate(),
+                        startDayStr: dayNames[startD.getDay()],
+                        statusType: statusType,
+                        isNoEndDate: tempEntry.endDate === null
+                    });
+                }
+            }
+
+            if (dailyList.length === 0) return { text: null, hasToday: false };
+
+            const consecutiveGroups = [];
+            let currentGroup = null;
+
+            dailyList.forEach(item => {
+                if (!currentGroup) {
+                    currentGroup = { start: item, end: item, statusType: item.statusType, isNoEndDate: item.isNoEndDate };
+                } else {
+                    const prevDate = new Date(currentGroup.end.dateObj);
+                    prevDate.setDate(prevDate.getDate() + 1);
+                    const isConsecutive = getLocalDateKey(prevDate) === getLocalDateKey(item.dateObj);
+
+                    if (isConsecutive && currentGroup.statusType === item.statusType && currentGroup.isNoEndDate === item.isNoEndDate) {
+                        currentGroup.end = item;
+                    } else {
+                        consecutiveGroups.push(currentGroup);
+                        currentGroup = { start: item, end: item, statusType: item.statusType, isNoEndDate: item.isNoEndDate };
+                    }
+                }
             });
+            if (currentGroup) consecutiveGroups.push(currentGroup);
+
+            consecutiveGroups.forEach(g => {
+                if (g.isNoEndDate) {
+                    const origStartStr = `${g.start.startMonth}/${g.start.startDate}(${g.start.startDayStr})`;
+                    g.dateText = `${origStartStr}〜当面の間`;
+                } else if (g.start === g.end) {
+                    g.dateText = `${g.start.month}/${g.start.date}(${g.start.dayStr})`;
+                } else {
+                    g.dateText = `${g.start.month}/${g.start.date}(${g.start.dayStr})-${g.end.month}/${g.end.date}(${g.end.dayStr})`;
+                }
+            });
+
+            const mergedGroups = [];
+            consecutiveGroups.forEach(g => {
+                const existing = mergedGroups.find(m => m.statusType === g.statusType && m.isNoEndDate === g.isNoEndDate);
+                if (existing) {
+                    existing.dateTexts.push(g.dateText);
+                } else {
+                    mergedGroups.push({
+                        statusType: g.statusType,
+                        isNoEndDate: g.isNoEndDate,
+                        dateTexts: [g.dateText]
+                    });
+                }
+            });
+
+            const formattedParts = mergedGroups.map(g => {
+                const combinedDates = g.dateTexts.join(', ');
+                return g.statusType === '休業' ? `${combinedDates} 臨時休業` : `${combinedDates} ${g.statusType}`;
+            });
+
+            return { text: formattedParts.join('、'), hasToday: hasTodayTemp };
         }
-    });
 
-    const formattedParts = mergedGroups.map(g => {
-        const combinedDates = g.dateTexts.join(', ');
-        return g.statusType === '休業' ? `${combinedDates} 臨時休業` : `${combinedDates} ${g.statusType}`;
-    });
+        function formatWeekNumbers(weeks) {
+            if (!weeks || weeks.length === 0) return '';
+            weeks.sort((a, b) => a - b);
 
-    return { text: formattedParts.join('、'), hasToday: hasTodayTemp };
-}
+            let ranges = [];
+            let start = weeks[0];
+            let end = weeks[0];
 
-function formatWeekNumbers(weeks) {
-    if (!weeks || weeks.length === 0) return '';
-    weeks.sort((a, b) => a - b);
-    
-    let ranges = [];
-    let start = weeks[0];
-    let end = weeks[0];
-
-    for (let i = 1; i < weeks.length; i++) {
-        if (weeks[i] === end + 1) {
-            end = weeks[i];
-        } else {
+            for (let i = 1; i < weeks.length; i++) {
+                if (weeks[i] === end + 1) {
+                    end = weeks[i];
+                } else {
+                    ranges.push(start === end ? `${start}` : `${start}-${end}`);
+                    start = weeks[i];
+                    end = weeks[i];
+                }
+            }
             ranges.push(start === end ? `${start}` : `${start}-${end}`);
-            start = weeks[i];
-            end = weeks[i];
+            return ranges.join(',');
         }
-    }
-    ranges.push(start === end ? `${start}` : `${start}-${end}`);
-    return ranges.join(',');
-}
 
-function renderBusinessHoursTable(shop) {
-    if (!shop.shiftsByDay && (!Array.isArray(shop.specialShifts) || shop.specialShifts.length === 0)) return '情報なし';
+        function renderBusinessHoursTable(shop, targetDate = new Date()) {
+            if (!shop.shiftsByDay && (!Array.isArray(shop.specialShifts) || shop.specialShifts.length === 0)) return '情報なし';
 
-    const baseDayNames = ["月", "火", "水", "木", "金", "土", "日"];
-    const rawEntries = [];
+            const baseDayNames = ["月", "火", "水", "木", "金", "土", "日"];
+            const rawEntries = [];
 
-    // 本日の日時・祝日情報・臨時情報取得
-    const now = new Date();
-    const currentHour = now.getHours() + (now.getMinutes() / 60);
+            // 本日の日時・祝日情報・臨時情報取得
+            const now = targetDate;
+            const currentHour = now.getHours() + (now.getMinutes() / 60);
 
-    // 24:00（深夜跨ぎ）営業の判定ロジック：深夜0〜4時等で前日からの営業中である場合、前日を「本日扱い」の対象とする
-    let activeTargetDate = new Date(now);
-    const yesterday = new Date(now);
-    yesterday.setDate(now.getDate() - 1);
-    const yesterdayShifts = getTodayShifts(shop, yesterday);
-    let isLateNightOvernight = false;
+            // 24:00（深夜跨ぎ）営業の判定ロジック：深夜0〜4時等で前日からの営業中である場合、前日を「本日扱い」の対象とする
+            let activeTargetDate = new Date(now);
+            const yesterday = new Date(now);
+            yesterday.setDate(now.getDate() - 1);
+            const yesterdayShifts = getTodayShifts(shop, yesterday);
+            let isLateNightOvernight = false;
 
-    if (yesterdayShifts?.length) {
-        const adjustedHour = currentHour + 24.0;
-        for (const [start, end] of yesterdayShifts) {
-            if (end > 24.0 && adjustedHour >= start && adjustedHour <= end) {
-                isLateNightOvernight = true;
-                activeTargetDate = yesterday;
-                break;
-            }
-        }
-    }
-
-    const tempEntryToday = findTemporaryEntry(shop, activeTargetDate);
-    const hasTodayTemp = !!tempEntryToday; // 臨時営業情報が適用される日か判定
-
-    const targetJsDay = activeTargetDate.getDay(); // 0:日, 1:月...
-    const targetMondayBasedDay = (targetJsDay + 6) % 7; // 0:月... 6:日
-    const targetIsHoliday = isJapaneseHoliday(activeTargetDate);
-    const hasHolidayShift = shop.holidayShifts !== null && shop.holidayShifts !== undefined;
-
-    for (let mondayIndex = 0; mondayIndex < 7; mondayIndex++) {
-        const jsDayOfWeek = (mondayIndex + 1) % 7;
-        const dayLabel = baseDayNames[mondayIndex];
-
-        const normalShifts = shop.shiftsByDay ? shop.shiftsByDay[mondayIndex] : null;
-        const normalStr = normalShifts?.length ? normalShifts.map(s => `${formatTime(s[0])}-${formatTime(s[1])}`).join(', ') : '定休日';
-
-        const specsForThisDay = Array.isArray(shop.specialShifts) 
-            ? shop.specialShifts.filter(spec => spec.day === jsDayOfWeek) 
-            : [];
-
-        let fullText = normalStr;
-        if (specsForThisDay.length > 0) {
-            const hoursToWeeksMap = {};
-            specsForThisDay.forEach(spec => {
-                const hoursStr = spec.hours && spec.hours.length > 0 
-                    ? spec.hours.map(s => `${formatTime(s[0])}-${formatTime(s[1])}`).join(', ') 
-                    : '定休日';
-                if (!hoursToWeeksMap[hoursStr]) {
-                    hoursToWeeksMap[hoursStr] = [];
+            if (yesterdayShifts?.length) {
+                const adjustedHour = currentHour + 24.0;
+                for (const [start, end] of yesterdayShifts) {
+                    if (end > 24.0 && adjustedHour >= start && adjustedHour <= end) {
+                        isLateNightOvernight = true;
+                        activeTargetDate = yesterday;
+                        break;
+                    }
                 }
-                hoursToWeeksMap[hoursStr].push(spec.week === -1 ? 5 : spec.week);
+            }
+
+            const tempEntryToday = findTemporaryEntry(shop, activeTargetDate);
+            const hasTodayTemp = !!tempEntryToday; // 臨時営業情報が適用される日か判定
+
+            const targetJsDay = activeTargetDate.getDay(); // 0:日, 1:月...
+            const targetMondayBasedDay = (targetJsDay + 6) % 7; // 0:月... 6:日
+            const targetIsHoliday = isJapaneseHoliday(activeTargetDate);
+            const hasHolidayShift = shop.holidayShifts !== null && shop.holidayShifts !== undefined;
+
+            for (let mondayIndex = 0; mondayIndex < 7; mondayIndex++) {
+                const jsDayOfWeek = (mondayIndex + 1) % 7;
+                const dayLabel = baseDayNames[mondayIndex];
+
+                const normalShifts = shop.shiftsByDay ? shop.shiftsByDay[mondayIndex] : null;
+                const normalStr = formatShiftList(normalShifts);
+
+                const specsForThisDay = Array.isArray(shop.specialShifts)
+                    ? shop.specialShifts.filter(spec => spec.day === jsDayOfWeek)
+                    : [];
+
+                // 祝日特別シフトによる注釈を取得
+                const specRulesForThisDay = [];
+                if (Array.isArray(shop.holidaySpecialShifts)) {
+                    shop.holidaySpecialShifts.forEach(rule => {
+                        const targetDayOfWeek = (rule.triggerDay + rule.targetOffset) % 7;
+                        if (targetDayOfWeek === jsDayOfWeek) {
+                            const label = rule.targetOffset === 0 ? "祝" : "翌祝";
+                            const hrsStr = (!rule.hours || rule.hours.length === 0) ? "定休日" : formatShiftList(rule.hours);
+                            specRulesForThisDay.push(`${label}: ${hrsStr}`);
+                        }
+                    });
+                }
+
+                let fullText = normalStr;
+                const specTexts = [];
+                if (specsForThisDay.length > 0) {
+                    const hoursToWeeksMap = {};
+                    specsForThisDay.forEach(spec => {
+                        const hoursStr = formatShiftList(spec.hours);
+                        if (!hoursToWeeksMap[hoursStr]) {
+                            hoursToWeeksMap[hoursStr] = [];
+                        }
+                        hoursToWeeksMap[hoursStr].push(spec.week === -1 ? 5 : spec.week);
+                    });
+
+                    for (const [hrs, weeks] of Object.entries(hoursToWeeksMap)) {
+                        const weeksStr = formatWeekNumbers(weeks);
+                        specTexts.push(`第${weeksStr}: ${hrs}`);
+                    }
+                }
+
+                if (specTexts.length > 0 || specRulesForThisDay.length > 0) {
+                    const combined = [...specTexts, ...specRulesForThisDay];
+                    fullText += `（${combined.join('、')}）`;
+                }
+
+                // 強調判定：臨時営業適用日は強調しない。祝日で祝日枠がない場合は該当曜日を強調
+                let isTodayRow = false;
+                if (!hasTodayTemp) {
+                    if (targetIsHoliday) {
+                        if (!hasHolidayShift && mondayIndex === targetMondayBasedDay) {
+                            isTodayRow = true;
+                        }
+                    } else {
+                        if (mondayIndex === targetMondayBasedDay) {
+                            isTodayRow = true;
+                        }
+                    }
+                }
+
+                rawEntries.push({ dayLabel, text: fullText, isHoliday: false, isToday: isTodayRow });
+            }
+
+            if (hasHolidayShift) {
+                const holidayStr = formatShiftList(shop.holidayShifts);
+                // 祝日の場合かつ臨時営業がない場合「祝」を強調
+                const isTodayRow = !hasTodayTemp && targetIsHoliday;
+                rawEntries.push({ dayLabel: '祝', text: holidayStr, isHoliday: true, isToday: isTodayRow });
+            }
+
+            const groupedEntries = [];
+            let currentGroup = null;
+
+            rawEntries.forEach(entry => {
+                if (!currentGroup) {
+                    currentGroup = { labels: [entry.dayLabel], text: entry.text, hasHoliday: entry.isHoliday, isToday: entry.isToday };
+                } else {
+                    if (currentGroup.text === entry.text && (!currentGroup.hasHoliday || (currentGroup.labels.length === 1 && currentGroup.labels[0] === '日' && entry.isHoliday))) {
+                        currentGroup.labels.push(entry.dayLabel);
+                        if (entry.isHoliday) currentGroup.hasHoliday = true;
+                        if (entry.isToday || currentGroup.isToday) currentGroup.isToday = true; // グループ内に本日が含まれていれば isToday を true にする
+                    } else {
+                        groupedEntries.push(currentGroup);
+                        currentGroup = { labels: [entry.dayLabel], text: entry.text, hasHoliday: entry.isHoliday, isToday: entry.isToday };
+                    }
+                }
+            });
+            if (currentGroup) {
+                groupedEntries.push(currentGroup);
+            }
+
+            let rowsHtml = '';
+            groupedEntries.forEach(group => {
+                let labelDisplay = '';
+                const labels = group.labels;
+                const hasHoliday = group.hasHoliday;
+                const nonHolidayLabels = labels.filter(l => l !== '祝');
+
+                if (labels.length === 3 && labels.includes('土') && labels.includes('日') && labels.includes('祝')) {
+                    labelDisplay = '土日祝';
+                } else if (labels.length === 2 && labels.includes('土') && labels.includes('日')) {
+                    labelDisplay = '土日';
+                } else if (labels.length === 2 && labels.includes('日') && labels.includes('祝')) {
+                    labelDisplay = '日祝';
+                } else if (labels.length === 2 && !hasHoliday) {
+                    labelDisplay = `${labels[0]}${labels[1]}`;
+                } else if (nonHolidayLabels.length >= 2) {
+                    const rangeText = `${nonHolidayLabels[0]}-${nonHolidayLabels[nonHolidayLabels.length - 1]}`;
+                    labelDisplay = hasHoliday ? `${rangeText}祝` : rangeText;
+                } else {
+                    labelDisplay = labels.join('');
+                }
+
+                const todayClass = group.isToday ? 'class="today-highlight"' : '';
+                rowsHtml += `<tr ${todayClass}><th>${labelDisplay}</th><td>${group.text}</td></tr>`;
             });
 
-            const specTexts = [];
-            for (const [hrs, weeks] of Object.entries(hoursToWeeksMap)) {
-                const weeksStr = formatWeekNumbers(weeks);
-                specTexts.push(`第${weeksStr}: ${hrs}`);
+            return `<table class="hours-table"><tbody>${rowsHtml}</tbody></table>`;
+        }
+
+        function generateCardContentHTML(shop, isVisited, fromPopup = false) {
+            const isProcessing = processingShops.has(shop.id);
+            const fullAddress = `${shop.prefecture || ''}${shop.addressText || ''}`.trim();
+            const gmapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('ラーメン二郎 ' + shop.name + ' ' + fullAddress)}`;
+            const selectedDate = (fromPopup || listSubMode !== 'today') ? new Date() : getEffectiveDisplayDate();
+
+            let linksHtml = '';
+            if (shop.x) linksHtml += `<a href="https://x.com/${shop.x}" target="_blank" rel="noopener noreferrer" class="shop-link">X ↗</a>`;
+            if (shop.instagram) linksHtml += `<a href="https://instagram.com/${shop.instagram}" target="_blank" rel="noopener noreferrer" class="shop-link">Instagram ↗</a>`;
+            if (shop.urls?.pc) linksHtml += `<a href="${shop.urls.pc}" target="_blank" rel="noopener noreferrer" class="shop-link">PC店Ⅲ ↗</a>`;
+            if (shop.urls?.rdb) linksHtml += `<a href="${shop.urls.rdb}" target="_blank" rel="noopener noreferrer" class="shop-link">RDB ↗</a>`;
+            if (shop.urls?.tabelog) linksHtml += `<a href="${shop.urls.tabelog}" target="_blank" rel="noopener noreferrer" class="shop-link">食べログ ↗</a>`;
+
+            const status = getBusinessStatus(shop, selectedDate);
+            const statusTag = `<span class="status-badge ${status.bgClass}">${status.label}</span>`;
+
+            let distanceText = '';
+            const sortSelect = document.getElementById('sort-select');
+            const sortVal = sortSelect ? sortSelect.value : '';
+
+            if (sortVal === 'distance_center' && shop.centerDistance !== undefined) {
+                distanceText = `<span class="distance-tag">📍 中心から ${formatDistance(shop.centerDistance)}</span>`;
+            } else if (userCoords && shop.userDistance !== undefined) {
+                distanceText = `<span class="distance-tag">📍 現在地から ${formatDistance(shop.userDistance)}</span>`;
             }
 
-            fullText += `（${specTexts.join('、')}）`;
-        }
-
-        // 強調判定：臨時営業適用日は強調しない。祝日で祝日枠がない場合は該当曜日を強調
-        let isTodayRow = false;
-        if (!hasTodayTemp) {
-            if (targetIsHoliday) {
-                if (!hasHolidayShift && mondayIndex === targetMondayBasedDay) {
-                    isTodayRow = true;
-                }
-            } else {
-                if (mondayIndex === targetMondayBasedDay) {
-                    isTodayRow = true;
-                }
-            }
-        }
-
-        rawEntries.push({ dayLabel, text: fullText, isHoliday: false, isToday: isTodayRow });
-    }
-
-    if (hasHolidayShift) {
-        const holidayStr = Array.isArray(shop.holidayShifts) && shop.holidayShifts.length > 0
-            ? shop.holidayShifts.map(s => `${formatTime(s[0])}-${formatTime(s[1])}`).join(', ')
-            : '定休日';
-        // 祝日の場合かつ臨時営業がない場合「祝」を強調
-        const isTodayRow = !hasTodayTemp && targetIsHoliday;
-        rawEntries.push({ dayLabel: '祝', text: holidayStr, isHoliday: true, isToday: isTodayRow });
-    }
-
-    const groupedEntries = [];
-    let currentGroup = null;
-
-    rawEntries.forEach(entry => {
-        if (!currentGroup) {
-            currentGroup = { labels: [entry.dayLabel], text: entry.text, hasHoliday: entry.isHoliday, isToday: entry.isToday };
-        } else {
-            if (currentGroup.text === entry.text && currentGroup.isToday === entry.isToday && (!currentGroup.hasHoliday || (currentGroup.labels.length === 1 && currentGroup.labels[0] === '日' && entry.isHoliday))) {
-                currentGroup.labels.push(entry.dayLabel);
-                if (entry.isHoliday) currentGroup.hasHoliday = true;
-            } else {
-                groupedEntries.push(currentGroup);
-                currentGroup = { labels: [entry.dayLabel], text: entry.text, hasHoliday: entry.isHoliday, isToday: entry.isToday };
-            }
-        }
-    });
-    if (currentGroup) {
-        groupedEntries.push(currentGroup);
-    }
-
-    let rowsHtml = '';
-    groupedEntries.forEach(group => {
-        let labelDisplay = '';
-        const labels = group.labels;
-        const hasHoliday = group.hasHoliday;
-        const nonHolidayLabels = labels.filter(l => l !== '祝');
-        
-        if (labels.length === 3 && labels.includes('土') && labels.includes('日') && labels.includes('祝')) {
-            labelDisplay = '土日祝';
-        } else if (labels.length === 2 && labels.includes('土') && labels.includes('日')) {
-            labelDisplay = '土日';
-        } else if (labels.length === 2 && labels.includes('日') && labels.includes('祝')) {
-            labelDisplay = '日祝';
-        } else if (labels.length === 2 && !hasHoliday) {
-            labelDisplay = `${labels[0]}${labels[1]}`;
-        } else if (nonHolidayLabels.length >= 2) {
-            const rangeText = `${nonHolidayLabels[0]}-${nonHolidayLabels[nonHolidayLabels.length - 1]}`;
-            labelDisplay = hasHoliday ? `${rangeText}祝` : rangeText;
-        } else {
-            labelDisplay = labels.join('');
-        }
-
-        const todayClass = group.isToday ? 'class="today-highlight"' : '';
-        rowsHtml += `<tr ${todayClass}><th>${labelDisplay}</th><td>${group.text}</td></tr>`;
-    });
-
-    return `<table class="hours-table"><tbody>${rowsHtml}</tbody></table>`;
-}
-
-function generateCardContentHTML(shop, isVisited, fromPopup = false) {
-    const isProcessing = processingShops.has(shop.id);
-    const fullAddress = `${shop.prefecture || ''}${shop.addressText || ''}`.trim();
-    const gmapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('ラーメン二郎 ' + shop.name + ' ' + fullAddress)}`;
-    
-    let linksHtml = '';
-    if (shop.x) linksHtml += `<a href="https://x.com/${shop.x}" target="_blank" rel="noopener noreferrer" class="shop-link">X ↗</a>`;
-    if (shop.instagram) linksHtml += `<a href="https://instagram.com/${shop.instagram}" target="_blank" rel="noopener noreferrer" class="shop-link">Instagram ↗</a>`;
-    if (shop.urls?.pc) linksHtml += `<a href="${shop.urls.pc}" target="_blank" rel="noopener noreferrer" class="shop-link">PC店Ⅲ ↗</a>`;
-    if (shop.urls?.tabelog) linksHtml += `<a href="${shop.urls.tabelog}" target="_blank" rel="noopener noreferrer" class="shop-link">食べログ ↗</a>`;
-
-    const status = getBusinessStatus(shop);
-    const statusTag = `<span class="status-badge ${status.bgClass}">${status.label}</span>`;
-    
-    let distanceText = '';
-    const sortSelect = document.getElementById('sort-select');
-    const sortVal = sortSelect ? sortSelect.value : '';
-    
-    if (sortVal === 'distance_center' && shop.centerDistance !== undefined) {
-        distanceText = `<span class="distance-tag">📍 中心から ${formatDistance(shop.centerDistance)}</span>`;
-    } else if (userCoords && shop.userDistance !== undefined) {
-        distanceText = `<span class="distance-tag">📍 現在地から ${formatDistance(shop.userDistance)}</span>`;
-    }
-
-    const tempWeeklyInfo = getWeeklyTemporaryText(shop);
-    const tempWeeklyHtml = tempWeeklyInfo.text ? `
+            const tempWeeklyInfo = getWeeklyTemporaryText(shop, selectedDate);
+            const tempWeeklyHtml = tempWeeklyInfo.text ? `
         <div class="temp-schedule-box ${tempWeeklyInfo.hasToday ? 'today-highlight' : ''}">
             <span class="temp-schedule-label">臨時営業情報（～30日後）:</span>
             <div class="temp-schedule-text">${tempWeeklyInfo.text}</div>
         </div>
     ` : '';
 
-    const remarksText = shop.remarks || shop.notes || '';
-    const openedDateStr = formatOpenedDateText(shop.openedAt);
+            const remarksText = shop.remarks || shop.notes || '';
+            const openedDateStr = formatOpenedDateText(shop.openedAt);
 
-    return `
+            return `
         <div class="shop-info" data-shop-id="${shop.id}">
             <div class="shop-header-row">
                 <div class="shop-title-wrapper">
@@ -1992,7 +2471,7 @@ function generateCardContentHTML(shop, isVisited, fromPopup = false) {
                 </button>
             </div>
             <div class="shop-sub-row">
-                ${getNextOpenScheduleText(shop)}
+                ${getNextOpenScheduleText(shop, selectedDate)}
                 ${distanceText}
             </div>
             <div class="detailed-content">
@@ -2005,7 +2484,7 @@ function generateCardContentHTML(shop, isVisited, fromPopup = false) {
                         <span>営業時間</span>
                         ${openedDateStr ? `<span class="open-date-text">${openedDateStr}</span>` : ''}
                     </div>
-                    ${renderBusinessHoursTable(shop)}
+                    ${renderBusinessHoursTable(shop, selectedDate)}
                     ${shop.hoursNotes ? `<div style="font-size:0.75rem; color:#ccc; margin-top:4px;"><strong>補足:</strong> ${shop.hoursNotes}</div>` : ''}
                     ${tempWeeklyHtml}
                 </div>
@@ -2014,618 +2493,687 @@ function generateCardContentHTML(shop, isVisited, fromPopup = false) {
             </div>
         </div>
     `;
-}
+        }
 
-const map = L.map('map', { fadeAnimation: false, zoomAnimation: true }).setView([MITA_HONTON_COORDS.lat, MITA_HONTON_COORDS.lng], 9);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+        const map = L.map('map', { fadeAnimation: false, zoomAnimation: true }).setView([MITA_HONTON_COORDS.lat, MITA_HONTON_COORDS.lng], 9);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
 
-map.on('movestart dragstart zoomstart', () => {
-    if (!isProgrammaticMove) {
-        userHasInteractedWithMap = true;
-    }
-});
+        map.on('movestart dragstart zoomstart', () => {
+            if (!isProgrammaticMove) {
+                userHasInteractedWithMap = true;
+            }
+        });
 
-function checkPopupBounds() {
-    map.eachLayer(layer => {
-        if (layer.getPopup && layer.getPopup() && layer.isPopupOpen()) {
-            const popup = layer.getPopup();
-            const latLng = popup.getLatLng();
-            if (latLng) {
-                const mapBounds = map.getBounds();
-                if (!mapBounds.contains(latLng)) {
-                    map.closePopup(popup);
+        function checkPopupBounds() {
+            map.eachLayer(layer => {
+                if (layer.getPopup && layer.getPopup() && layer.isPopupOpen()) {
+                    const popup = layer.getPopup();
+                    const latLng = popup.getLatLng();
+                    if (latLng) {
+                        const mapBounds = map.getBounds();
+                        if (!mapBounds.contains(latLng)) {
+                            map.closePopup(popup);
+                        }
+                    }
                 }
+            });
+        }
+
+        map.on('move', checkPopupBounds);
+        map.on('moveend', () => {
+            const center = map.getCenter();
+            lastMapCenter = { lat: center.lat, lng: center.lng };
+            checkPopupBounds();
+            const sortSelect = document.getElementById('sort-select');
+            if (sortSelect && sortSelect.value === 'distance_center') {
+                render();
+            }
+        });
+
+        function updateLocationButtonUI(hasLocation) {
+            if (!locationBtnElement) return;
+            locationBtnElement.classList.toggle('active-loc', hasLocation);
+            locationBtnElement.classList.toggle('is-visible', hasLocation);
+        }
+
+        function fitMapToAllShops() {
+            const validShops = shops.filter(shop => shop.lat !== undefined && shop.lng !== undefined && !isClosedShopExpired(shop));
+            if (validShops.length === 0) return;
+
+            const bounds = L.latLngBounds(validShops.map(shop => [shop.lat, shop.lng]));
+            map.fitBounds(bounds, {
+                padding: [30, 30],
+                maxZoom: 6,
+                animate: true
+            });
+            userHasInteractedWithMap = false;
+        }
+
+        function createIcon(shop, isVisited) {
+            const status = getBusinessStatus(shop, new Date());
+            return L.divIcon({
+                className: 'custom-icon',
+                html: `<div class="marker-pin ${status.bgClass} ${isVisited ? 'border-visited' : 'border-unvisited'}"></div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+        }
+
+        function saveState() {
+            localStorage.setItem('jiro_pc_visited', JSON.stringify(visitedState));
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = shops.length;
+            const visitedCount = shops.filter(s => visitedState[s.id]).length;
+            const percent = total > 0 ? Math.round((visitedCount / total) * 100) : 0;
+
+            document.getElementById('total-count').textContent = total;
+            document.getElementById('visited-count').textContent = visitedCount;
+            document.getElementById('percentage').textContent = percent + '%';
+
+            const fill = document.getElementById('progress-fill');
+            fill.style.width = percent + '%';
+            fill.style.backgroundColor = 'var(--jiro-yellow)';
+            document.getElementById('progress-bar').setAttribute('aria-valuenow', percent);
+        }
+
+        function updateVisibleCount(count) {
+            const countNode = document.getElementById('controls-toggle-count');
+            if (countNode) {
+                countNode.innerHTML = `表示: <strong>${count}</strong> 店舗`;
             }
         }
-    });
-}
 
-map.on('move', checkPopupBounds);
-map.on('moveend', () => {
-    const center = map.getCenter();
-    lastMapCenter = { lat: center.lat, lng: center.lng };
-    checkPopupBounds();
-    const sortSelect = document.getElementById('sort-select');
-    if (sortSelect && sortSelect.value === 'distance_center') {
-        render();
-    }
-});
+        function setListSubMode(mode) {
+            listSubMode = mode;
+            document.getElementById('opt-minimal').classList.toggle('active', mode === 'minimal');
+            document.getElementById('opt-compact').classList.toggle('active', mode === 'compact');
+            document.getElementById('opt-detailed').classList.toggle('active', mode === 'detailed');
+            document.getElementById('opt-today').classList.toggle('active', mode === 'today');
+            const dateArea = document.getElementById('date-selector-area');
+            if (dateArea) {
+                dateArea.classList.toggle('is-visible', mode === 'today');
+            }
 
-function updateLocationButtonUI(hasLocation) {
-    if (!locationBtnElement) return;
-    locationBtnElement.classList.toggle('active-loc', hasLocation);
-    locationBtnElement.classList.toggle('is-visible', hasLocation);
-}
+            const todayFilterRow = document.getElementById('today-filter-row');
+            if (todayFilterRow) {
+                if (mode === 'today') {
+                    todayFilterRow.style.display = 'block';
+                } else {
+                    todayFilterRow.style.display = 'none';
+                    // 日別以外のレイアウトになったら、日付指定の営業/休業フィルタを全てONにリセットする
+                    const checkboxes = document.querySelectorAll('input[name="today-open-filter"]');
+                    checkboxes.forEach(cb => cb.checked = true);
+                }
+            }
 
-function fitMapToAllShops() {
-    const validShops = shops.filter(shop => shop.lat !== undefined && shop.lng !== undefined && !isClosedShopExpired(shop));
-    if (validShops.length === 0) return;
+            const sidebar = document.getElementById('sidebar-container');
+            if (sidebar) {
+                sidebar.style.minWidth = (mode === 'minimal') ? '160px' : '340px';
+            }
 
-    const bounds = L.latLngBounds(validShops.map(shop => [shop.lat, shop.lng]));
-    map.fitBounds(bounds, {
-        padding: [30, 30],
-        maxZoom: 6,
-        animate: true
-    });
-    userHasInteractedWithMap = false;
-}
-
-function createIcon(shop, isVisited) {
-    const status = getBusinessStatus(shop);
-    return L.divIcon({
-        className: 'custom-icon',
-        html: `<div class="marker-pin ${status.bgClass} ${isVisited ? 'border-visited' : 'border-unvisited'}"></div>`,
-        iconSize: [20, 20],
-        iconAnchor: [10, 10]
-    });
-}
-
-function saveState() {
-    localStorage.setItem('jiro_pc_visited', JSON.stringify(visitedState));
-    updateStats();
-}
-
-function updateStats() {
-    const total = shops.length;
-    const visitedCount = shops.filter(s => visitedState[s.id]).length;
-    const percent = total > 0 ? Math.round((visitedCount / total) * 100) : 0;
-
-    document.getElementById('total-count').textContent = total;
-    document.getElementById('visited-count').textContent = visitedCount;
-    document.getElementById('percentage').textContent = percent + '%';
-    
-    const fill = document.getElementById('progress-fill');
-    fill.style.width = percent + '%';
-    fill.style.backgroundColor = 'var(--jiro-yellow)';
-    document.getElementById('progress-bar').setAttribute('aria-valuenow', percent);
-}
-
-function updateVisibleCount(count) {
-    const countNode = document.getElementById('controls-toggle-count');
-    if (countNode) {
-        countNode.innerHTML = `表示: <strong>${count}</strong>店舗`;
-    }
-}
-
-function setListSubMode(mode) {
-    listSubMode = mode;
-    document.getElementById('opt-minimal').classList.toggle('active', mode === 'minimal');
-    document.getElementById('opt-compact').classList.toggle('active', mode === 'compact');
-    document.getElementById('opt-detailed').classList.toggle('active', mode === 'detailed');
-    document.getElementById('opt-today').classList.toggle('active', mode === 'today');
-    
-    const sidebar = document.getElementById('sidebar-container');
-    if (sidebar) {
-        sidebar.style.minWidth = (mode === 'minimal') ? '160px' : '340px';
-    }
-    
-    render();
-}
-
-function updateLayout() {
-    const isWide = window.innerWidth >= 900;
-    const mapWrapper = document.getElementById('map-wrapper');
-    const sidebar = document.getElementById('sidebar-container');
-    const resizer = document.getElementById('drag-resizer');
-    const container = document.getElementById('layout-switch-group');
-
-    sidebar.style.minWidth = (listSubMode === 'minimal') ? '160px' : '340px';
-
-    if (isWide) {
-        resizer.style.display = (isShowMap && isShowList) ? 'block' : 'none';
-        mapWrapper.style.display = isShowMap ? 'block' : 'none';
-        sidebar.style.display = isShowList ? 'flex' : 'none';
-
-        if (!isShowMap && isShowList) {
-            sidebar.style.width = '100%';
-        } else if (isShowMap && isShowList) {
-            if (sidebar.style.width === '100%') sidebar.style.width = '380px';
+            render();
         }
 
-        container.innerHTML = `
+        function updateLayout() {
+            const isWide = window.innerWidth >= 900;
+            const mapWrapper = document.getElementById('map-wrapper');
+            const sidebar = document.getElementById('sidebar-container');
+            const resizer = document.getElementById('drag-resizer');
+            const container = document.getElementById('layout-switch-group');
+
+            sidebar.style.minWidth = (listSubMode === 'minimal') ? '160px' : '340px';
+
+            if (isWide) {
+                resizer.style.display = (isShowMap && isShowList) ? 'block' : 'none';
+                mapWrapper.style.display = isShowMap ? 'block' : 'none';
+                sidebar.style.display = isShowList ? 'flex' : 'none';
+
+                if (!isShowMap && isShowList) {
+                    sidebar.style.width = '100%';
+                } else if (isShowMap && isShowList) {
+                    if (sidebar.style.width === '100%') sidebar.style.width = '380px';
+                }
+
+                container.innerHTML = `
             <button type="button" class="mode-switch-option ${isShowMap ? 'active' : ''}" onclick="toggleWideComponent('map')">地図</button>
             <button type="button" class="mode-switch-option ${isShowList ? 'active' : ''}" onclick="toggleWideComponent('list')">リスト</button>
         `;
-    } else {
-        resizer.style.display = 'none';
-        sidebar.style.width = '100%';
+            } else {
+                resizer.style.display = 'none';
+                sidebar.style.width = '100%';
 
-        if (narrowViewMode === 'map') {
-            mapWrapper.style.display = 'block';
-            sidebar.style.display = 'none';
-        } else {
-            mapWrapper.style.display = 'none';
-            sidebar.style.display = 'flex';
-        }
+                if (narrowViewMode === 'map') {
+                    mapWrapper.style.display = 'block';
+                    sidebar.style.display = 'none';
+                } else {
+                    mapWrapper.style.display = 'none';
+                    sidebar.style.display = 'flex';
+                }
 
-        container.innerHTML = `
+                container.innerHTML = `
             <button type="button" class="mode-switch-option ${narrowViewMode === 'map' ? 'active' : ''}" onclick="setNarrowView('map')">地図</button>
             <button type="button" class="mode-switch-option ${narrowViewMode === 'list' ? 'active' : ''}" onclick="setNarrowView('list')">リスト</button>
         `;
-    }
+            }
 
-    updateSortDropdownOptions();
-    setTimeout(() => map.invalidateSize(), 50);
-}
-
-function toggleWideComponent(component) {
-    if (component === 'map') {
-        if (isShowMap && !isShowList) return;
-        isShowMap = !isShowMap;
-    } else if (component === 'list') {
-        if (isShowList && !isShowMap) return;
-        isShowList = !isShowList;
-    }
-    updateLayout();
-    render();
-}
-
-function setNarrowView(mode) {
-    narrowViewMode = mode;
-    updateLayout();
-    render();
-}
-
-function updateSortDropdownOptions() {
-    const sortSelect = document.getElementById('sort-select');
-    if (!sortSelect) return;
-
-    let emptyOption = sortSelect.querySelector('option[value=""]');
-    if (!emptyOption) {
-        emptyOption = document.createElement('option');
-        emptyOption.value = "";
-        emptyOption.textContent = "";
-        emptyOption.style.display = "none";
-        sortSelect.appendChild(emptyOption);
-    }
-
-    const distUserOpt = sortSelect.querySelector('option[value="distance_user"]');
-    const distCenterOpt = sortSelect.querySelector('option[value="distance_center"]');
-
-    if (distUserOpt) distUserOpt.disabled = !userCoords;
-    if (distCenterOpt) distCenterOpt.disabled = !isShowMap && (window.innerWidth >= 900 ? !isShowMap : narrowViewMode !== 'map');
-}
-
-function onSortChange() {
-    customPreservedOrder = null;
-    render();
-}
-
-function toggleControlsVisibility() {
-    const wrapper = document.getElementById('controls-wrapper');
-    const toggleText = document.getElementById('controls-toggle-text');
-    wrapper.classList.toggle('collapsed');
-    
-    if (wrapper.classList.contains('collapsed')) {
-        toggleText.textContent = '▼ フィルタを表示する';
-    } else {
-        toggleText.textContent = '▲ フィルタを隠す';
-    }
-}
-
-function toggleVisit(id, fromPopup = false, event = null) {
-    if (event) event.stopPropagation();
-
-    visitedState[id] = !visitedState[id];
-    saveState();
-    
-    const isVisited = !!visitedState[id];
-    const shop = shops.find(s => s.id === id);
-    if (markers[id] && shop) {
-        markers[id].setIcon(createIcon(shop, isVisited));
-        markers[id].setPopupContent(generateCardContentHTML(shop, isVisited, true));
-        if (fromPopup || markers[id].isPopupOpen()) {
-            setTimeout(() => {
-                markers[id].openPopup();
-            }, 0);
+            updateSortDropdownOptions();
+            setTimeout(() => map.invalidateSize(), 50);
         }
-    }
-    
-    const gridModal = document.getElementById('grid-popup-modal');
-    if (gridModal && gridModal.open) {
-        const contentArea = document.getElementById('grid-popup-content-area');
-        if (contentArea && contentArea.dataset.shopId === id) {
+
+        function toggleWideComponent(component) {
+            if (component === 'map') {
+                if (isShowMap && !isShowList) return;
+                isShowMap = !isShowMap;
+            } else if (component === 'list') {
+                if (isShowList && !isShowMap) return;
+                isShowList = !isShowList;
+            }
+            updateLayout();
+            render();
+        }
+
+        function setNarrowView(mode) {
+            narrowViewMode = mode;
+            updateLayout();
+            render();
+        }
+
+        function updateSortDropdownOptions() {
+            const sortSelect = document.getElementById('sort-select');
+            if (!sortSelect) return;
+
+            let emptyOption = sortSelect.querySelector('option[value=""]');
+            if (!emptyOption) {
+                emptyOption = document.createElement('option');
+                emptyOption.value = "";
+                emptyOption.textContent = "";
+                emptyOption.style.display = "none";
+                sortSelect.appendChild(emptyOption);
+            }
+
+            const distUserOpt = sortSelect.querySelector('option[value="distance_user"]');
+            const distCenterOpt = sortSelect.querySelector('option[value="distance_center"]');
+
+            if (distUserOpt) distUserOpt.disabled = !userCoords;
+            if (distCenterOpt) distCenterOpt.disabled = !isShowMap && (window.innerWidth >= 900 ? !isShowMap : narrowViewMode !== 'map');
+        }
+
+        function onSortChange() {
+            customPreservedOrder = null;
+            render();
+        }
+
+        function toggleControlsVisibility() {
+            const wrapper = document.getElementById('controls-wrapper');
+            const toggleText = document.getElementById('controls-toggle-text');
+            wrapper.classList.toggle('collapsed');
+
+            if (wrapper.classList.contains('collapsed')) {
+                toggleText.textContent = '▼ フィルタを表示する';
+            } else {
+                toggleText.textContent = '▲ フィルタを隠す';
+            }
+        }
+
+        function toggleFooterVisibility() {
+            const footer = document.getElementById('app-footer');
+            const btn = document.getElementById('footer-toggle-btn');
+            if (!footer || !btn) return;
+            const isCollapsed = footer.classList.toggle('is-collapsed');
+            btn.innerHTML = isCollapsed
+                ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>'
+                : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+            btn.setAttribute('aria-label', isCollapsed ? 'フッターを再表示' : 'フッターを隠す');
+        }
+
+        function toggleHeaderVisibility() {
+            const header = document.querySelector('header');
+            if (!header) return;
+            header.classList.toggle('is-collapsed');
+        }
+
+        function toggleVisit(id, fromPopup = false, event = null) {
+            if (event) event.stopPropagation();
+
+            visitedState[id] = !visitedState[id];
+            saveState();
+
+            const isVisited = !!visitedState[id];
+            const shop = shops.find(s => s.id === id);
+            if (markers[id] && shop) {
+                markers[id].setIcon(createIcon(shop, isVisited));
+                markers[id].setPopupContent(generateCardContentHTML(shop, isVisited, true));
+                if (fromPopup || markers[id].isPopupOpen()) {
+                    setTimeout(() => {
+                        markers[id].openPopup();
+                    }, 0);
+                }
+            }
+
+            const gridModal = document.getElementById('grid-popup-modal');
+            if (gridModal && gridModal.open) {
+                const contentArea = document.getElementById('grid-popup-content-area');
+                if (contentArea && contentArea.dataset.shopId === id) {
+                    contentArea.innerHTML = generateCardContentHTML(shop, isVisited, true);
+                }
+            }
+
+            render();
+
+            if (GAS_API_URL) {
+                fetch(GAS_API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify({ user_id: CURRENT_USER_ID, shop_id: id, is_completed: isVisited })
+                }).catch(err => {
+                    console.error("GASエラー:", err);
+                });
+            }
+        }
+
+        function focusShopOnMap(shopId) {
+            const shop = shops.find(s => s.id === shopId);
+            if (shop?.lat && shop?.lng && markers[shopId]) {
+                isProgrammaticMove = true;
+                map.invalidateSize();
+                map.setView([shop.lat, shop.lng], 15, { animate: false });
+                markers[shopId].openPopup();
+                setTimeout(() => {
+                    isProgrammaticMove = false;
+                }, 100);
+            }
+        }
+
+        function handleShopSelect(shopId) {
+            const isMapVisible = isShowMap && (window.innerWidth >= 900 || narrowViewMode === 'map');
+
+            if (!isMapVisible) {
+                showGridShopPopup(shopId);
+            } else {
+                focusShopOnMap(shopId);
+            }
+        }
+
+        function showGridShopPopup(shopId) {
+            const shop = shops.find(s => s.id === shopId);
+            if (!shop) return;
+
+            const isVisited = !!visitedState[shop.id];
+            const contentArea = document.getElementById('grid-popup-content-area');
+            contentArea.dataset.shopId = shop.id;
             contentArea.innerHTML = generateCardContentHTML(shop, isVisited, true);
-        }
-    }
 
-    render();
-
-    if (GAS_API_URL) {
-        fetch(GAS_API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify({ user_id: CURRENT_USER_ID, shop_id: id, is_completed: isVisited })
-        }).catch(err => {
-            console.error("GASエラー:", err);
-        });
-    }
-}
-
-function focusShopOnMap(shopId) {
-    const shop = shops.find(s => s.id === shopId);
-    if (shop?.lat && shop?.lng && markers[shopId]) {
-        isProgrammaticMove = true;
-        map.invalidateSize();
-        map.setView([shop.lat, shop.lng], 15, { animate: false });
-        markers[shopId].openPopup();
-        setTimeout(() => {
-            isProgrammaticMove = false;
-        }, 100);
-    }
-}
-
-function handleShopSelect(shopId) {
-    const isMapVisible = isShowMap && (window.innerWidth >= 900 || narrowViewMode === 'map');
-    
-    if (!isMapVisible) {
-        showGridShopPopup(shopId);
-    } else {
-        focusShopOnMap(shopId);
-    }
-}
-
-function showGridShopPopup(shopId) {
-    const shop = shops.find(s => s.id === shopId);
-    if (!shop) return;
-
-    const isVisited = !!visitedState[shop.id];
-    const contentArea = document.getElementById('grid-popup-content-area');
-    contentArea.dataset.shopId = shop.id;
-    contentArea.innerHTML = generateCardContentHTML(shop, isVisited, true);
-
-    const modal = document.getElementById('grid-popup-modal');
-    if (modal && !modal.open) {
-        modal.showModal();
-    }
-}
-
-function onSearchInput() {
-    render();
-    
-    const rawSearchQuery = document.getElementById('search-input').value.toLowerCase().trim();
-    if (!rawSearchQuery) return;
-
-    const katakanaQuery = hiraganaToKatakana(rawSearchQuery);
-    const selectedOpen = Array.from(document.querySelectorAll('input[name="open-filter"]:checked')).map(cb => cb.value);
-    const selectedVisit = Array.from(document.querySelectorAll('input[name="visit-filter"]:checked')).map(cb => cb.value);
-
-    const matchedShops = shops.filter(shop => {
-        if (shop.lat === undefined || shop.lng === undefined || isClosedShopExpired(shop)) return false;
-        const isVisited = !!visitedState[shop.id];
-        if (!selectedVisit.includes(isVisited ? 'visited' : 'unvisited')) return false;
-        const status = getBusinessStatus(shop);
-        let statusKey = status.type === 'preopen' ? 'closed' : status.type;
-        if (!selectedOpen.includes(statusKey)) return false;
-
-        const fullAddress = `${shop.prefecture || ''}${shop.addressText || ''}`.toLowerCase();
-        const shopKana = shop.kana || '';
-        
-        return shop.name.toLowerCase().includes(rawSearchQuery) || 
-               fullAddress.includes(rawSearchQuery) ||
-               shopKana.includes(katakanaQuery) ||
-               shopKana.includes(rawSearchQuery);
-    });
-
-    if (matchedShops.length === 1) {
-        const targetShop = matchedShops[0];
-        if (markers[targetShop.id]) {
-            focusShopOnMap(targetShop.id);
-        }
-    }
-}
-
-function render() {
-    const grid = document.getElementById('shop-grid');
-    
-    grid.className = 'shop-grid';
-    if (listSubMode === 'minimal') {
-        grid.classList.add('view-mode-minimal');
-    } else if (listSubMode === 'compact') {
-        grid.classList.add('view-mode-compact');
-    } else if (listSubMode === 'detailed') {
-        grid.classList.add('view-mode-detailed');
-    } else if (listSubMode === 'today') {
-        grid.classList.add('view-mode-today');
-    }
-
-    const rawSearchQuery = document.getElementById('search-input').value.toLowerCase().trim();
-    const katakanaQuery = hiraganaToKatakana(rawSearchQuery);
-
-    const selectedOpen = Array.from(document.querySelectorAll('input[name="open-filter"]:checked')).map(cb => cb.value);
-    const selectedVisit = Array.from(document.querySelectorAll('input[name="visit-filter"]:checked')).map(cb => cb.value);
-    
-    const sortSelect = document.getElementById('sort-select');
-    const sortType = sortSelect ? sortSelect.value : 'distance_center';
-
-    grid.innerHTML = '';
-    let displayShops = shops.filter(s => s.lat !== undefined && s.lng !== undefined && !isClosedShopExpired(s));
-
-    const center = map.getCenter();
-    displayShops.forEach(shop => {
-        if (userCoords) {
-            shop.userDistance = calculateDistance(userCoords.lat, userCoords.lng, shop.lat, shop.lng);
-        } else {
-            shop.userDistance = undefined;
-        }
-        shop.centerDistance = calculateDistance(center.lat, center.lng, shop.lat, shop.lng);
-        
-        if (markers[shop.id]) {
-            markers[shop.id].setPopupContent(generateCardContentHTML(shop, !!visitedState[shop.id], true));
-        }
-    });
-
-    if (sortType === "") {
-        if (!customPreservedOrder) {
-            customPreservedOrder = [...displayShops].sort((a, b) => {
-                if (a.userDistance !== undefined && b.userDistance !== undefined) return a.userDistance - b.userDistance;
-                return a.centerDistance - b.centerDistance;
-            }).map(s => s.id);
-        }
-        const orderMap = new Map(customPreservedOrder.map((id, index) => [id, index]));
-        displayShops.sort((a, b) => {
-            const indexA = orderMap.has(a.id) ? orderMap.get(a.id) : 9999;
-            const indexB = orderMap.has(b.id) ? orderMap.get(b.id) : 9999;
-            return indexA - indexB;
-        });
-    } else if (sortType === 'distance_user') {
-        displayShops.sort((a, b) => {
-            if (a.userDistance === undefined && b.userDistance === undefined) return 0;
-            if (a.userDistance === undefined) return 1;
-            if (b.userDistance === undefined) return -1;
-            return a.userDistance - b.userDistance;
-        });
-    } else if (sortType === 'distance_center') {
-        displayShops.sort((a, b) => a.centerDistance - b.centerDistance);
-    } else if (sortType === 'opened') {
-        displayShops.sort((a, b) => {
-            const dateA = parseNormalizedDateStr(a.openedAt);
-            const dateB = parseNormalizedDateStr(b.openedAt);
-            if (!dateA) return 1;
-            if (!dateB) return -1;
-            return dateA.localeCompare(dateB);
-        });
-    } else if (sortType === 'hours') {
-        displayShops.sort((a, b) => {
-            const shiftA = getNextShiftTimes(a);
-            const shiftB = getNextShiftTimes(b);
-
-            if (shiftA.startTime !== shiftB.startTime) {
-                return shiftA.startTime - shiftB.startTime;
+            const modal = document.getElementById('grid-popup-modal');
+            if (modal && !modal.open) {
+                modal.showModal();
             }
-            if (shiftA.endTime !== shiftB.endTime) {
-                return shiftA.endTime - shiftB.endTime;
+        }
+
+        function onSearchInput() {
+            render();
+
+            const rawSearchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            if (!rawSearchQuery) return;
+
+            const katakanaQuery = hiraganaToKatakana(rawSearchQuery);
+            const selectedOpen = Array.from(document.querySelectorAll('input[name="open-filter"]:checked')).map(cb => cb.value);
+            const selectedVisit = Array.from(document.querySelectorAll('input[name="visit-filter"]:checked')).map(cb => cb.value);
+
+            const matchedShops = shops.filter(shop => {
+                if (shop.lat === undefined || shop.lng === undefined || isClosedShopExpired(shop)) return false;
+                const isVisited = !!visitedState[shop.id];
+                if (!selectedVisit.includes(isVisited ? 'visited' : 'unvisited')) return false;
+                const status = getBusinessStatus(shop);
+                let statusKey = status.type === 'preopen' ? 'closed' : status.type;
+                if (!selectedOpen.includes(statusKey)) return false;
+
+                const fullAddress = `${shop.prefecture || ''}${shop.addressText || ''}`.toLowerCase();
+                const shopKana = shop.kana || '';
+
+                return shop.name.toLowerCase().includes(rawSearchQuery) ||
+                    fullAddress.includes(rawSearchQuery) ||
+                    shopKana.includes(katakanaQuery) ||
+                    shopKana.includes(rawSearchQuery);
+            });
+
+            if (matchedShops.length === 1) {
+                const targetShop = matchedShops[0];
+                if (markers[targetShop.id]) {
+                    focusShopOnMap(targetShop.id);
+                }
             }
-            if (userCoords) {
-                if (a.userDistance !== undefined && b.userDistance !== undefined) {
+        }
+
+        function render() {
+            const dateInput = document.getElementById('date-selector');
+            const activeDate = getEffectiveDisplayDate();
+            if (dateInput && !dateInput.value) {
+                const minDate = getLocalDateKey(new Date());
+                dateInput.min = minDate;
+                dateInput.value = minDate;
+                selectedDateKey = minDate;
+            }
+            if (dateInput) {
+                dateInput.min = getLocalDateKey(new Date());
+            }
+
+            const grid = document.getElementById('shop-grid');
+
+            grid.className = 'shop-grid';
+            if (listSubMode === 'minimal') {
+                grid.classList.add('view-mode-minimal');
+            } else if (listSubMode === 'compact') {
+                grid.classList.add('view-mode-compact');
+            } else if (listSubMode === 'detailed') {
+                grid.classList.add('view-mode-detailed');
+            } else if (listSubMode === 'today') {
+                grid.classList.add('view-mode-today');
+            }
+
+            const rawSearchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            const katakanaQuery = hiraganaToKatakana(rawSearchQuery);
+
+            const selectedOpen = Array.from(document.querySelectorAll('input[name="open-filter"]:checked')).map(cb => cb.value);
+            const selectedVisit = Array.from(document.querySelectorAll('input[name="visit-filter"]:checked')).map(cb => cb.value);
+
+            const sortSelect = document.getElementById('sort-select');
+            const sortType = sortSelect ? sortSelect.value : 'distance_center';
+
+            grid.innerHTML = '';
+            let displayShops = shops.filter(s => s.lat !== undefined && s.lng !== undefined && !isClosedShopExpired(s));
+
+            const center = map.getCenter();
+            displayShops.forEach(shop => {
+                if (userCoords) {
+                    shop.userDistance = calculateDistance(userCoords.lat, userCoords.lng, shop.lat, shop.lng);
+                } else {
+                    shop.userDistance = undefined;
+                }
+                shop.centerDistance = calculateDistance(center.lat, center.lng, shop.lat, shop.lng);
+
+                if (markers[shop.id]) {
+                    markers[shop.id].setPopupContent(generateCardContentHTML(shop, !!visitedState[shop.id], true));
+                    markers[shop.id].setIcon(createIcon(shop, !!visitedState[shop.id]));
+                }
+            });
+
+            if (sortType === "") {
+                if (!customPreservedOrder) {
+                    customPreservedOrder = [...displayShops].sort((a, b) => {
+                        if (a.userDistance !== undefined && b.userDistance !== undefined) return a.userDistance - b.userDistance;
+                        return a.centerDistance - b.centerDistance;
+                    }).map(s => s.id);
+                }
+                const orderMap = new Map(customPreservedOrder.map((id, index) => [id, index]));
+                displayShops.sort((a, b) => {
+                    const indexA = orderMap.has(a.id) ? orderMap.get(a.id) : 9999;
+                    const indexB = orderMap.has(b.id) ? orderMap.get(b.id) : 9999;
+                    return indexA - indexB;
+                });
+            } else if (sortType === 'distance_user') {
+                displayShops.sort((a, b) => {
+                    if (a.userDistance === undefined && b.userDistance === undefined) return 0;
+                    if (a.userDistance === undefined) return 1;
+                    if (b.userDistance === undefined) return -1;
                     return a.userDistance - b.userDistance;
+                });
+            } else if (sortType === 'distance_center') {
+                displayShops.sort((a, b) => a.centerDistance - b.centerDistance);
+            } else if (sortType === 'opened') {
+                displayShops.sort((a, b) => {
+                    const dateA = parseNormalizedDateStr(a.openedAt);
+                    const dateB = parseNormalizedDateStr(b.openedAt);
+                    if (!dateA) return 1;
+                    if (!dateB) return -1;
+                    return dateA.localeCompare(dateB);
+                });
+            } else if (sortType === 'hours') {
+                displayShops.sort((a, b) => {
+                    const shiftA = getNextShiftTimes(a);
+                    const shiftB = getNextShiftTimes(b);
+
+                    if (shiftA.startTime !== shiftB.startTime) {
+                        return shiftA.startTime - shiftB.startTime;
+                    }
+                    if (shiftA.endTime !== shiftB.endTime) {
+                        return shiftA.endTime - shiftB.endTime;
+                    }
+                    if (userCoords) {
+                        if (a.userDistance !== undefined && b.userDistance !== undefined) {
+                            return a.userDistance - b.userDistance;
+                        }
+                    }
+                    return a.centerDistance - b.centerDistance;
+                });
+            } else if (sortType === 'name') {
+                displayShops.sort((a, b) => (a.kana || a.name).localeCompare(b.kana || b.name, 'ja'));
+            }
+
+            const fragment = document.createDocumentFragment();
+            let visibleShopCount = 0;
+
+            displayShops.forEach(shop => {
+                const isVisited = !!visitedState[shop.id];
+                const status = getBusinessStatus(shop, activeDate);
+
+                if (!selectedVisit.includes(isVisited ? 'visited' : 'unvisited')) {
+                    updateMarkerVisibility(shop.id, false);
+                    return;
                 }
-            }
-            return a.centerDistance - b.centerDistance;
-        });
-    } else if (sortType === 'name') {
-        displayShops.sort((a, b) => (a.kana || a.name).localeCompare(b.kana || b.name, 'ja'));
-    }
 
-    const fragment = document.createDocumentFragment();
-    let visibleShopCount = 0;
+                let statusKey = status.type === 'preopen' ? 'closed' : status.type;
+                if (!selectedOpen.includes(statusKey)) {
+                    updateMarkerVisibility(shop.id, false);
+                    return;
+                }
 
-    displayShops.forEach(shop => {
-        const isVisited = !!visitedState[shop.id];
-        const status = getBusinessStatus(shop);
-        
-        if (!selectedVisit.includes(isVisited ? 'visited' : 'unvisited')) {
-            updateMarkerVisibility(shop.id, false);
-            return;
-        }
+                if (listSubMode === 'today') {
+                    const selectedTodayOpen = Array.from(document.querySelectorAll('input[name="today-open-filter"]:checked')).map(cb => cb.value);
+                    const shifts = getTodayShifts(shop, activeDate);
+                    const isShopOpenOnDay = shifts && shifts.length > 0;
+                    const shopTodayStatus = isShopOpenOnDay ? 'open' : 'closed';
+                    if (!selectedTodayOpen.includes(shopTodayStatus)) {
+                        updateMarkerVisibility(shop.id, false);
+                        return;
+                    }
+                }
 
-        let statusKey = status.type === 'preopen' ? 'closed' : status.type;
-        if (!selectedOpen.includes(statusKey)) {
-            updateMarkerVisibility(shop.id, false);
-            return;
-        }
+                const fullAddress = `${shop.prefecture || ''}${shop.addressText || ''}`.toLowerCase();
+                const shopKana = shop.kana || '';
 
-        const fullAddress = `${shop.prefecture || ''}${shop.addressText || ''}`.toLowerCase();
-        const shopKana = shop.kana || '';
-        
-        if (rawSearchQuery) {
-            const isMatch = shop.name.toLowerCase().includes(rawSearchQuery) ||
-                            fullAddress.includes(rawSearchQuery) ||
-                            shopKana.includes(katakanaQuery) ||
-                            shopKana.includes(rawSearchQuery);
-            if (!isMatch) {
-                updateMarkerVisibility(shop.id, false);
-                return;
-            }
-        }
+                if (rawSearchQuery) {
+                    const isMatch = shop.name.toLowerCase().includes(rawSearchQuery) ||
+                        fullAddress.includes(rawSearchQuery) ||
+                        shopKana.includes(katakanaQuery) ||
+                        shopKana.includes(rawSearchQuery);
+                    if (!isMatch) {
+                        updateMarkerVisibility(shop.id, false);
+                        return;
+                    }
+                }
 
-        updateMarkerVisibility(shop.id, true);
-        visibleShopCount++;
+                updateMarkerVisibility(shop.id, true);
+                visibleShopCount++;
 
-        const item = document.createElement('div');
-        const isTodayOpen = ['open', 'closing-soon', 'scheduled'].includes(status.type);
-        item.className = `shop-item ${isVisited ? 'visited' : ''} ${listSubMode === 'today' ? (isTodayOpen ? 'today-open' : 'today-closed') : ''}`;
-        
-        if (listSubMode === 'minimal') {
-            item.onclick = (e) => {
-                if (e.target.tagName !== 'BUTTON') handleShopSelect(shop.id);
-            };
-            item.innerHTML = `
-                <div class="grid-shop-header">
-                    <span class="color-dot ${status.bgClass}"></span>
-                    <div class="grid-shop-name">${shop.name}</div>
+                const item = document.createElement('div');
+                const isTodayOpen = ['open', 'closing-soon', 'scheduled'].includes(status.type);
+
+                if (listSubMode === 'minimal') {
+                    item.onclick = (e) => {
+                        if (e.target.tagName !== 'BUTTON') handleShopSelect(shop.id);
+                    };
+                    const currentStatus = getBusinessStatus(shop, new Date());
+                    item.className = `shop-item ${isVisited ? 'visited' : ''} current-${currentStatus.type}`;
+                    const nextOpenHtml = getNextOpenScheduleText(shop, new Date());
+                    // HTML内のタグからプレーンテキストを抽出してツールチップ用に設定
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = nextOpenHtml;
+                    const nextOpenText = tempDiv.textContent || tempDiv.innerText || '';
+
+                    item.innerHTML = `
+                <div class="today-summary-card" style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; height:100%; width:100%;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; width:100%; flex:0 0 auto; min-height:2.4em; padding: 0 2px;">
+                        <div class="today-summary-name" style="text-align: left; -webkit-line-clamp: 2; flex: 1; margin-right: 4px; height:auto; line-height:1.2; font-size:0.68rem; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; align-content: center;" title="${shop.name}">${shop.name}</div>
+                        <button type="button" class="visit-toggle-btn-minimal ${isVisited ? 'is-visited' : ''}" onclick="toggleVisit('${shop.id}', false, event)" aria-label="${shop.name}の制覇状態を切り替え" style="background:none; border:none; color: ${isVisited ? 'var(--jiro-yellow)' : '#555'}; font-size: 0.95rem; padding: 0; cursor: pointer; line-height: 1; outline: none; flex-shrink: 0;">
+                            ${isVisited ? '✔' : '☐'}
+                        </button>
+                    </div>
+                    <div style="font-size: 0.58rem; color: #ccc; margin: 1px 0; text-align:center; width:100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${nextOpenText}">${nextOpenHtml}</div>
                 </div>
-                <button type="button" class="visit-toggle-btn ${isVisited ? 'is-visited' : ''}" onclick="toggleVisit('${shop.id}', false, event)" aria-label="${shop.name}の制覇状態を切り替え">
-                    ${isVisited ? '制覇済' : '未制覇'}
-                </button>
             `;
-        } else if (listSubMode === 'today') {
-            item.onclick = (e) => {
-                if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A') {
-                    handleShopSelect(shop.id);
-                }
-            };
+                } else if (listSubMode === 'today') {
+                    item.onclick = (e) => {
+                        if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A') {
+                            handleShopSelect(shop.id);
+                        }
+                    };
+                    item.className = `shop-item ${isVisited ? 'visited' : ''} ${isTodayOpen ? 'today-open' : 'today-closed'}`;
 
-            const tempStatus = getTemporaryStatus(shop);
-            const todayHours = (() => {
-                const shifts = getTodayShifts(shop);
-                if (!shifts || shifts.length === 0) return '休業';
-                return shifts.map(([start, end]) => `${formatTime(start)}-${formatTime(end)}`).join(', ');
-            })();
+                    const tempStatus = getTemporaryStatus(shop, activeDate);
+                    const todayHours = (() => {
+                        const shifts = getTodayShifts(shop, activeDate);
+                        if (!shifts || shifts.length === 0) return '休業';
+                        return shifts.map(([start, end]) => `${formatTime(start)}-${formatTime(end)}`).join('<br>');
+                    })();
 
-            const textClass = tempStatus ? 'is-temp' : (isTodayOpen ? 'is-open' : 'is-closed');
+                    const textClass = tempStatus ? 'is-temp' : (isTodayOpen ? 'is-open' : 'is-closed');
 
-            item.innerHTML = `
+                    item.innerHTML = `
                 <div class="today-summary-card">
                     <div class="today-summary-name">${shop.name}</div>
                     <div class="today-hours-text ${textClass}">${todayHours}</div>
                 </div>
             `;
-        } else {
-            item.onclick = (e) => {
-                if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A') {
-                    handleShopSelect(shop.id);
-                }
-            };
-            item.innerHTML = generateCardContentHTML(shop, isVisited, false);
+                } else {
+                    item.onclick = (e) => {
+                        if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A') {
+                            handleShopSelect(shop.id);
+                        }
+                    };
+                    const currentStatus = getBusinessStatus(shop, new Date());
+                    item.className = `shop-item ${isVisited ? 'visited' : ''} current-${currentStatus.type}`;
+                    item.innerHTML = generateCardContentHTML(shop, isVisited, false);
 
-            const detailedContent = item.querySelector('.detailed-content');
-            if (detailedContent) {
-                if (listSubMode === 'detailed') {
-                    detailedContent.style.display = 'flex';
-                } else if (listSubMode === 'compact') {
-                    detailedContent.style.display = 'none';
+                    const detailedContent = item.querySelector('.detailed-content');
+                    if (detailedContent) {
+                        if (listSubMode === 'detailed') {
+                            detailedContent.style.display = 'flex';
+                        } else if (listSubMode === 'compact') {
+                            detailedContent.style.display = 'none';
+                        }
+                    }
                 }
+
+                fragment.appendChild(item);
+            });
+
+            grid.appendChild(fragment);
+            updateVisibleCount(visibleShopCount);
+            updateStats();
+        }
+
+        function updateMarkerVisibility(shopId, isVisible) {
+            if (markers[shopId]) {
+                if (isVisible && !map.hasLayer(markers[shopId])) map.addLayer(markers[shopId]);
+                else if (!isVisible && map.hasLayer(markers[shopId])) map.removeLayer(markers[shopId]);
             }
         }
 
-        fragment.appendChild(item);
-    });
+        function locateAndFitToNearest(lat, lng, forceMove = false) {
+            userCoords = { lat, lng };
+            updateLocationButtonUI(true);
 
-    grid.appendChild(fragment);
-    updateVisibleCount(visibleShopCount);
-    updateStats();
-}
+            if (userMarker) userMarker.setLatLng([lat, lng]);
+            else userMarker = L.marker([lat, lng], { icon: L.divIcon({ className: 'custom-icon', html: '<div class="user-location-pin"></div>', iconSize: [16, 16] }) }).addTo(map);
 
-function updateMarkerVisibility(shopId, isVisible) {
-    if (markers[shopId]) {
-        if (isVisible && !map.hasLayer(markers[shopId])) map.addLayer(markers[shopId]);
-        else if (!isVisible && map.hasLayer(markers[shopId])) map.removeLayer(markers[shopId]);
-    }
-}
+            let nearestShop = null;
+            let minDistance = Infinity;
 
-function locateAndFitToNearest(lat, lng, forceMove = false) {
-    userCoords = { lat, lng };
-    updateLocationButtonUI(true);
-
-    if (userMarker) userMarker.setLatLng([lat, lng]);
-    else userMarker = L.marker([lat, lng], { icon: L.divIcon({ className: 'custom-icon', html: '<div class="user-location-pin"></div>', iconSize: [16, 16] }) }).addTo(map);
-
-    let nearestShop = null;
-    let minDistance = Infinity;
-
-    shops.forEach(shop => {
-        if (shop.lat !== undefined && shop.lng !== undefined && !isClosedShopExpired(shop)) {
-            const dist = calculateDistance(lat, lng, shop.lat, shop.lng);
-            shop.userDistance = dist;
-            if (dist < minDistance) {
-                minDistance = dist;
-                nearestShop = shop;
-            }
-        }
-    });
-
-    if (forceMove || !userHasInteractedWithMap) {
-        isProgrammaticMove = true;
-        
-        if (nearestShop && nearestShop.lat !== undefined && nearestShop.lng !== undefined) {
-            const bounds = L.latLngBounds([
-                [lat, lng],
-                [nearestShop.lat, nearestShop.lng]
-            ]);
-            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15, animate: true });
-
-            setTimeout(() => {
-                isProgrammaticMove = false;
-                if (markers[nearestShop.id]) {
-                    markers[nearestShop.id].openPopup();
+            shops.forEach(shop => {
+                if (shop.lat !== undefined && shop.lng !== undefined && !isClosedShopExpired(shop)) {
+                    const dist = calculateDistance(lat, lng, shop.lat, shop.lng);
+                    shop.userDistance = dist;
+                    if (dist < minDistance) {
+                        minDistance = dist;
+                        nearestShop = shop;
+                    }
                 }
-                map.invalidateSize();
-            }, 500);
-        } else {
-            map.flyTo([lat, lng], 13);
-            setTimeout(() => {
-                isProgrammaticMove = false;
-                map.invalidateSize();
-            }, 500);
-        }
-    }
+            });
 
-    updateSortDropdownOptions();
-    const sortSelect = document.getElementById('sort-select');
-    if (sortSelect && sortSelect.value !== 'distance_user') {
-        sortSelect.value = 'distance_user';
-    }
+            if (forceMove || !userHasInteractedWithMap) {
+                isProgrammaticMove = true;
 
-    render();
-}
+                if (nearestShop && nearestShop.lat !== undefined && nearestShop.lng !== undefined) {
+                    const bounds = L.latLngBounds([
+                        [lat, lng],
+                        [nearestShop.lat, nearestShop.lng]
+                    ]);
+                    map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15, animate: true });
 
-function requestUserLocation(silent = false, isUserClick = false) {
-    if (!navigator.geolocation) {
-        if (!silent) alert("お使いのブラウザは位置情報に対応していません。");
-        return;
-    }
-
-    if (isUserClick) {
-        userHasInteractedWithMap = false;
-    }
-    
-    navigator.geolocation.getCurrentPosition(
-        pos => locateAndFitToNearest(pos.coords.latitude, pos.coords.longitude, isUserClick),
-        err => {
-            updateLocationButtonUI(false);
-            if (!silent) {
-                let msg = "現在地の取得に失敗しました。";
-                if (err.code === err.PERMISSION_DENIED) msg = "位置情報の利用が許可されていません。";
-                else if (err.code === err.TIMEOUT) msg = "位置情報の取得がタイムアウトしました。";
-                alert(msg);
+                    setTimeout(() => {
+                        isProgrammaticMove = false;
+                        if (markers[nearestShop.id]) {
+                            markers[nearestShop.id].openPopup();
+                        }
+                        map.invalidateSize();
+                    }, 500);
+                } else {
+                    map.flyTo([lat, lng], 13);
+                    setTimeout(() => {
+                        isProgrammaticMove = false;
+                        map.invalidateSize();
+                    }, 500);
+                }
             }
-        },
-        geoOptions
-    );
-}
 
-const GlobalViewControl = L.Control.extend({
-    options: { position: 'bottomright' },
-    onAdd: function () {
-        const btn = L.DomUtil.create('button', 'global-view-btn');
-        btn.setAttribute('type', 'button');
-        btn.setAttribute('aria-label', '全国表示');
-        btn.setAttribute('data-tooltip', '全国表示');
-        btn.title = '全国表示';
-        btn.innerHTML = `
+            updateSortDropdownOptions();
+            const sortSelect = document.getElementById('sort-select');
+            if (sortSelect && sortSelect.value !== 'distance_user') {
+                sortSelect.value = 'distance_user';
+            }
+
+            render();
+        }
+
+        function requestUserLocation(silent = false, isUserClick = false) {
+            if (!navigator.geolocation) {
+                if (!silent) alert("お使いのブラウザは位置情報に対応していません。");
+                return;
+            }
+
+            if (isUserClick) {
+                userHasInteractedWithMap = false;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                pos => locateAndFitToNearest(pos.coords.latitude, pos.coords.longitude, isUserClick),
+                err => {
+                    updateLocationButtonUI(false);
+                    if (!silent) {
+                        let msg = "現在地の取得に失敗しました。";
+                        if (err.code === err.PERMISSION_DENIED) msg = "位置情報の利用が許可されていません。";
+                        else if (err.code === err.TIMEOUT) msg = "位置情報の取得がタイムアウトしました。";
+                        alert(msg);
+                    }
+                },
+                geoOptions
+            );
+        }
+
+        const GlobalViewControl = L.Control.extend({
+            options: { position: 'bottomright' },
+            onAdd: function () {
+                const btn = L.DomUtil.create('button', 'global-view-btn');
+                btn.setAttribute('type', 'button');
+                btn.setAttribute('aria-label', '全国表示');
+                btn.setAttribute('data-tooltip', '全国表示');
+                btn.title = '全国表示';
+                btn.innerHTML = `
             <svg viewBox="0 0 24 24" aria-hidden="true">
                 <rect x="4" y="4" width="7" height="7" rx="1"/>
                 <rect x="13" y="4" width="7" height="7" rx="1"/>
@@ -2633,134 +3181,152 @@ const GlobalViewControl = L.Control.extend({
                 <rect x="13" y="13" width="7" height="7" rx="1"/>
             </svg>
         `;
-        btn.onclick = function (e) {
-            e.stopPropagation();
-            fitMapToAllShops();
-        };
-        return btn;
-    }
-});
-
-const LocationControl = L.Control.extend({
-    options: { position: 'bottomright' },
-    onAdd: function () {
-        const btn = L.DomUtil.create('button', 'location-btn');
-        locationBtnElement = btn;
-        btn.setAttribute('aria-label', '現在地');
-        btn.setAttribute('data-tooltip', '現在地');
-        btn.title = '現在地';
-        btn.innerHTML = `<svg class="location-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle></svg>`;
-        btn.onclick = function (e) {
-            e.stopPropagation();
-            requestUserLocation(false, true);
-        };
-        return btn;
-    }
-});
-
-function initResizer() {
-    const resizer = document.getElementById('drag-resizer');
-    const sidebar = document.getElementById('sidebar-container');
-    let isDragging = false;
-
-    function handleStart(e) {
-        isDragging = true;
-        resizer.classList.add('is-dragging');
-        document.body.style.cursor = 'col-resize';
-        document.body.style.userSelect = 'none';
-    }
-
-    function handleMove(clientX) {
-        if (!isDragging) return;
-        const containerWidth = document.querySelector('.content-area').clientWidth;
-        let newSidebarWidth = containerWidth - clientX;
-        
-        const minW = (listSubMode === 'minimal') ? 160 : 340;
-        if (newSidebarWidth < minW) newSidebarWidth = minW;
-        if (newSidebarWidth > containerWidth - 250) newSidebarWidth = containerWidth - 250;
-        
-        sidebar.style.width = newSidebarWidth + 'px';
-        map.invalidateSize();
-    }
-
-    function handleEnd() {
-        if (isDragging) {
-            isDragging = false;
-            resizer.classList.remove('is-dragging');
-            document.body.style.cursor = '';
-            document.body.style.userSelect = '';
-        }
-    }
-
-    // マウスイベント
-    resizer.addEventListener('mousedown', handleStart);
-    document.addEventListener('mousemove', (e) => handleMove(e.clientX));
-    document.addEventListener('mouseup', handleEnd);
-
-    // タッチスクリーン（スマホ）対応イベント
-    resizer.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 1) handleStart(e.touches[0]);
-    }, { passive: true });
-    
-    document.addEventListener('touchmove', (e) => {
-        if (isDragging && e.touches.length === 1) {
-            handleMove(e.touches[0].clientX);
-        }
-    }, { passive: true });
-
-    document.addEventListener('touchend', handleEnd);
-    document.addEventListener('touchcancel', handleEnd);
-}
-
-async function initApp() {
-    map.addControl(new GlobalViewControl());
-    map.addControl(new LocationControl());
-
-    try {
-        const response = await fetch('shops.json');
-        if (!response.ok) throw new Error('読み込み失敗');
-        shops = (await response.json()).filter(shop => !isClosedShopExpired(shop));
-    } catch (error) {
-        console.error(error);
-        return;
-    }
-
-    let mitaShopId = null;
-
-    shops.forEach(shop => {
-        if (shop.lat && shop.lng) {
-            const isVisited = !!visitedState[shop.id];
-            const marker = L.marker([shop.lat, shop.lng], { icon: createIcon(shop, isVisited) }).addTo(map);
-            marker.bindPopup(generateCardContentHTML(shop, isVisited, true));
-            markers[shop.id] = marker;
-
-            if (shop.name.includes("三田本店")) {
-                mitaShopId = shop.id;
+                btn.onclick = function (e) {
+                    e.stopPropagation();
+                    fitMapToAllShops();
+                };
+                return btn;
             }
+        });
+
+        const LocationControl = L.Control.extend({
+            options: { position: 'bottomright' },
+            onAdd: function () {
+                const btn = L.DomUtil.create('button', 'location-btn');
+                locationBtnElement = btn;
+                btn.setAttribute('aria-label', '現在地');
+                btn.setAttribute('data-tooltip', '現在地');
+                btn.title = '現在地';
+                btn.innerHTML = `<svg class="location-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle></svg>`;
+                btn.onclick = function (e) {
+                    e.stopPropagation();
+                    requestUserLocation(false, true);
+                };
+                return btn;
+            }
+        });
+
+        function initResizer() {
+            const resizer = document.getElementById('drag-resizer');
+            const sidebar = document.getElementById('sidebar-container');
+            let isDragging = false;
+
+            function handleStart(e) {
+                isDragging = true;
+                resizer.classList.add('is-dragging');
+                document.body.style.cursor = 'col-resize';
+                document.body.style.userSelect = 'none';
+            }
+
+            function handleMove(clientX) {
+                if (!isDragging) return;
+                const containerWidth = document.querySelector('.content-area').clientWidth;
+                let newSidebarWidth = containerWidth - clientX;
+
+                const minW = (listSubMode === 'minimal') ? 160 : 340;
+                if (newSidebarWidth < minW) newSidebarWidth = minW;
+                if (newSidebarWidth > containerWidth - 250) newSidebarWidth = containerWidth - 250;
+
+                sidebar.style.width = newSidebarWidth + 'px';
+                map.invalidateSize();
+            }
+
+            function handleEnd() {
+                if (isDragging) {
+                    isDragging = false;
+                    resizer.classList.remove('is-dragging');
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+                }
+            }
+
+            // マウスイベント
+            resizer.addEventListener('mousedown', handleStart);
+            document.addEventListener('mousemove', (e) => handleMove(e.clientX));
+            document.addEventListener('mouseup', handleEnd);
+
+            // タッチスクリーン（スマホ）対応イベント
+            resizer.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) handleStart(e.touches[0]);
+            }, { passive: true });
+
+            document.addEventListener('touchmove', (e) => {
+                if (isDragging && e.touches.length === 1) {
+                    handleMove(e.touches[0].clientX);
+                }
+            }, { passive: true });
+
+            document.addEventListener('touchend', handleEnd);
+            document.addEventListener('touchcancel', handleEnd);
         }
-    });
 
-    updateLayout();
+        function initDateSelector() {
+            const dateInput = document.getElementById('date-selector');
+            if (!dateInput) return;
+            const minDate = getLocalDateKey(new Date());
+            dateInput.min = minDate;
+            dateInput.value = selectedDateKey || minDate;
+            selectedDateKey = dateInput.value;
 
-    if (mitaShopId && markers[mitaShopId]) {
-        markers[mitaShopId].openPopup();
-    }
+            const handler = (event) => {
+                const nextValue = event.target.value || minDate;
+                setSelectedDate(nextValue);
+            };
+            dateInput.addEventListener('change', handler);
+            dateInput.addEventListener('input', handler);
+        }
 
-    if ("geolocation" in navigator) {
-        requestUserLocation(true, false);
-    } else {
-        updateSortDropdownOptions();
-    }
-    
-    initResizer();
-    setTimeout(() => map.invalidateSize(), 100);
-}
+        async function initApp() {
+            map.addControl(new GlobalViewControl());
+            map.addControl(new LocationControl());
+            initDateSelector();
 
-window.addEventListener('resize', () => {
-    updateLayout();
-});
+            try {
+                const response = await fetch('shops.json');
+                if (!response.ok) throw new Error('読み込み失敗');
+                shops = (await response.json()).filter(shop => !isClosedShopExpired(shop));
+            } catch (error) {
+                console.error(error);
+                return;
+            }
 
-window.addEventListener('DOMContentLoaded', initApp);
-</script>
+            let mitaShopId = null;
+
+            shops.forEach(shop => {
+                if (shop.lat && shop.lng) {
+                    const isVisited = !!visitedState[shop.id];
+                    const marker = L.marker([shop.lat, shop.lng], { icon: createIcon(shop, isVisited) }).addTo(map);
+                    marker.bindPopup(generateCardContentHTML(shop, isVisited, true));
+                    markers[shop.id] = marker;
+
+                    if (shop.name.includes("三田本店")) {
+                        mitaShopId = shop.id;
+                    }
+                }
+            });
+
+            updateLayout();
+
+            if (mitaShopId && markers[mitaShopId]) {
+                markers[mitaShopId].openPopup();
+            }
+
+            if ("geolocation" in navigator) {
+                requestUserLocation(true, false);
+            } else {
+                updateSortDropdownOptions();
+            }
+
+            initResizer();
+            setTimeout(() => map.invalidateSize(), 100);
+        }
+
+        window.addEventListener('resize', () => {
+            updateLayout();
+        });
+
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
 </body>
+
 </html>

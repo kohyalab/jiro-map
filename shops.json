@@ -819,6 +819,7 @@
     "lng": 139.7138991067635,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/ikebukuro/",
+      "rdb": "",
       "tabelog": "https://tabelog.com/tokyo/A1305/A130501/13003881/"
     },
     "x": "ikejikabuji",
@@ -872,8 +873,25 @@
       ]
     ],
     "remarks": "",
-    "hoursNotes": "火曜日祝日の場合は水曜日振替定休",
-    "instagram": ""
+    "hoursNotes": "",
+    "instagram": "",
+    "holidaySpecialShifts": [
+      {
+        "triggerDay": 2,
+        "targetOffset": 0,
+        "hours": [
+          [
+            17,
+            21.5
+          ]
+        ]
+      },
+      {
+        "triggerDay": 2,
+        "targetOffset": 1,
+        "hours": []
+      }
+    ]
   },
   {
     "id": "shinkoganei",
@@ -1938,6 +1956,7 @@
     "lng": 139.40134589999886,
     "urls": {
       "pc": "https://ramen-jiro-pc3.com/yaen2/",
+      "rdb": "",
       "tabelog": "https://tabelog.com/tokyo/A1329/A132904/13025633/"
     },
     "x": "Jiro_Yaenkaido2",
@@ -2019,7 +2038,14 @@
     ],
     "remarks": "",
     "hoursNotes": "月曜祝日の場合は休み",
-    "instagram": "yaen0828"
+    "instagram": "yaen0828",
+    "holidaySpecialShifts": [
+      {
+        "triggerDay": 1,
+        "targetOffset": 0,
+        "hours": []
+      }
+    ]
   },
   {
     "id": "hibarigaoka",
