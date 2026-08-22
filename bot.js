@@ -121,10 +121,10 @@ async function run() {
 
     // X（Twitter）へ自動投稿
     const client = new TwitterApi({
-        appKey: process.env.TWITTER_API_KEY_DEV,
-        appSecret: process.env.TWITTER_API_SECRET_DEV,
-        accessToken: process.env.TWITTER_ACCESS_TOKEN_DEV,
-        accessSecret: process.env.TWITTER_ACCESS_SECRET_DEV,
+        appKey: process.env.TWITTER_API_KEY,
+        appSecret: process.env.TWITTER_API_SECRET,
+        accessToken: process.env.TWITTER_ACCESS_TOKEN,
+        accessSecret: process.env.TWITTER_ACCESS_SECRET,
     });
 
     const mediaId = await client.v1.uploadMedia('sheet.png');
